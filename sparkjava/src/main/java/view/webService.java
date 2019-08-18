@@ -3,9 +3,9 @@ import static spark.Spark.*;
 public class webService {
 
     private String _serviceName;
-    private Runnable _serviceAction;
+    private String _serviceAction;
 
-    public webService(String serviceName, Runnable serviceAction){
+    public webService(String serviceName, String serviceAction){
         _serviceAction = serviceAction;
         _serviceName = serviceName;
     }
