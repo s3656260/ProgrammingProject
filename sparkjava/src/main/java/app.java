@@ -6,8 +6,11 @@ import java.io.IOException;
 public class app {
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
-        //String foo = getApple();
-        //System.out.println(foo);
+        //apiService foo = new apiService();
+        //foo.genList();
+        liveService();
+    }
+    private static void liveService(){
         webService test = new webService("test","foo");
         test.startService();
     }

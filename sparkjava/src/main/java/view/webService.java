@@ -2,7 +2,6 @@ package view;
 
 import com.google.gson.JsonArray;
 import controller.apiService;
-import model.popularShares;
 import model.shareItem;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
 
@@ -33,14 +32,21 @@ public class webService {
         });
         pathStr = "/"+_serviceName+"/top";
         get(pathStr, (req, res) -> {
-            popularShares popular = new popularShares();
-            List<shareItem> popShares = popular.getList();
-            JsonArray list = new JsonArray();
-            for (shareItem x :popShares) {
-                list.add(x.toJson());
-            }
-            return list;
+            return (JsonArray) getTop();
         });
         //post(pathStr, (request, response) ->{});
      }
+
+    public Object getTop(){
+        //popularShares popular = new popularShares();
+        //List<shareItem> popShares = popular.getList();
+        //List<shareItem> allShares = _apiService.getSymbols();
+        List<shareItem> allShares = _apiService.genList();
+        JsonArray list = new JsonArray();
+        for (shareItem x :allShares) {
+            //x.updateStock(_apiService);
+            list.add(x.toJson());
+        }
+        return list;
+    }
 }
