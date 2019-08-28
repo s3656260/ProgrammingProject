@@ -1,6 +1,7 @@
 package view;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import controller.apiService;
 import model.shareItem;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
@@ -31,9 +32,7 @@ public class webService {
             return price.toString();
         });
         pathStr = "/"+_serviceName+"/top";
-        get(pathStr, (req, res) -> {
-            return (JsonArray) getTop();
-        });
+        get(pathStr, (req, res) -> getTop());
         //post(pathStr, (request, response) ->{});
      }
 
@@ -42,11 +41,13 @@ public class webService {
         //List<shareItem> popShares = popular.getList();
         //List<shareItem> allShares = _apiService.getSymbols();
         List<shareItem> allShares = _apiService.genList();
+        JsonObject pack = new JsonObject();
         JsonArray list = new JsonArray();
         for (shareItem x :allShares) {
             //x.updateStock(_apiService);
             list.add(x.toJson());
         }
-        return list;
+        pack.add("items",list);
+        return pack;
     }
 }
