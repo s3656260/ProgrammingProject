@@ -1,9 +1,4 @@
 import React from 'react';
-//import getTop from 'D:/Development files/ProgrammingProject/React/src/Client.js';
-import { JsonToTable } from "react-json-to-table";
-
-
-
 
 export default class Home extends React.Component {
 
@@ -16,12 +11,28 @@ export default class Home extends React.Component {
         };
       }
     componentDidMount() {
-        fetch("http://localhost:4567/test/top").then(res => res.json()).then(
+        //fetch("http://localhost:4567/test/top", {mode: 'no-cors'}).then(res => res.text())          // convert to plain text
+        //.then(text => console.log(text))
+        /*fetch("http://localhost:4567/test/top", {mode: 'no-cors'}).then(res => res.json()).then(
         (result) => {this.setState({isLoaded: true, items: result.items});},
         (error) => {this.setState({isLoaded: true,error});})
-        
+        console.log("items");
+        console.log(this.items);*/
+        const myJson = [
+            {"symbol":"GE","company":"General Electric Co.","price":"7.93"},
+            {"symbol":"MO","company":"Altria Group, Inc.","price":"45.25"},
+            {"symbol":"CHK","company":"Chesapeake Energy Corp.","price":"1.39"},
+            {"symbol":"AMD","company":"Advanced Micro Devices, Inc.","price":"30.2"},
+            {"symbol":"BAC","company":"Bank of America Corp.","price":"26.47"},
+            {"symbol":"PM","company":"Philip Morris International, Inc.","price":"71.7"},
+            {"symbol":"T","company":"AT&T, Inc.","price":"34.72"},
+            {"symbol":"SNAP","company":"Snap, Inc.","price":"15.51"},
+            {"symbol":"NLY","company":"Annaly Capital Management, Inc.","price":"8.42"},
+            {"symbol":"ECA","company":"Encana Corp.","price":"4.31"}];
+        this.setState({isLoaded: true, items:myJson});
     }
     render() {
+        
         const { error, isLoaded, items } = this.state;
         if (error) {
         return <div>Error: {error.message}</div>;
@@ -47,7 +58,7 @@ export default class Home extends React.Component {
                 <div>TEST LIST SHARE</div><div className="TableData">
                 <ul>
                     {items.map(item => (
-                    <li key={item.name}>
+                    <li key={item.symbol}>
                     {item.symbol} {item.company} {item.price}
                     </li>
                     ))}
