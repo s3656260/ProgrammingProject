@@ -14,7 +14,7 @@ export default class Home extends React.Component {
             error: null,
             isLoaded: false,
             items: [],
-            term: '',
+            term: ''
         };
         this.searchHandler = this.searchHandler.bind(this);
     }
@@ -51,9 +51,9 @@ export default class Home extends React.Component {
             </label>
                             <input
                                 type="text"
-                                onchange={this.searchHandler}
-                                value={this.state.term}
 
+                                //value={this.state.term}
+                                onchange={this.searchHandler}
                                 id="name"
                                 className="FormField__Input"
                                 placeholder="Enter Share name"
