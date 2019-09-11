@@ -47,10 +47,13 @@ export default class Home extends React.Component {
                     />
                 </div>
                 <div>TEST LIST SHARE</div><div className="TableData">
-                <ul>
+                <ul id="shareTable">
+                    <div class="row">
+                    <b class ="cell">Share Symbol</b><b class ="cell">Company name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
+                    </div>
                     {items.map(item => (
-                    <li key={item.symbol}>
-                    {item.symbol} {item.company} {item.price}
+                    <li key={item.symbol} class="row" id="shareItem">
+                    <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">{item.price}</div><div class ="cell">{item.uAmount}</div>
                     </li>
                     ))}
                 </ul> 

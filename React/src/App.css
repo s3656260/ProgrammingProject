@@ -140,3 +140,11 @@
   padding-bottom: 2px;
   margin-left: 5px;
 }
+
+#shareTable{display:table;}
+.row{display: table-row;padding-top: 10px; -webkit-transition-duration: 0.4s; /* Safari */transition-duration: 0.4s;}
+.cell{display: table-cell; padding-right:30px}
+
+#shareItem:hover{
+  background-color:rgba(0, 0, 0, 0.199);
+}
