@@ -2,7 +2,7 @@ import React from 'react';
 
 function searchingFor(term) {
     return function (x) {
-        return x.symbol.toLowerCase().includes(term.toLowerCase());
+        return x.symbol.toLowerCase().includes(term.toLowerCase()) || x.company.toLowerCase().includes(term.toLowerCase());
     }
 }
 
@@ -47,13 +47,14 @@ export default class Home extends React.Component {
                     <form>
                         <div className="FormField">
                             <label className="FormField__Label" htmlFor="name">
-                                Symbol
+                                testing
             </label>
+
                             <input
                                 type="text"
+                                onChange={this.searchHandler}
+                                value={term}
 
-                                //value={this.state.term}
-                                onchange={this.searchHandler}
                                 id="name"
                                 className="FormField__Input"
                                 placeholder="Enter Share name"
