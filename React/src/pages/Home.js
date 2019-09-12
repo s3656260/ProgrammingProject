@@ -10,26 +10,17 @@ export default class Home extends React.Component {
           items: []
         };
       }
-    componentDidMount() {
+    getApi(){
         //fetch("http://localhost:4567/test/top", {mode: 'no-cors'}).then(res => res.text())          // convert to plain text
         //.then(text => console.log(text))
-        /*fetch("http://localhost:4567/test/top", {mode: 'no-cors'}).then(res => res.json()).then(
-        (result) => {this.setState({isLoaded: true, items: result.items});},
+        fetch("http://localhost:4567/test/top").then(res => res.json()).then(
+        (result) => {this.setState({isLoaded: true, items: result});},
         (error) => {this.setState({isLoaded: true,error});})
+    }
+    componentDidMount() {
+        this.getApi();
         console.log("items");
-        console.log(this.items);*/
-        const myJson = [
-            {"symbol":"GE","company":"General Electric Co.","price":"7.93"},
-            {"symbol":"MO","company":"Altria Group, Inc.","price":"45.25"},
-            {"symbol":"CHK","company":"Chesapeake Energy Corp.","price":"1.39"},
-            {"symbol":"AMD","company":"Advanced Micro Devices, Inc.","price":"30.2"},
-            {"symbol":"BAC","company":"Bank of America Corp.","price":"26.47"},
-            {"symbol":"PM","company":"Philip Morris International, Inc.","price":"71.7"},
-            {"symbol":"T","company":"AT&T, Inc.","price":"34.72"},
-            {"symbol":"SNAP","company":"Snap, Inc.","price":"15.51"},
-            {"symbol":"NLY","company":"Annaly Capital Management, Inc.","price":"8.42"},
-            {"symbol":"ECA","company":"Encana Corp.","price":"4.31"}];
-        this.setState({isLoaded: true, items:myJson});
+        console.log(this.state.items);
     }
     render() {
         
@@ -56,10 +47,13 @@ export default class Home extends React.Component {
                     />
                 </div>
                 <div>TEST LIST SHARE</div><div className="TableData">
-                <ul>
+                <ul id="shareTable">
+                    <div class="row">
+                    <b class ="cell">Share Symbol</b><b class ="cell">Company name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
+                    </div>
                     {items.map(item => (
-                    <li key={item.symbol}>
-                    {item.symbol} {item.company} {item.price}
+                    <li key={item.symbol} class="row" id="shareItem">
+                    <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">{item.price}</div><div class ="cell">{item.uAmount}</div>
                     </li>
                     ))}
                 </ul> 

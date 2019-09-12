@@ -8,6 +8,9 @@ public class shareItem {
     private String _symbol;
     private String _name;
     private String _price;
+    public String getSymbol(){
+        return _symbol;
+    }
     public shareItem(String symbol){
         _symbol = symbol;
     }
@@ -22,11 +25,12 @@ public class shareItem {
         _name = quote.getCompanyName();
         System.out.println(_name);
     }
-    public JsonObject toJson(){
+    public JsonObject toJson(int userAmount){
         JsonObject res = new JsonObject();
         res.addProperty("symbol",_symbol);
         res.addProperty("company",_name);
         res.addProperty("price",_price);
+        res.addProperty("uAmount",userAmount);
         return res;
     }
 
