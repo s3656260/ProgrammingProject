@@ -1,12 +1,14 @@
 package controller;
 
 import model.shareItem;
+import pl.zankowski.iextrading4j.api.marketdata.LastTrade;
 import pl.zankowski.iextrading4j.api.refdata.v1.ExchangeSymbol;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
 import pl.zankowski.iextrading4j.client.IEXCloudClient;
 import pl.zankowski.iextrading4j.client.IEXCloudTokenBuilder;
 import pl.zankowski.iextrading4j.client.IEXTradingApiVersion;
 import pl.zankowski.iextrading4j.client.IEXTradingClient;
+import pl.zankowski.iextrading4j.client.rest.request.marketdata.LastTradeRequestBuilder;
 import pl.zankowski.iextrading4j.client.rest.request.refdata.v1.SymbolsRequestBuilder;
 import pl.zankowski.iextrading4j.client.rest.request.stocks.ListRequestBuilder;
 import pl.zankowski.iextrading4j.client.rest.request.stocks.ListType;
@@ -22,12 +24,14 @@ public class apiService {
     //private static String _pk = "Tpk_a61dc94ba18e40ee896db15ff299f9e5";
     //private static String _sk = "Tsk_28a16e80b0d14b5bb0962842b13cf6d8";
     private IEXCloudClient cloudClient = null;
+    private IEXTradingClient iexTradingClient = null;
     public apiService(){
         cloudClient = IEXTradingClient.create(IEXTradingApiVersion.IEX_CLOUD_V1,
                 new IEXCloudTokenBuilder()
                         .withPublishableToken(_pk)
                         .withSecretToken(_sk)
                         .build());
+        iexTradingClient = (IEXTradingClient) IEXTradingClient.create();
     }
     public List<shareItem> getSymbols() {
         final IEXTradingClient iexTradingClient = (IEXTradingClient) IEXTradingClient.create();
@@ -44,10 +48,11 @@ public class apiService {
         //System.out.println(exchangeSymbolList);
     }
     public List<shareItem> genList(){
-        final List<Quote> quoteList = cloudClient.executeRequest(new ListRequestBuilder()
-                .withListType(ListType.MOSTACTIVE)
+        /*final List<Quote> quoteList = cloudClient.executeRequest(new ListRequestBuilder()
+                .withListType(ListType.IEXPERCENT)
                 .build());
-        List<shareItem> res = new ArrayList<shareItem>();
+        List<shareItem> res = new ArrayList<shareItem>();*/
+
         shareItem temp;
         for (Quote x : quoteList){
 
