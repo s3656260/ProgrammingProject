@@ -1,6 +1,9 @@
 package controller;
 
+import com.google.gson.Gson;
 import model.shareItem;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import pl.zankowski.iextrading4j.api.marketdata.LastTrade;
 import pl.zankowski.iextrading4j.api.refdata.v1.ExchangeSymbol;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
@@ -14,8 +17,15 @@ import pl.zankowski.iextrading4j.client.rest.request.stocks.ListRequestBuilder;
 import pl.zankowski.iextrading4j.client.rest.request.stocks.ListType;
 import pl.zankowski.iextrading4j.client.rest.request.stocks.QuoteRequestBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class apiService {
 
@@ -33,25 +43,11 @@ public class apiService {
                         .build());
         iexTradingClient = (IEXTradingClient) IEXTradingClient.create();
     }
-    public List<shareItem> getSymbols() {
-        final IEXTradingClient iexTradingClient = (IEXTradingClient) IEXTradingClient.create();
-        final List<ExchangeSymbol> exchangeSymbolList = iexTradingClient.executeRequest(new SymbolsRequestBuilder()
-                .build());
-        List<shareItem> res = new ArrayList<shareItem>();
-        shareItem temp;
-        for (ExchangeSymbol x : exchangeSymbolList){
-            String str = x.getSymbol();
-            temp = new shareItem(str);
-            res.add(temp);
-        }
-        return res;
-        //System.out.println(exchangeSymbolList);
-    }
-    public List<shareItem> genList(){
-        /*final List<Quote> quoteList = cloudClient.executeRequest(new ListRequestBuilder()
+    /*public List<shareItem> genList(){
+        final List<Quote> quoteList = cloudClient.executeRequest(new ListRequestBuilder()
                 .withListType(ListType.IEXPERCENT)
                 .build());
-        List<shareItem> res = new ArrayList<shareItem>();*/
+        List<shareItem> res = new ArrayList<shareItem>();
 
         shareItem temp;
         for (Quote x : quoteList){
@@ -60,7 +56,28 @@ public class apiService {
             res.add(temp);
         }
         return res;
+    }*/
+
+    public List<shareItem> genList() throws IOException {
+        URL url = new URL("https://api.iextrading.com/1.0/tops/last");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        InputStream response = con.getInputStream();
+        String responseBody = null;
+        try (Scanner scanner = new Scanner(response)) {
+            responseBody = scanner.useDelimiter("\\A").next();
+            System.out.println(responseBody);
+        }
+        JSONArray jsonArray = new JSONArray(responseBody);
+        List<shareItem> res = new ArrayList<shareItem>();
+        for (int i=0; i < jsonArray.length(); i++) {
+            JSONObject x = jsonArray.getJSONObject(i);
+            String sym = x.getString("symbol");
+            String price = x.getBigDecimal("price").toString();
+            res.add(new shareItem(sym,price));
+        }
+        return res;
     }
+
     public Quote getBySymb(String symbol){
         final Quote quote = cloudClient.executeRequest(new QuoteRequestBuilder()
                 .withSymbol(symbol)

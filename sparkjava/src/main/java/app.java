@@ -1,3 +1,4 @@
+import controller.apiService;
 import org.apache.log4j.BasicConfigurator;
 import view.webService;
 
@@ -8,6 +9,7 @@ public class app {
         BasicConfigurator.configure();
         //apiService foo = new apiService();
         //foo.genList();
+
         liveService();
     }
     private static void liveService(){

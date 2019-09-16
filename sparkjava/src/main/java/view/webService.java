@@ -8,6 +8,7 @@ import controller.apiService;
 import model.shareItem;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class webService {
     private int checkForUserStock(String symbol){
         return 0;
     }
-    private Object getTop(){
+    private Object getTop() throws IOException {
         List<shareItem> allShares = _apiService.genList();
         JsonObject pack = new JsonObject();
         JsonArray list = new JsonArray();

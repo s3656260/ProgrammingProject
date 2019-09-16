@@ -19,6 +19,10 @@ public class shareItem {
         _name = name;
         _price = price;
     }
+    public shareItem(String symbol,String price){
+        _symbol = symbol;
+        _price = price;
+    }
     public void updateStock(apiService api){
         Quote quote = api.getBySymb(_symbol);
         _price = (quote.getLatestPrice()).toString();
