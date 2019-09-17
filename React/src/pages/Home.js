@@ -71,13 +71,13 @@ export default class Home extends React.Component {
                     <div>TEST LIST SHARE</div><div className="TableData">
         
                     <div class="row">
-                    <b class ="cell">Share Symbol</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
+                    <b class ="cell">Share Symbol</b><b class ="cell">Company Name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
                     </div>
 
                     <ul id="shareTable">
                         {this.state.items.filter(searchingFor(this.state.term)).map(item => (
                             <li key={item.symbol} class="row" id="shareItem">
-                                <div class ="cell">{item.symbol}</div><div class ="cell">{roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
+                                <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">{item.price}</div><div class ="cell">{item.uAmount}</div>
                             </li>
                         ))}
                     </ul>

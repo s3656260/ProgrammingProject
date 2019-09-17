@@ -3,6 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import model.shareItem;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import pl.zankowski.iextrading4j.api.marketdata.LastTrade;
 import pl.zankowski.iextrading4j.api.refdata.v1.ExchangeSymbol;
@@ -37,6 +38,7 @@ public class apiService {
 
     private IEXCloudClient cloudClient = null;
     private IEXTradingClient iexTradingClient = null;
+    private JSONObject companyNames = null;
 
     public apiService(){
         cloudClient = IEXTradingClient.create(IEXTradingApiVersion.IEX_CLOUD_V1,
@@ -45,6 +47,18 @@ public class apiService {
                         .withSecretToken(_sk)
                         .build());
         iexTradingClient = (IEXTradingClient) IEXTradingClient.create();
+        jsonService jService = new jsonService("database/cNameList.json");
+        String clis = jService.getAsString();
+        companyNames = new JSONObject(clis);
+    }
+    private String getCName(String sym){
+        String str;
+        try {
+            str = companyNames.getString(sym);
+        }catch (JSONException e){
+            str = null;
+        }
+        return str;
     }
 
     public List<shareItem> genList() throws IOException {
@@ -56,13 +70,17 @@ public class apiService {
             responseBody = scanner.useDelimiter("\\A").next();
             System.out.println(responseBody);
         }
+
         JSONArray jsonArray = new JSONArray(responseBody);
         List<shareItem> res = new ArrayList<shareItem>();
+
         for (int i=0; i < jsonArray.length(); i++) {
             JSONObject x = jsonArray.getJSONObject(i);
             String sym = x.getString("symbol");
             String price = x.getBigDecimal("price").toString();
-            res.add(new shareItem(sym,price));
+            String company = getCName(sym);
+
+            res.add(new shareItem(sym,company,price));
         }
         return res;
     }
