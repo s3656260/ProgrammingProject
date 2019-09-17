@@ -31,10 +31,13 @@ public class apiService {
 
     private static String _pk = "pk_8e4e901c9ffa4d798bfd7e87afd505d0";
     private static String _sk = "sk_8205a90214374a1bb0e91259405126fd";
+
     //private static String _pk = "Tpk_a61dc94ba18e40ee896db15ff299f9e5";
     //private static String _sk = "Tsk_28a16e80b0d14b5bb0962842b13cf6d8";
+
     private IEXCloudClient cloudClient = null;
     private IEXTradingClient iexTradingClient = null;
+
     public apiService(){
         cloudClient = IEXTradingClient.create(IEXTradingApiVersion.IEX_CLOUD_V1,
                 new IEXCloudTokenBuilder()
@@ -43,20 +46,6 @@ public class apiService {
                         .build());
         iexTradingClient = (IEXTradingClient) IEXTradingClient.create();
     }
-    /*public List<shareItem> genList(){
-        final List<Quote> quoteList = cloudClient.executeRequest(new ListRequestBuilder()
-                .withListType(ListType.IEXPERCENT)
-                .build());
-        List<shareItem> res = new ArrayList<shareItem>();
-
-        shareItem temp;
-        for (Quote x : quoteList){
-
-            temp = new shareItem(x.getSymbol(),x.getCompanyName(),x.getLatestPrice().toString());
-            res.add(temp);
-        }
-        return res;
-    }*/
 
     public List<shareItem> genList() throws IOException {
         URL url = new URL("https://api.iextrading.com/1.0/tops/last");

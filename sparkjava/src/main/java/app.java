@@ -1,5 +1,7 @@
 import controller.apiService;
 import org.apache.log4j.BasicConfigurator;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import view.webService;
 
 import java.io.IOException;
@@ -9,7 +11,6 @@ public class app {
         BasicConfigurator.configure();
         //apiService foo = new apiService();
         //foo.genList();
-
         liveService();
     }
     private static void liveService(){
