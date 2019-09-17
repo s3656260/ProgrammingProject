@@ -5,7 +5,11 @@ function searchingFor(term) {
         return x.symbol.toLowerCase().includes(term.toLowerCase()) || x.company.toLowerCase().includes(term.toLowerCase());
     }
 }
-
+function roundStr(val){
+    var i = parseInt(val);
+    i = i.toFixed(2);
+    return(i);
+}
 export default class Home extends React.Component {
 
     constructor(props) {
@@ -32,11 +36,7 @@ export default class Home extends React.Component {
         console.log("items");
         console.log(this.state.items);
     }
-    roundStr(val){
-        var i = parseInt(val);
-        i = i.toFixed(2);
-        return(i);
-    }
+    
     render() {
 
         const { error, isLoaded, items, term } = this.state;
@@ -77,7 +77,7 @@ export default class Home extends React.Component {
                     <ul id="shareTable">
                         {this.state.items.filter(searchingFor(this.state.term)).map(item => (
                             <li key={item.symbol} class="row" id="shareItem">
-                                <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">{item.price}</div><div class ="cell">{item.uAmount}</div>
+                                <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">{roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
                             </li>
                         ))}
                     </ul>

@@ -56,7 +56,7 @@ public class apiService {
         try {
             str = companyNames.getString(sym);
         }catch (JSONException e){
-            str = null;
+            str = " ";
         }
         return str;
     }
