@@ -41,7 +41,9 @@ export default class Home extends React.Component {
         //console.log(this.state.userMoney);
             
     }
-    
+    async doStockPurchase(sym, amount){
+
+    }
       
     componentDidMount() {
         this.getApi();
@@ -80,7 +82,7 @@ export default class Home extends React.Component {
 
                         </div>
                     </form>
-                    <div>TEST LIST SHARE user money : {this.state.userMoney}</div><div className="TableData">
+                    <div>TEST LIST SHARE user money : {roundStr(this.state.userMoney)}</div><div className="TableData">
         
                     <div class="row">
                     <b class ="cell">Share Symbol</b><b class ="cell">Company Name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
