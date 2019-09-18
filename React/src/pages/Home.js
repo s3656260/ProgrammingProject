@@ -18,7 +18,8 @@ export default class Home extends React.Component {
             error: null,
             isLoaded: false,
             items: [],
-            term: ''
+            term: '',
+            userMoney: null
         };
         this.searchHandler = this.searchHandler.bind(this);
     }
@@ -30,11 +31,14 @@ export default class Home extends React.Component {
         fetch("http://localhost:4567/test/top").then(res => res.json()).then(
             (result) => { this.setState({ isLoaded: true, items: result }); },
             (error) => { this.setState({ isLoaded: true, error }); })
+            fetch("http://localhost:4567/test/userCash/1").then(res=>res.json().then(
+                (result) => { this.setState({ userMoney: result }); }
+            ));
     }
     componentDidMount() {
         this.getApi();
-        console.log("items");
-        console.log(this.state.items);
+        console.log("user money");
+        console.log(this.state.userMoney);
     }
     
     render() {
@@ -68,7 +72,7 @@ export default class Home extends React.Component {
 
                         </div>
                     </form>
-                    <div>TEST LIST SHARE</div><div className="TableData">
+                    <div>TEST LIST SHARE user money : {this.userMoney}</div><div className="TableData">
         
                     <div class="row">
                     <b class ="cell">Share Symbol</b><b class ="cell">Company Name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
@@ -77,7 +81,7 @@ export default class Home extends React.Component {
                     <ul id="shareTable">
                         {this.state.items.filter(searchingFor(this.state.term)).map(item => (
                             <li key={item.symbol} class="row" id="shareItem">
-                                <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">{roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
+                                <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">${roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
                             </li>
                         ))}
                     </ul>

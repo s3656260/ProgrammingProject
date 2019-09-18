@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import controller.apiService;
 import model.shareItem;
+import model.userItem;
+import org.json.JSONObject;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
 
 import java.io.IOException;
@@ -19,11 +21,13 @@ public class webService {
     private String _serviceName;
     private String _serviceAction;
     private apiService _apiService;
+    private userItem CurrentUser;
 
     public webService(String serviceName, String serviceAction){
         _serviceAction = serviceAction;
         _serviceName = serviceName;
         _apiService = new apiService();
+        CurrentUser = new userItem(10000);
     }
 
     public void startService(){
@@ -57,9 +61,17 @@ public class webService {
             System.out.println(price);
             return price.toString();
         });
-        //top hare list
+        //top share list
         pathStr = "/"+_serviceName+"/top";
         get(pathStr, (req, res) -> getTop());
+        pathStr = "/"+_serviceName+"/userCash/:userId";
+        get(pathStr, (req, res) -> getUserMoney());
+     }
+     private JSONObject getUserMoney(){
+        double val = CurrentUser.get_Money();
+        JSONObject json = new JSONObject();
+        json.put("userMoney",val);
+        return json;
      }
     private int checkForUserStock(String symbol){
         return 0;
