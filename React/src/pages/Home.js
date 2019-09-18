@@ -6,8 +6,9 @@ function searchingFor(term) {
     }
 }
 function roundStr(val){
-    var i = parseInt(val);
-    i = i.toFixed(2);
+    //var i = parseInt(val);
+    //i = i.toFixed(2);
+    var i = Math.round(val* 1000)/1000;
     return(i);
 }
 export default class Home extends React.Component {

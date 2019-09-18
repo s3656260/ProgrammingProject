@@ -12,6 +12,7 @@ import pl.zankowski.iextrading4j.api.stocks.Quote;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static spark.Spark.*;
@@ -22,12 +23,15 @@ public class webService {
     private String _serviceAction;
     private apiService _apiService;
     private userItem CurrentUser;
+    private ArrayList<JSONObject> StockList;
 
     public webService(String serviceName, String serviceAction){
         _serviceAction = serviceAction;
         _serviceName = serviceName;
         _apiService = new apiService();
         CurrentUser = new userItem(10000);
+        StockList = new ArrayList<JSONObject>();
+        doPurchase("OHI","String userId", 12);
     }
 
     public void startService(){
@@ -67,14 +71,20 @@ public class webService {
         pathStr = "/"+_serviceName+"/userCash/:userId";
         get(pathStr, (req, res) -> getUserMoney());
         pathStr = "/"+_serviceName+"/userPurchase/:sym/:userId/:amount";
-        post(pathStr, (req, res) -> {
+        /*post(pathStr, (req, res) -> {
             getUserMoney();
-        });
+        });*/
 
     }
     private void doPurchase(String sym,String userId, double amount){
-        CurrentUser.rmv_Money(amount);
-
+        Quote q = _apiService.getBySymb(sym);
+        double price = q.getLatestPrice().doubleValue();
+        double cost = price*amount;
+        CurrentUser.rmv_Money(cost);
+        JSONObject json = new JSONObject();
+        json.put("symbol", sym);
+        json.put("value", amount);
+        StockList.add(json);
     }
     private JSONObject getUserMoney(){
         double val = CurrentUser.get_Money();
@@ -83,7 +93,16 @@ public class webService {
         return json;
     }
     private int checkForUserStock(String symbol){
-        return 0;
+        //loop through array
+        int res = 0;
+        for (JSONObject json: StockList) {
+            String symC = json.getString("symbol");
+            if((symC).equals(symbol)){
+                res= json.getInt("value");
+            }
+        }
+        //find stocks
+        return res;
     }
     private Object getTop() throws IOException {
         List<shareItem> allShares = _apiService.genList();
