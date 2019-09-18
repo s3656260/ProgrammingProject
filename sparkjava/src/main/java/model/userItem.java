@@ -11,5 +11,8 @@ public class userItem {
     public double get_Money() {
         return _Money;
     }
+    public void rmv_Money(double money){
+        _Money = _Money - money;
+    }
 
 }

@@ -66,13 +66,22 @@ public class webService {
         get(pathStr, (req, res) -> getTop());
         pathStr = "/"+_serviceName+"/userCash/:userId";
         get(pathStr, (req, res) -> getUserMoney());
-     }
-     private JSONObject getUserMoney(){
+        pathStr = "/"+_serviceName+"/userPurchase/:sym/:userId/:amount";
+        post(pathStr, (req, res) -> {
+            getUserMoney();
+        });
+
+    }
+    private void doPurchase(String sym,String userId, double amount){
+        CurrentUser.rmv_Money(amount);
+
+    }
+    private JSONObject getUserMoney(){
         double val = CurrentUser.get_Money();
         JSONObject json = new JSONObject();
         json.put("userMoney",val);
         return json;
-     }
+    }
     private int checkForUserStock(String symbol){
         return 0;
     }
