@@ -19,7 +19,7 @@ export default class Home extends React.Component {
             isLoaded: false,
             items: [],
             term: '',
-            userMoney: null
+            userMoney: 0
         };
         this.searchHandler = this.searchHandler.bind(this);
     }
@@ -27,18 +27,25 @@ export default class Home extends React.Component {
     searchHandler(event) {
         this.setState({ term: event.target.value })
     }
-    getApi() {
+    async getApi() {
+        const fetchResult = fetch("http://localhost:4567/test/userCash/1")
+        var res = await fetchResult;
+        var json = await res.json();
+        this.setState({userMoney:json.userMoney});
+        console.log(json.userMoney);
+
         fetch("http://localhost:4567/test/top").then(res => res.json()).then(
             (result) => { this.setState({ isLoaded: true, items: result }); },
             (error) => { this.setState({ isLoaded: true, error }); })
-            fetch("http://localhost:4567/test/userCash/1").then(res=>res.json().then(
-                (result) => { this.setState({ userMoney: result }); }
-            ));
+        //console.log(this.state.userMoney);
+            
     }
+    
+      
     componentDidMount() {
         this.getApi();
-        console.log("user money");
-        console.log(this.state.userMoney);
+        //console.log("user money");
+        //console.log(this.state.userMoney);
     }
     
     render() {
@@ -72,7 +79,7 @@ export default class Home extends React.Component {
 
                         </div>
                     </form>
-                    <div>TEST LIST SHARE user money : {this.userMoney}</div><div className="TableData">
+                    <div>TEST LIST SHARE user money : {this.state.userMoney}</div><div className="TableData">
         
                     <div class="row">
                     <b class ="cell">Share Symbol</b><b class ="cell">Company Name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
