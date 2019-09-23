@@ -90,7 +90,7 @@ export default class Home extends React.Component {
 
                     <ul id="shareTable">
                         {this.state.items.filter(searchingFor(this.state.term)).map(item => (
-                            <li key={item.symbol} class="row" id="shareItem">
+                            <li key={item.symbol} class="row" id="shareItem" onclick="alert('You clicked me !')">
                                 <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">${roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
                             </li>
                         ))}
