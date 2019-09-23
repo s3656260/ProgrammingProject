@@ -12,6 +12,10 @@ function roundStr(val){
     return(i);
 }
 export default class Home extends React.Component {
+    getStockData = (stock) => {
+        //[...somewhere in here I define a variable listInfo which    I think will be useful as data in my ToDoList component...]
+        this.props.stockItem(stock)
+    }
 
     constructor(props) {
         super(props);
