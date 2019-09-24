@@ -12,11 +12,7 @@ function roundStr(val){
     return(i);
 }
 export default class Home extends React.Component {
-    getStockData = (stock) => {
-        //[...somewhere in here I define a variable listInfo which    I think will be useful as data in my ToDoList component...]
-        this.props.stockItem(stock)
-    }
-
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -45,10 +41,11 @@ export default class Home extends React.Component {
         //console.log(this.state.userMoney);
             
     }
-    async doStockPurchase(sym, amount){
-
+    doStockPurchase = (item) =>{
+        console.log("purchase made!!");
+        this.props.currentStock(item)
     }
-      
+    
     componentDidMount() {
         this.getApi();
         //console.log("user money");
@@ -80,9 +77,7 @@ export default class Home extends React.Component {
                                 className="FormField__Input"
                                 placeholder="Enter Share name"
                                 name="name"
-
-
-                            />
+                                />
 
                         </div>
                     </form>
@@ -93,8 +88,9 @@ export default class Home extends React.Component {
                     </div>
 
                     <ul id="shareTable">
+                        {}
                         {this.state.items.filter(searchingFor(this.state.term)).map(item => (
-                            <li key={item.symbol} class="row" id="shareItem" onclick="alert('You clicked me !')">
+                            <li key={item.symbol} class="row" id="shareItem" onClick={() => this.doStockPurchase(item)}>
                                 <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">${roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
                             </li>
                         ))}

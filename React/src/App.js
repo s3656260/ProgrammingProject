@@ -5,7 +5,7 @@ import SignInForm from './pages/SignInForm';
 import Home from './pages/Home';
 
 import './App.css';
-import stockItemDisplay from './pages/stockItemDisplay';
+import StockItemDisplay from './pages/StockItemDisplay';
 
 class App extends Component {
   constructor(props) {
@@ -15,14 +15,14 @@ class App extends Component {
     };    
 }
   stockData = (dataFromChild) => {
-    //[...we will use the dataFromChild here...]
+    this.refs.stockPage.updateStock(dataFromChild);
   }
   render() {
     return (
       <Router basename="/react-auth-ui/">
         <div className="App">
           <div className="App__Aside">
-          <stockItemDisplay/>
+          <StockItemDisplay ref="stockPage"/>
           </div>
           <div className="App__Form">
             <div className="PageSwitcher">
@@ -38,7 +38,7 @@ class App extends Component {
             </Route>
             <Route path="/sign-in" component={SignInForm}>
             </Route>
-            <Route exact path="/home"render={ () => <Home callbackFromParent={this.stockData}/> } />
+            <Route exact path="/home"render={ () => <Home currentStock={this.stockData}/> } />
           </div>
 
         </div>
