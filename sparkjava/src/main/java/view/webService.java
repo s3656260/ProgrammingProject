@@ -70,11 +70,12 @@ public class webService {
         get(pathStr, (req, res) -> getTop());
         pathStr = "/"+_serviceName+"/userCash/:userId";
         get(pathStr, (req, res) -> getUserMoney());
-        pathStr = "/"+_serviceName+"/userPurchase/:sym/:userId/:amount";
+        pathStr = "/"+_serviceName+"/userPurchase";
         post(pathStr, (req, res) -> {
-            String sym = req.params(":sym");
-            String id = req.params(":userId");
-            Double amount = Double.parseDouble(req.params(":amount"));
+            System.out.print("doing post");
+            String sym = req.queryParams("sym");
+            String id = req.queryParams("userId");
+            Double amount = Double.parseDouble(req.queryParams("amount"));
             doPurchase(sym,id,amount);
             return 1;
         });
