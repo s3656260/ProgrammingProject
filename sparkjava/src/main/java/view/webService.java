@@ -47,7 +47,7 @@ public class webService {
 
     public boolean isHaveList() { return haveList; }
 
-    public void testPurchase(String sym,String userId, int amount){ doPurchase(sym,userId,amount); }
+    public boolean testPurchase(String sym,String userId, int amount){ return doPurchase(sym,userId,amount); }
 
     public shareItem getTestShare(int index){ return allShares.get(index); }
 
@@ -55,7 +55,9 @@ public class webService {
         JSONObject o = new JSONObject(list.get(index).toString());
         return o.getInt("uAmount");
     }
-
+    public void setUserMoney(double amount){
+        CurrentUser.set_Money(amount);
+    }
     //------------------------------------------------------------------------------
     //
     //
@@ -127,20 +129,26 @@ public class webService {
 
     }
 
-    private void doPurchase(String sym,String userId, int amount){
+    private boolean doPurchase(String sym,String userId, int amount){
         Quote q = _apiService.getBySymb(sym);
         double price = q.getLatestPrice().doubleValue();
         double cost = price*amount;
-        CurrentUser.rmv_Money(cost);
-        for (int i= 0; i<list.size();i++) {
-            JSONObject o = new JSONObject(list.get(i).toString());
-            String s = (String) o.get("symbol");
-            if(s.equals(sym)){
-                int nAmount = o.getInt("uAmount")+amount;
-                list.get(i).getAsJsonObject().addProperty("uAmount",nAmount);
-                JSONObject n = new JSONObject(list.get(i).toString());
-            }
 
+        if(cost>CurrentUser.get_Money()){
+            //check if user has enough money for purchase
+            return false;
+        }else {
+            CurrentUser.rmv_Money(cost);
+            for (int i = 0; i < list.size(); i++) {
+                JSONObject o = new JSONObject(list.get(i).toString());
+                String s = (String) o.get("symbol");
+                if (s.equals(sym)) {
+                    int nAmount = o.getInt("uAmount") + amount;
+                    list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
+                    JSONObject n = new JSONObject(list.get(i).toString());
+                }
+            }
+            return true;
         }
     }
 

@@ -2,6 +2,10 @@ package model;
 
 public class userItem {
 
+    public void set_Money(double _Money) {
+        this._Money = _Money;
+    }
+
     private double _Money;
 
     public userItem(double money){

@@ -2,9 +2,10 @@ package unitTests;
 
 import model.shareItem;
 import model.userItem;
-import org.apache.log4j.BasicConfigurator;
 import org.junit.*;
 import view.webService;
+
+import static org.junit.Assert.*;
 
 public class webserviceTest {
     private webService web_service;
@@ -55,9 +56,40 @@ public class webserviceTest {
         int stockCount = this.web_service.stockCount(index);
         //run assertions
         //changes to happen
-        Assert.assertEquals("User Money is not as expected after purchase ",expectedUserMoney,this.web_service.getCurrentUser().get_Money(),0);
-        Assert.assertEquals("Stock incremented incorrectly",amount,stockCount,0);
+        assertEquals("User Money is not as expected after purchase ",expectedUserMoney,this.web_service.getCurrentUser().get_Money(),0);
+        assertEquals("Stock incremented incorrectly",amount,stockCount,0);
         //not to change
-        Assert.assertEquals("Stock list size changed unexpectedly",stockListLength,this.web_service.getStockList().size(),0);
+        assertEquals("Stock list size changed unexpectedly",stockListLength,this.web_service.getStockList().size(),0);
+        //reset user currency
+        this.web_service.setUserMoney(10000);
+    }
+    @Test
+    public void invalidPurchaseTest(){
+        System.out.println("webserviceTest.invalidPurchaseTest");
+        int index = 1;
+        //set test variables
+        shareItem testShare = web_service.getTestShare(index);
+        String symbol = testShare.getSymbol();
+        String userId = "1";
+        double price;
+        int amount = 10;
+
+        //no money test
+        price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        this.web_service.setUserMoney(0);
+        assertFalse(this.web_service.testPurchase(symbol,userId,amount));
+
+        //price-1 money test just not enough
+        price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        this.web_service.setUserMoney(price-1);
+        assertFalse(this.web_service.testPurchase(symbol,userId,amount));
+
+        //just enough price
+        price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        this.web_service.setUserMoney(price);
+        assertTrue(this.web_service.testPurchase(symbol, userId, amount));
+
+        //reset user currency
+        this.web_service.setUserMoney(10000);
     }
 }
