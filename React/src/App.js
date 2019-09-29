@@ -14,17 +14,13 @@ class App extends Component {
         homeR:null,
         listDataFromChild: null
     };   
-    this.updateChild = this.updateChild.bind(this);
-}
-updateChild(){
-  this.refs.Home.getStockFromParents(this.state.items,this.state.isLoaded,this.state.error,this.state.userMoney);
 }
 updateUserAmount = (amount,type,symbol) =>{//type is wether its buy or sell, true for but, false for sell
-  this.setState({nAmount:amount,nType:type,nSymbol:symbol}); 
-}
-stockData = (dataFromChild) => {
   console.log("refs:");
   console.log(this.refs);
+  this.refs.Home.stockUChange(amount,type,symbol);
+}
+stockData = (dataFromChild) => {
   this.refs.stockPage.updateStock(dataFromChild);
 }
 render() {

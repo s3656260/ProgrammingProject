@@ -21,14 +21,18 @@ export default class Home extends React.Component {
             items: [],
             term: '',
             userMoney: 0,
-            haveItems:false
+            haveItems:false,
+            needUpdate:false
         };
         this.searchHandler = this.searchHandler.bind(this);
-        this.stockPriceChange = this.stockPriceChange.bind(this);
+        this.stockUChange = this.stockUChange.bind(this);
     }
-
-    stockPriceChange = (amount,type,symbol) =>{//type is wether its buy or sell, true for but, false for sell
-        console.log("a:"+amount+" t:"+type+" s:"+symbol);
+    stockUChange = (amount,type,symbol) =>{//type is wether its buy or sell, true for but, false for sell
+        console.log("home is re rendering");
+        console.log(amount+"/"+type+"/"+symbol)
+        this.setState({haveItems:false});
+        this.getApi();
+        this.render();
     }
 
     searchHandler(event) {
@@ -39,19 +43,19 @@ export default class Home extends React.Component {
         this.setState({items:stocks,error:err,isLoaded:loaded,userMoney:money});
     }
     async getApi() {
-        if (this.state.haveItems==0){
-            const fetchResult = fetch("http://localhost:4567/test/userCash/1")
-            var res = await fetchResult;
-            var json = await res.json();
-            this.setState({userMoney:json.userMoney});
-            console.log(json.userMoney);
+        console.log("getting api");
+        const fetchResult = fetch("http://localhost:4567/test/userCash/1")
+        var res = await fetchResult;
+        var json = await res.json();
+        this.setState({userMoney:json.userMoney});
+        console.log(json.userMoney);
 
-            fetch("http://localhost:4567/test/top").then(res => res.json()).then(
-                (result) => { this.setState({ isLoaded: true, items: result }); },
-                (error) => { this.setState({ isLoaded: true, error }); })
-            //console.log(this.state.userMoney);
-            this.setState({haveItems:true});
-        }
+        fetch("http://localhost:4567/test/top").then(res => res.json()).then(
+            (result) => { this.setState({ isLoaded: true, items: result }); },
+            (error) => { this.setState({ isLoaded: true, error }); })
+        //console.log(this.state.userMoney);
+        this.setState({haveItems:true});
+        
     }
     doStockPurchase = (item) =>{
         this.props.currentStock(item)
@@ -59,12 +63,10 @@ export default class Home extends React.Component {
     
     componentDidMount() {
         this.getApi();
-        //console.log("user money");
-        //console.log(this.state.userMoney);
     }
     
     render() {
-
+        console.log("rendering home");
         const { error, isLoaded, items, term } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
