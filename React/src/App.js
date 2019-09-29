@@ -11,40 +11,70 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        homeR:null,
         listDataFromChild: null
-    };    
+    };   
+    this.updateChild = this.updateChild.bind(this);
 }
-  stockData = (dataFromChild) => {
-    this.refs.stockPage.updateStock(dataFromChild);
-  }
-  render() {
-    return (
-      <Router basename="/react-auth-ui/">
-        <div className="App">
-          <div className="App__Aside">
-          <StockItemDisplay ref="stockPage"/>
-          </div>
-          <div className="App__Form">
-            <div className="PageSwitcher">
-              <NavLink to="/home" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">HomeTest</NavLink>
-              <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">Sign Up</NavLink>
-            </div>
-
-            {/* <div className="FormTitle"> }
-              <NavLink to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</NavLink> or <NavLink exact to="/" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
-            </div> */}
-
-            <Route exact path="/" component={SignUpForm}>
-            </Route>
-            <Route path="/sign-in" component={SignInForm}>
-            </Route>
-            <Route exact path="/home"render={ () => <Home currentStock={this.stockData}/> } />
-          </div>
-
+updateChild(){
+  this.refs.Home.getStockFromParents(this.state.items,this.state.isLoaded,this.state.error,this.state.userMoney);
+}
+updateUserAmount = (amount,type,symbol) =>{//type is wether its buy or sell, true for but, false for sell
+  this.setState({nAmount:amount,nType:type,nSymbol:symbol}); 
+}
+stockData = (dataFromChild) => {
+  console.log("refs:");
+  console.log(this.refs);
+  this.refs.stockPage.updateStock(dataFromChild);
+}
+render() {
+  return (
+    <Router basename="/react-auth-ui/">
+      <div className="App">
+        <div className="App__Aside">
+        <StockItemDisplay ref="stockPage" updateUserAmount = {this.updateUserAmount} />
         </div>
-      </Router>
-    );
-  }
+        <div className="App__Form">
+          <Home ref ="Home" currentStock={this.stockData}/>
+          
+          {/*
+          <div className="PageSwitcher">
+            <NavLink to="/home" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">HomeTest</NavLink>
+            <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">Sign Up</NavLink>
+          </div>
+          <div className="FormTitle"> }
+            <NavLink to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</NavLink> or <NavLink exact to="/" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
+          </div> */}
+          {/*<Route exact path="/" component={SignUpForm}>
+          </Route>
+          <Route path="/sign-in" component={SignInForm}>
+          </Route>
+        <Route exact path="/home"render={ () =>  } />*/}
+          
+        </div>
+      </div>
+    </Router>
+  );
+}
 }
 
+//ref="Home" component={ () => <Home ref="test" currentStock={this.stockData} />}
+/*var arr = [];
+  var newStock = {
+    company: this.state.nAmount,
+    price: null,
+    symbol: this.state.nSymbol,
+    uAmount: null
+  }
+  var amnt = this.state.nAmount;
+  var type = this.state.nType;
+  var sym = this.state.nSymbol;
+  
+  this.state.items.map((item)=>{
+    console.log(sym);
+
+    if(sym.equals(item.symbol)==true){
+      console.log(item);
+    }
+  }); */
 export default App;

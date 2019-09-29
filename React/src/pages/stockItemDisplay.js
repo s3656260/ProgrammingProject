@@ -33,7 +33,8 @@ export default class StockItemDisplay extends React.Component {
 
     handleBuySubmit(event){
         var id = 0;
-        var url = "http://localhost:4567/test/userPurchase";
+        console.log("doing purchase");
+        var url = "http://localhost:4567/test/userPurchase/";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -43,11 +44,13 @@ export default class StockItemDisplay extends React.Component {
             body: JSON.stringify({
                 sym: this.state.stock.symbol,
                 userId: id,
-                amount: this.state.stock.price
+                amount: this.state.buyVal
             })
         })
-
-        //event.preventDefault();
+        event.preventDefault();
+        //need to check if user can afford
+        this.props.updateUserAmount(this.state.buyVal,true,this.state.stock.symbol);
+       
     }
     
     handleSellSubmit(event){
@@ -67,8 +70,8 @@ export default class StockItemDisplay extends React.Component {
                 <div class="stockItemH1">Current Value of held stock : ${roundStr(userVal)}</div>
                 <form onSubmit={this.handleSubmit}>
                 <div class="stockItemH1"><input type="number" name="quantity" min="1" value={this.state.sellVal} onChange={this.handleSellChange}/>
-                <input type="submit" value="Sell"/>Value : ${roundStr(this.state.sellVal*price)}</div>
-                </form><form onSubmit={this.handleSubmit}>
+                <button onclick="myFunction()">Sell</button><input type="submit" value="Sell"/>Value : ${roundStr(this.state.sellVal*price)}</div>
+                </form><form onSubmit={this.handleBuySubmit}>
                 <div class="stockItemH1"><input type="number" name="quantity" min="1" value={this.state.buyVal} onChange={this.handleBuyChange}/>
                 <input type="submit" value="buy"/>Value : ${roundStr(this.state.buyVal*price)}</div>
                 </form>

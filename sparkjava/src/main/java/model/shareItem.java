@@ -29,12 +29,12 @@ public class shareItem {
         _name = quote.getCompanyName();
         System.out.println(_name);
     }
-    public JsonObject toJson(int userAmount){
+    public JsonObject toJson(){
         JsonObject res = new JsonObject();
         res.addProperty("symbol",_symbol);
         res.addProperty("company",_name);
         res.addProperty("price",_price);
-        res.addProperty("uAmount",userAmount);
+        res.addProperty("uAmount",0);
         return res;
     }
 

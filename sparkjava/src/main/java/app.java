@@ -16,10 +16,13 @@ public class app {
         //test();
     }
     private static void test() throws IOException {
-        apiService test = new apiService();
-        test.genList();
+        //apiService test = new apiService();
+        //test.genList();
+        webService test = new webService("test","foo");
+        test.startService();
+        test.testFn();
     }
-    private static void liveService(){
+    private static void liveService() throws IOException {
         webService test = new webService("test","foo");
         test.startService();
     }

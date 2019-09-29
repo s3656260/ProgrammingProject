@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import controller.apiService;
 import model.shareItem;
 import model.userItem;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
 
@@ -24,14 +25,22 @@ public class webService {
     private apiService _apiService;
     private userItem CurrentUser;
     private ArrayList<JSONObject> StockList;
+    private List<shareItem> allShares;
+    private JsonArray list;
+    private boolean haveList;
 
-    public webService(String serviceName, String serviceAction){
+    public webService(String serviceName, String serviceAction) throws IOException {
         _serviceAction = serviceAction;
         _serviceName = serviceName;
         _apiService = new apiService();
         CurrentUser = new userItem(10000);
         StockList = new ArrayList<JSONObject>();
+        genStocklist();
+        haveList = false;
+    }
+    public void testFn(){
         doPurchase("OHI","String userId", 12);
+        doPurchase("OHI","String userId", 1);
     }
 
     public void startService(){
@@ -70,26 +79,37 @@ public class webService {
         get(pathStr, (req, res) -> getTop());
         pathStr = "/"+_serviceName+"/userCash/:userId";
         get(pathStr, (req, res) -> getUserMoney());
-        pathStr = "/"+_serviceName+"/userPurchase";
+        pathStr = "/"+_serviceName+"/userPurchase/";
         post(pathStr, (req, res) -> {
+            res.type("application/json");
+
+            JSONObject bod = new JSONObject(req.body());
+
             System.out.print("doing post");
-            String sym = req.queryParams("sym");
-            String id = req.queryParams("userId");
-            Double amount = Double.parseDouble(req.queryParams("amount"));
+            String sym = bod.getString("sym");
+            String id = "1";
+            int amount = bod.getInt("amount");
             doPurchase(sym,id,amount);
-            return 1;
+            return 200;
         });
 
     }
-    private void doPurchase(String sym,String userId, double amount){
+    private void doPurchase(String sym,String userId, int amount){
         Quote q = _apiService.getBySymb(sym);
         double price = q.getLatestPrice().doubleValue();
         double cost = price*amount;
         CurrentUser.rmv_Money(cost);
-        JSONObject json = new JSONObject();
-        json.put("symbol", sym);
-        json.put("value", amount);
-        StockList.add(json);
+        for (int i= 0; i<list.size();i++) {
+            JSONObject o = new JSONObject(list.get(i).toString());
+            String s = (String) o.get("symbol");
+            if(s.equals(sym)){
+                int nAmount = o.getInt("uAmount")+amount;
+                list.get(i).getAsJsonObject().addProperty("uAmount",nAmount);
+                System.out.println("found match");
+                JSONObject n = new JSONObject(list.get(i).toString());
+            }
+
+        }
     }
     private JSONObject getUserMoney(){
         double val = CurrentUser.get_Money();
@@ -109,18 +129,15 @@ public class webService {
         //find stocks
         return res;
     }
-    private Object getTop() throws IOException {
-        List<shareItem> allShares = _apiService.genList();
-        JsonObject pack = new JsonObject();
-        JsonArray list = new JsonArray();
+    private void genStocklist() throws IOException {
+        list = new JsonArray();
+        allShares  = _apiService.genList();
         for (shareItem x :allShares) {
-            int i = checkForUserStock(x.getSymbol());
-
-            list.add(x.toJson(i));
+            list.add(x.toJson());
         }
-        //pack.add("items",list);
+    }
+    private Object getTop() throws IOException {
         return list;
-        //return addUserAmounts(list);
     }
     public Object addUserAmounts(JsonArray list){
         JsonParser jsonParser = new JsonParser();
