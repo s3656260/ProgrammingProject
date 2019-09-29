@@ -37,5 +37,8 @@ public class shareItem {
         res.addProperty("uAmount",0);
         return res;
     }
-
+    @Override
+    public String toString(){
+        return "Sym:" + _symbol + " Company:" + _name + " Price:" + _price;
+    }
 }
