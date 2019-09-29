@@ -2,6 +2,7 @@ package unitTests;
 
 import model.shareItem;
 import model.userItem;
+import org.apache.log4j.BasicConfigurator;
 import org.junit.*;
 import view.webService;
 
@@ -41,7 +42,7 @@ public class webserviceTest {
         shareItem testShare = web_service.getTestShare(index);
         String symbol = testShare.getSymbol();
         String userId = "1";
-        double price = Double.parseDouble(testShare.get_price());
+        double price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
         int amount = 10;
         userItem testUser = this.web_service.getCurrentUser();
 
@@ -54,7 +55,7 @@ public class webserviceTest {
         int stockCount = this.web_service.stockCount(index);
         //run assertions
         //changes to happen
-        Assert.assertEquals("User Money is not as expected after purchase ",this.web_service.getCurrentUser().get_Money(),0);
+        Assert.assertEquals("User Money is not as expected after purchase ",expectedUserMoney,this.web_service.getCurrentUser().get_Money(),0);
         Assert.assertEquals("Stock incremented incorrectly",amount,stockCount,0);
         //not to change
         Assert.assertEquals("Stock list size changed unexpectedly",stockListLength,this.web_service.getStockList().size(),0);
