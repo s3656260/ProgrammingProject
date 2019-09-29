@@ -68,7 +68,6 @@ public class apiService {
         String responseBody = null;
         try (Scanner scanner = new Scanner(response)) {
             responseBody = scanner.useDelimiter("\\A").next();
-            System.out.println(responseBody);
         }
 
         JSONArray jsonArray = new JSONArray(responseBody);

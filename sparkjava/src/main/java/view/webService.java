@@ -28,7 +28,39 @@ public class webService {
     private List<shareItem> allShares;
     private JsonArray list;
     private boolean haveList;
+    //
+    //                            test functions
+    //------------------------------------------------------------------------------
+    public String get_serviceName() { return _serviceName; }
 
+    public String get_serviceAction() { return _serviceAction; }
+
+    public apiService get_apiService() { return _apiService; }
+
+    public userItem getCurrentUser() { return CurrentUser; }
+
+    public ArrayList<JSONObject> getStockList() { return StockList; }
+
+    public List<shareItem> getAllShares() { return allShares; }
+
+    public JsonArray getList() { return list; }
+
+    public boolean isHaveList() { return haveList; }
+
+    public boolean testPurchase(String sym,String userId, int amount){ return doPurchase(sym,userId,amount); }
+
+    public shareItem getTestShare(int index){ return allShares.get(index); }
+
+    public int stockCount(int index){
+        JSONObject o = new JSONObject(list.get(index).toString());
+        return o.getInt("uAmount");
+    }
+    public void setUserMoney(double amount){
+        CurrentUser.set_Money(amount);
+    }
+    //------------------------------------------------------------------------------
+    //
+    //
     public webService(String serviceName, String serviceAction) throws IOException {
         _serviceAction = serviceAction;
         _serviceName = serviceName;
@@ -41,6 +73,10 @@ public class webService {
     public void testFn(){
         doPurchase("OHI","String userId", 12);
         doPurchase("OHI","String userId", 1);
+    }
+
+    public void stopService(){
+        stop();
     }
 
     public void startService(){
@@ -71,7 +107,6 @@ public class webService {
             String name = req.params(":name");
             Quote quote = _apiService.getBySymb(name);
             BigDecimal price = quote.getLatestPrice();
-            System.out.println(price);
             return price.toString();
         });
         //top share list
@@ -85,7 +120,6 @@ public class webService {
 
             JSONObject bod = new JSONObject(req.body());
 
-            System.out.print("doing post");
             String sym = bod.getString("sym");
             String id = "1";
             int amount = bod.getInt("amount");
@@ -94,29 +128,37 @@ public class webService {
         });
 
     }
-    private void doPurchase(String sym,String userId, int amount){
+
+    private boolean doPurchase(String sym,String userId, int amount){
         Quote q = _apiService.getBySymb(sym);
         double price = q.getLatestPrice().doubleValue();
         double cost = price*amount;
-        CurrentUser.rmv_Money(cost);
-        for (int i= 0; i<list.size();i++) {
-            JSONObject o = new JSONObject(list.get(i).toString());
-            String s = (String) o.get("symbol");
-            if(s.equals(sym)){
-                int nAmount = o.getInt("uAmount")+amount;
-                list.get(i).getAsJsonObject().addProperty("uAmount",nAmount);
-                System.out.println("found match");
-                JSONObject n = new JSONObject(list.get(i).toString());
-            }
 
+        if(cost>CurrentUser.get_Money()){
+            //check if user has enough money for purchase
+            return false;
+        }else {
+            CurrentUser.rmv_Money(cost);
+            for (int i = 0; i < list.size(); i++) {
+                JSONObject o = new JSONObject(list.get(i).toString());
+                String s = (String) o.get("symbol");
+                if (s.equals(sym)) {
+                    int nAmount = o.getInt("uAmount") + amount;
+                    list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
+                    JSONObject n = new JSONObject(list.get(i).toString());
+                }
+            }
+            return true;
         }
     }
+
     private JSONObject getUserMoney(){
         double val = CurrentUser.get_Money();
         JSONObject json = new JSONObject();
         json.put("userMoney",val);
         return json;
     }
+
     private int checkForUserStock(String symbol){
         //loop through array
         int res = 0;
@@ -129,6 +171,7 @@ public class webService {
         //find stocks
         return res;
     }
+
     private void genStocklist() throws IOException {
         list = new JsonArray();
         allShares  = _apiService.genList();
@@ -136,9 +179,11 @@ public class webService {
             list.add(x.toJson());
         }
     }
+
     private Object getTop() throws IOException {
         return list;
     }
+
     public Object addUserAmounts(JsonArray list){
         JsonParser jsonParser = new JsonParser();
         // Convert JSON Array String into JSON Array
