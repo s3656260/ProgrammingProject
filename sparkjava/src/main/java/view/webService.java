@@ -49,8 +49,11 @@ public class webService {
 
     public void testPurchase(String sym,String userId, int amount){ doPurchase(sym,userId,amount); }
 
-    public shareItem getTestShare(int i){
-        return allShares.get(i);
+    public shareItem getTestShare(int index){ return allShares.get(index); }
+
+    public int stockCount(int index){
+        JSONObject o = new JSONObject(list.get(index).toString());
+        return o.getInt("uAmount");
     }
 
     //------------------------------------------------------------------------------

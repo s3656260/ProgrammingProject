@@ -7,6 +7,11 @@ import pl.zankowski.iextrading4j.api.stocks.Quote;
 public class shareItem {
     private String _symbol;
     private String _name;
+
+    public String get_price() {
+        return _price;
+    }
+
     private String _price;
     public String getSymbol(){
         return _symbol;
