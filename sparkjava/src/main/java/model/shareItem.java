@@ -19,18 +19,22 @@ public class shareItem {
         _name = name;
         _price = price;
     }
+    public shareItem(String symbol,String price){
+        _symbol = symbol;
+        _price = price;
+    }
     public void updateStock(apiService api){
         Quote quote = api.getBySymb(_symbol);
         _price = (quote.getLatestPrice()).toString();
         _name = quote.getCompanyName();
         System.out.println(_name);
     }
-    public JsonObject toJson(int userAmount){
+    public JsonObject toJson(){
         JsonObject res = new JsonObject();
         res.addProperty("symbol",_symbol);
         res.addProperty("company",_name);
         res.addProperty("price",_price);
-        res.addProperty("uAmount",userAmount);
+        res.addProperty("uAmount",0);
         return res;
     }
 
