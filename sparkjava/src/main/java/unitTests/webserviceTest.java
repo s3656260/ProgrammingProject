@@ -5,6 +5,8 @@ import model.userItem;
 import org.junit.*;
 import view.webService;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class webserviceTest {
@@ -33,6 +35,30 @@ public class webserviceTest {
         //remove webservice
         this.web_service.stopService();
         this.web_service = null;
+    }
+
+    @Test
+    public void shareListGenerateTest(){
+        System.out.println("webserviceTest.shareListGenerateTest");
+        //setup test variable
+        int index = 1;
+        //reset list for testing
+        this.web_service.resetList();
+        //test list is empty
+        assertNull(this.web_service.getList());
+        //generate list
+        try {
+            this.web_service.testGenList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //test list is no longer null
+        assertNotNull(this.web_service.getList());
+        //test list size is greater than 0
+        assertNotEquals(0,this.web_service.getList().size());
+        //test the stock list has values
+        assertNotNull(this.web_service.getTestListStock(index));
+        //
     }
 
     @Test

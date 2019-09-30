@@ -39,7 +39,38 @@ public class apiService {
     private IEXCloudClient cloudClient = null;
     private IEXTradingClient iexTradingClient = null;
     private JSONObject companyNames = null;
+    //
+    //                            test functions
+    //------------------------------------------------------------------------------
+    private URL testUrl;
+    public boolean tryUrl(){
+        //returns true if able to connect
+        testUrl = null;
+        boolean b = true;
+        try {
+            testUrl = new URL("https://api.iextrading.com/1.0/tops/last");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            b = false;
+        }
+        return b;
+    }
+    public boolean tryConnect(){
+        //must be called after try url has been called (
+        //returns true if able to connect
+        boolean b = true;
+        try {
+            HttpURLConnection con = (HttpURLConnection) testUrl.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+            b = false;
+        }
+        return b;
+    }
 
+    //------------------------------------------------------------------------------
+    //
+    //
     public apiService(){
         cloudClient = IEXTradingClient.create(IEXTradingApiVersion.IEX_CLOUD_V1,
                 new IEXCloudTokenBuilder()
@@ -61,10 +92,29 @@ public class apiService {
         return str;
     }
 
-    public List<shareItem> genList() throws IOException {
-        URL url = new URL("https://api.iextrading.com/1.0/tops/last");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        InputStream response = con.getInputStream();
+    public List<shareItem> genList(){
+        //function will return null if the api cannot connect
+        URL url = null;
+        try {
+            url = new URL("https://api.iextrading.com/1.0/tops/last");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        HttpURLConnection con = null;
+        try {
+            con = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        InputStream response = null;
+        try {
+            response = con.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         String responseBody = null;
         try (Scanner scanner = new Scanner(response)) {
             responseBody = scanner.useDelimiter("\\A").next();
