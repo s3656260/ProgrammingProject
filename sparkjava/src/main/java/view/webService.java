@@ -138,8 +138,8 @@ public class webService {
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
-
-        if(cost>CurrentUser.get_Money()){
+        double userM = CurrentUser.get_Money();
+        if(cost>userM){
             //check if user has enough money for purchase
             return false;
         }else {

@@ -99,7 +99,7 @@ public class webserviceTest {
         String symbol = testShare.getSymbol();
         String userId = "1";
         double price;
-        int amount = 10;
+        int amount = 1;
 
         //no money test
         price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
