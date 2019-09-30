@@ -45,7 +45,7 @@ public class apiService {
     private URL testUrl;
     public boolean tryUrl(){
         //returns true if able to connect
-        URL testUrl = null;
+        testUrl = null;
         boolean b = true;
         try {
             testUrl = new URL("https://api.iextrading.com/1.0/tops/last");
@@ -56,7 +56,7 @@ public class apiService {
         return b;
     }
     public boolean tryConnect(){
-        //must be called after try url has been called
+        //must be called after try url has been called (
         //returns true if able to connect
         boolean b = true;
         try {
@@ -67,6 +67,7 @@ public class apiService {
         }
         return b;
     }
+
     //------------------------------------------------------------------------------
     //
     //
@@ -91,10 +92,28 @@ public class apiService {
         return str;
     }
 
-    public List<shareItem> genList() throws IOException {
-        URL url = new URL("https://api.iextrading.com/1.0/tops/last");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        InputStream response = con.getInputStream();
+    public List<shareItem> genList(){
+        URL url = null;
+        try {
+            url = new URL("https://api.iextrading.com/1.0/tops/last");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        HttpURLConnection con = null;
+        try {
+            con = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        InputStream response = null;
+        try {
+            response = con.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         String responseBody = null;
         try (Scanner scanner = new Scanner(response)) {
             responseBody = scanner.useDelimiter("\\A").next();
