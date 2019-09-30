@@ -58,6 +58,12 @@ public class webService {
     public void setUserMoney(double amount){
         CurrentUser.set_Money(amount);
     }
+
+    public void resetList(){ list = null; }
+
+    public void testGenList() throws IOException {genStocklist();}
+
+    public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
     //------------------------------------------------------------------------------
     //
     //
