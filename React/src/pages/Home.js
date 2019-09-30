@@ -1,18 +1,17 @@
+
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+
 
 function searchingFor(term) {
     return function (x) {
         return x.symbol.toLowerCase().includes(term.toLowerCase()) || x.company.toLowerCase().includes(term.toLowerCase());
     }
 }
-function roundStr(val){
-    //var i = parseInt(val);
-    //i = i.toFixed(2);
-    var i = Math.round(val* 1000)/1000;
-    return(i);
-}
+
 export default class Home extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -20,54 +19,41 @@ export default class Home extends React.Component {
             isLoaded: false,
             items: [],
             term: '',
-            userMoney: 0,
-            haveItems:false,
-            needUpdate:false
+            showBuy: false
         };
         this.searchHandler = this.searchHandler.bind(this);
-        this.stockUChange = this.stockUChange.bind(this);
+        this.toggleBuy = this.toggleBuy.bind(this);
+
+
     }
-    stockUChange = (amount,type,symbol) =>{//type is wether its buy or sell, true for but, false for sell
-        console.log("home is re rendering");
-        console.log(amount+"/"+type+"/"+symbol)
-        this.setState({haveItems:false});
-        this.getApi();
-        this.render();
+
+    toggleBuy(event) {
+        event.preventDefault()
+        this.setState({
+            showBuy: !this.state.showBuy
+        })
+
     }
 
     searchHandler(event) {
         this.setState({ term: event.target.value })
     }
-    getStockFromParents(stocks,loaded,err,money){
-        console.log(stocks);
-        this.setState({items:stocks,error:err,isLoaded:loaded,userMoney:money});
-    }
-    async getApi() {
-        console.log("getting api");
-        const fetchResult = fetch("http://localhost:4567/test/userCash/1")
-        var res = await fetchResult;
-        var json = await res.json();
-        this.setState({userMoney:json.userMoney});
-        console.log(json.userMoney);
-
+    getApi() {
+        //fetch("http://localhost:4567/test/top", {mode: 'no-cors'}).then(res => res.text())          // convert to plain text
+        //.then(text => console.log(text))
         fetch("http://localhost:4567/test/top").then(res => res.json()).then(
             (result) => { this.setState({ isLoaded: true, items: result }); },
             (error) => { this.setState({ isLoaded: true, error }); })
-        //console.log(this.state.userMoney);
-        this.setState({haveItems:true});
-        
     }
-    doStockPurchase = (item) =>{
-        this.props.currentStock(item)
-    }
-    
     componentDidMount() {
         this.getApi();
+        console.log("items");
+        console.log(this.state.items);
     }
-    
     render() {
-        console.log("rendering home");
+
         const { error, isLoaded, items, term } = this.state;
+        const { showBuy } = this.state
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -78,7 +64,7 @@ export default class Home extends React.Component {
                     <form>
                         <div className="FormField">
                             <label className="FormField__Label" htmlFor="name">
-                                testing
+                                SHARES
             </label>
 
                             <input
@@ -90,25 +76,36 @@ export default class Home extends React.Component {
                                 className="FormField__Input"
                                 placeholder="Enter Share name"
                                 name="name"
-                                />
+
+
+                            />
 
                         </div>
                     </form>
-                    <div>TEST LIST SHARE user money : {roundStr(this.state.userMoney)}</div><div className="TableData">
-        
-                    <div class="row">
-                    <b class ="cell">Share Symbol</b><b class ="cell">Company Name</b><b class ="cell">Price</b><b class ="cell">User Amount</b>
-                    </div>
+                    <div>TEST LIST SHARE</div>
 
-                    <ul id="shareTable">
-                        {}
+
+                    <ul>
                         {this.state.items.filter(searchingFor(this.state.term)).map(item => (
-                            <li key={item.symbol} class="row" id="shareItem" onClick={() => this.doStockPurchase(item)}>
-                                <div class ="cell">{item.symbol}</div><div class ="cell">{item.company}</div><div class ="cell">${roundStr(item.price)}</div><div class ="cell">{item.uAmount}</div>
+                            <li key={item.symbol}>
+
+                                <Button onClick={this.toggleBuy} variant="light" block>{item.symbol} {item.company} {item.price} </Button>
+                                {showBuy === true ? <Button variant="success" >BUY</Button> : ''}
+                                {showBuy === true ? <Button variant="danger" disabled>SELL</Button> : ''}
+                                {showBuy === true ? <input
+                                    type="number"
+                                    id="name"
+
+                                    placeholder="No. shares"
+                                    name="name"
+                                /> : ''}
+
+
+
+
                             </li>
                         ))}
                     </ul>
-                    </div>
                 </div>
 
             );
