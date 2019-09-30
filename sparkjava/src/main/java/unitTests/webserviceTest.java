@@ -1,5 +1,6 @@
 package unitTests;
 
+import controller.apiService;
 import model.shareItem;
 import model.userItem;
 import org.junit.*;
@@ -69,7 +70,7 @@ public class webserviceTest {
         shareItem testShare = web_service.getTestShare(index);
         String symbol = testShare.getSymbol();
         String userId = "1";
-        double price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        double price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
         int amount = 10;
         userItem testUser = this.web_service.getCurrentUser();
 
@@ -98,24 +99,38 @@ public class webserviceTest {
         String symbol = testShare.getSymbol();
         String userId = "1";
         double price;
-        int amount = 10;
+        int amount = 1;
 
         //no money test
-        price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
         this.web_service.setUserMoney(0);
         assertFalse(this.web_service.testPurchase(symbol,userId,amount));
 
         //price-1 money test just not enough
-        price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
         this.web_service.setUserMoney(price-1);
         assertFalse(this.web_service.testPurchase(symbol,userId,amount));
 
         //just enough price
-        price = this.web_service.get_apiService().getBySymb(symbol).getLatestPrice().doubleValue();
+        price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
         this.web_service.setUserMoney(price);
         assertTrue(this.web_service.testPurchase(symbol, userId, amount));
 
         //reset user currency
         this.web_service.setUserMoney(10000);
+    }
+
+    @Test
+    public void getPriceTest() {
+        System.out.println("webserviceTest.getPriceTest");
+        //set test variables
+        int index = 1;
+        //get test stock
+        shareItem testShare = web_service.getTestShare(index);
+        //start up api to test price
+        apiService testApi = this.web_service.get_apiService();
+        //assert price
+        shareItem expectedShare = testApi.getBySymb(testShare.getSymbol());
+        assertEquals(testShare.get_price(),expectedShare.get_price());
     }
 }

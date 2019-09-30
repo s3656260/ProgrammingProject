@@ -33,9 +33,9 @@ public class shareItem {
     }
 
     public void updateStock(apiService api){
-        Quote quote = api.getBySymb(_symbol);
-        _price = (quote.getLatestPrice()).toString();
-        _name = quote.getCompanyName();
+        shareItem quote = api.getBySymb(_symbol);
+        _price = (quote.get_price());
+        _name = quote.get_name();
         System.out.println(_name);
     }
 
