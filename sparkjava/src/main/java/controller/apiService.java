@@ -39,7 +39,37 @@ public class apiService {
     private IEXCloudClient cloudClient = null;
     private IEXTradingClient iexTradingClient = null;
     private JSONObject companyNames = null;
-
+    //
+    //                            test functions
+    //------------------------------------------------------------------------------
+    private URL testUrl;
+    public boolean tryUrl(){
+        //returns true if able to connect
+        URL testUrl = null;
+        boolean b = true;
+        try {
+            testUrl = new URL("https://api.iextrading.com/1.0/tops/last");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            b = false;
+        }
+        return b;
+    }
+    public boolean tryConnect(){
+        //must be called after try url has been called
+        //returns true if able to connect
+        boolean b = true;
+        try {
+            HttpURLConnection con = (HttpURLConnection) testUrl.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+            b = false;
+        }
+        return b;
+    }
+    //------------------------------------------------------------------------------
+    //
+    //
     public apiService(){
         cloudClient = IEXTradingClient.create(IEXTradingApiVersion.IEX_CLOUD_V1,
                 new IEXCloudTokenBuilder()
