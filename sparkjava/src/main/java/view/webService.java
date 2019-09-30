@@ -111,9 +111,8 @@ public class webService {
         String pathStr = "/"+_serviceName+"/sym/:name";
         get(pathStr, (req, res) -> {
             String name = req.params(":name");
-            Quote quote = _apiService.getBySymb(name);
-            BigDecimal price = quote.getLatestPrice();
-            return price.toString();
+            shareItem quote = _apiService.getBySymb(name);
+            return quote.get_price();
         });
         //top share list
         pathStr = "/"+_serviceName+"/top";
@@ -136,8 +135,8 @@ public class webService {
     }
 
     private boolean doPurchase(String sym,String userId, int amount){
-        Quote q = _apiService.getBySymb(sym);
-        double price = q.getLatestPrice().doubleValue();
+        shareItem q = _apiService.getBySymb(sym);
+        double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
 
         if(cost>CurrentUser.get_Money()){

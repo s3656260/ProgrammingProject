@@ -91,7 +91,6 @@ public class apiService {
         }
         return str;
     }
-
     public List<shareItem> genList(){
         //function will return null if the api cannot connect
         URL url = null;
@@ -134,10 +133,18 @@ public class apiService {
         return res;
     }
 
-    public Quote getBySymb(String symbol){
-        final Quote quote = cloudClient.executeRequest(new QuoteRequestBuilder()
+    public shareItem getBySymb(String symbol){
+        /*final Quote quote = cloudClient.executeRequest(new QuoteRequestBuilder()
                 .withSymbol(symbol)
                 .build());
-        return quote;
+        return quote;*/
+        List<shareItem> list = genList();
+        //search list
+        for(shareItem x : list){
+            if(x.getSymbol().equals(symbol)){
+                return x;
+            }
+        }
+        return null;
     }
 }

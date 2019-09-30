@@ -62,7 +62,7 @@ public class apiServiceTest {
         //test share is not null
         assertNotNull(testShare);
         //test individual stock getter
-        Quote indStockTest = this.api_service.getBySymb(testShare.getSymbol());
+        shareItem indStockTest = this.api_service.getBySymb(testShare.getSymbol());
         //test share is not null
         assertNotNull(indStockTest);
         //test values are the same
@@ -70,9 +70,8 @@ public class apiServiceTest {
         assertEquals(testShare.getSymbol(),indStockTest.getSymbol());
         //price
         double expected = Double.parseDouble(testShare.get_price());
-        double actual = indStockTest.getLatestPrice().doubleValue();
-        //allow a degree of error, of 1, the second method is a little inacurate, but
-        assertEquals(expected,actual,1);
+        double actual = Double.parseDouble(indStockTest.get_price());
+        assertEquals(expected,actual,0.01);
     }
 
 }
