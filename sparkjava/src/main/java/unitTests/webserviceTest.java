@@ -1,5 +1,6 @@
 package unitTests;
 
+import controller.apiService;
 import model.shareItem;
 import model.userItem;
 import org.junit.*;
@@ -117,5 +118,16 @@ public class webserviceTest {
 
         //reset user currency
         this.web_service.setUserMoney(10000);
+    }
+
+    @Test
+    public void getPriceTest() {
+        System.out.println("webserviceTest.getPriceTest");
+        //set test variables
+        int index = 1;
+        //start up api to test price
+        apiService testApi = new apiService();
+        //assert price
+
     }
 }
