@@ -3,6 +3,7 @@ package unitTests;
 import controller.apiService;
 import model.shareItem;
 import org.junit.*;
+import pl.zankowski.iextrading4j.api.stocks.Quote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,31 @@ public class apiServiceTest {
         assertNotNull(testList);
         //test list contains values
         assertNotEquals(0,testList.size());
+    }
+    @Test
+    public void testIndividualStockConsistancy(){
+        System.out.println("webserviceTest.testIndividualStockConsistancy");
+        //test case variables
+        int index = 1;
+        //test list generation
+        List<shareItem> testList = this.api_service.genList();
+        //get test stock from list
+        shareItem testShare = testList.get(index);
+        //test share is not null
+        assertNotNull(testShare);
+        //test individual stock getter
+        Quote indStockTest = this.api_service.getBySymb(testShare.getSymbol());
+        //test share is not null
+        assertNotNull(indStockTest);
+        //test values are the same
+        //symbol
+        assertEquals(testShare.getSymbol(),indStockTest.getSymbol());
+        //company
+        assertEquals(testShare.get_name(),indStockTest.getCompanyName());
+        //price
+        double expected = Double.parseDouble(testShare.get_price());
+        double actual = indStockTest.getLatestPrice().doubleValue();
+        assertEquals(expected,actual,0);
     }
 
 }
