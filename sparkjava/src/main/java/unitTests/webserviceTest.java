@@ -130,6 +130,7 @@ public class webserviceTest {
         //start up api to test price
         apiService testApi = this.web_service.get_apiService();
         //assert price
-        testApi.getBySymb(testShare.getSymbol());
+        shareItem expectedShare = testApi.getBySymb(testShare.getSymbol());
+        assertEquals(testShare.get_price(),expectedShare.get_price());
     }
 }
