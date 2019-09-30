@@ -93,6 +93,7 @@ public class apiService {
     }
 
     public List<shareItem> genList(){
+        //function will return null if the api cannot connect
         URL url = null;
         try {
             url = new URL("https://api.iextrading.com/1.0/tops/last");
