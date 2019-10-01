@@ -18,7 +18,5 @@ public class userItem {
     public void rmv_Money(double money){
         _Money = _Money - money;
     }
-    public void add_money(double money){
-        _Money = _Money + money;
-    }
+
 }

@@ -64,30 +64,6 @@ public class webService {
     public void testGenList() throws IOException {genStocklist();}
 
     public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
-
-    public void testAddStockOwnership(int index,int amount){
-        JSONObject o = new JSONObject(list.get(index).toString());
-        int nAmount = o.getInt("uAmount") + amount;
-        list.get(index).getAsJsonObject().addProperty("uAmount", nAmount);
-        JSONObject n = new JSONObject(list.get(index).toString());
-
-    }
-
-    public JsonArray getStocksOwned(){
-        JsonArray res = new JsonArray();
-        for (int i = 0; i < list.size(); i++) {
-            JSONObject o = new JSONObject(list.get(i).toString());
-            int uAmount = (int) o.get("uAmount");
-            if (uAmount >= 1) {
-                res.add(list.get(i));
-            }
-        }
-        if(res.size() == 0) return null;
-        else return res;
-    }
-
-    public boolean testSale(String sym,String userId, int amount){ return doShareSale(sym,userId,amount); }
-
     //------------------------------------------------------------------------------
     //
     //
@@ -158,27 +134,6 @@ public class webService {
 
     }
 
-    private boolean doShareSale(String sym,String userId, int amount){
-        shareItem q = _apiService.getBySymb(sym);
-        double price = Double.parseDouble(q.get_price());
-        double cost = price*amount;
-        for (int i = 0; i < list.size(); i++) {
-            JSONObject o = new JSONObject(list.get(i).toString());
-            String s = (String) o.get("symbol");
-            if (s.equals(sym)) {
-                int oAmnt = o.getInt("uAmount");
-                if (oAmnt >= amount){
-                    int nAmount = oAmnt - amount;
-                    list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
-                    JSONObject n = new JSONObject(list.get(i).toString());
-                    CurrentUser.add_money(cost);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private boolean doPurchase(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
@@ -197,9 +152,8 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                 }
-                return true;
             }
-            return false;
+            return true;
         }
     }
 
