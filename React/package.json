@@ -20,5 +20,10 @@
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "enzyme": "^3.10.0",
+    "fetch-mock": "^7.4.0",
+    "jest-fetch-mock": "^2.1.2"
   }
 }
