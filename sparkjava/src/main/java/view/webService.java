@@ -196,8 +196,9 @@ public class webService {
                     int nAmount = o.getInt("uAmount") + amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
+                    return true;
                 }
-                return true;
+
             }
             return false;
         }
