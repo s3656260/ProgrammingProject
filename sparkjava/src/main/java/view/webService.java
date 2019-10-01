@@ -64,6 +64,28 @@ public class webService {
     public void testGenList() throws IOException {genStocklist();}
 
     public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
+
+    public void testAddStockOwnership(int index,int amount){
+        JSONObject o = new JSONObject(list.get(index).toString());
+        int nAmount = o.getInt("uAmount") + amount;
+        list.get(index).getAsJsonObject().addProperty("uAmount", nAmount);
+        JSONObject n = new JSONObject(list.get(index).toString());
+
+    }
+
+    public JsonArray getStocksOwned(){
+        JsonArray res = new JsonArray();
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject o = new JSONObject(list.get(i).toString());
+            int uAmount = (int) o.get("uAmount");
+            if (uAmount >= 1) {
+                res.add(list.get(i));
+            }
+        }
+        if(res.size() == 0) return null;
+        else return res;
+    }
+
     //------------------------------------------------------------------------------
     //
     //
@@ -138,7 +160,7 @@ public class webService {
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
         double userM = CurrentUser.get_Money();
-
+        return true;
     }
 
     private boolean doPurchase(String sym,String userId, int amount){

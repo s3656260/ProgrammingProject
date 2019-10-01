@@ -1,5 +1,6 @@
 package unitTests;
 
+import com.google.gson.JsonArray;
 import controller.apiService;
 import model.shareItem;
 import model.userItem;
@@ -64,6 +65,19 @@ public class webserviceTest {
     @Test
     public void sellShareTest(){
         System.out.println("webserviceTest.sellShareTest");
+        int ownedAmnt = 2;
+
+        // add a test stock ownership
+        this.web_service.testAddStockOwnership(1,ownedAmnt);
+        JsonArray res = this.web_service.getStocksOwned();
+
+        //set test variables
+        shareItem testShare = web_service.getTestShare(index);
+        String symbol = testShare.getSymbol();
+        String userId = "1";
+        double price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
+        int amount = 10;
+        userItem testUser = this.web_service.getCurrentUser();
     }
     @Test
     public void invalidSellShareTest(){
@@ -73,6 +87,7 @@ public class webserviceTest {
     public void purchaseTest(){
         System.out.println("webserviceTest.purchaseTest");
         int index = 1;
+
         //set test variables
         shareItem testShare = web_service.getTestShare(index);
         String symbol = testShare.getSymbol();
@@ -84,16 +99,21 @@ public class webserviceTest {
         //test expected variables
         int stockListLength = this.web_service.getStockList().size();
         double expectedUserMoney = (testUser.get_Money())-(amount*price);
+
         //run test purchase
         this.web_service.testPurchase(symbol,userId,amount);
+
         //values after purchase
         int stockCount = this.web_service.stockCount(index);
+
         //run assertions
         //changes to happen
         assertEquals("User Money is not as expected after purchase ",expectedUserMoney,this.web_service.getCurrentUser().get_Money(),0);
         assertEquals("Stock incremented incorrectly",amount,stockCount,0);
+
         //not to change
         assertEquals("Stock list size changed unexpectedly",stockListLength,this.web_service.getStockList().size(),0);
+
         //reset user currency
         this.web_service.setUserMoney(10000);
     }
@@ -101,6 +121,7 @@ public class webserviceTest {
     public void invalidPurchaseTest(){
         System.out.println("webserviceTest.invalidPurchaseTest");
         int index = 1;
+
         //set test variables
         shareItem testShare = web_service.getTestShare(index);
         String symbol = testShare.getSymbol();
@@ -130,12 +151,16 @@ public class webserviceTest {
     @Test
     public void getPriceTest() {
         System.out.println("webserviceTest.getPriceTest");
+
         //set test variables
         int index = 1;
+
         //get test stock
         shareItem testShare = web_service.getTestShare(index);
+
         //start up api to test price
         apiService testApi = this.web_service.get_apiService();
+        
         //assert price
         shareItem expectedShare = testApi.getBySymb(testShare.getSymbol());
         assertEquals(testShare.get_price(),expectedShare.get_price());
