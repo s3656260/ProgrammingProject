@@ -160,7 +160,20 @@ public class webService {
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
         double userM = CurrentUser.get_Money();
-        return true;
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject o = new JSONObject(list.get(i).toString());
+            String s = (String) o.get("symbol");
+            if (s.equals(sym)) {
+                int oAmnt = o.getInt("uAmount");
+                if (oAmnt >= amount){
+                    int nAmount = oAmnt - amount;
+                    list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
+                    JSONObject n = new JSONObject(list.get(i).toString());
+                    return true;
+                }
+            }else return false;
+        }
+        return false;
     }
 
     private boolean doPurchase(String sym,String userId, int amount){
@@ -181,8 +194,9 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                 }
+                return true;
             }
-            return true;
+            return false;
         }
     }
 

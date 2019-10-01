@@ -62,13 +62,15 @@ public class webserviceTest {
         assertNotNull(this.web_service.getTestListStock(index));
         //
     }
+
     @Test
     public void sellShareTest(){
         System.out.println("webserviceTest.sellShareTest");
         int ownedAmnt = 2;
+        int index = 1;
 
         // add a test stock ownership
-        this.web_service.testAddStockOwnership(1,ownedAmnt);
+        this.web_service.testAddStockOwnership(index,ownedAmnt);
         JsonArray res = this.web_service.getStocksOwned();
 
         //set test variables
@@ -79,10 +81,12 @@ public class webserviceTest {
         int amount = 10;
         userItem testUser = this.web_service.getCurrentUser();
     }
+
     @Test
     public void invalidSellShareTest(){
         System.out.println("webserviceTest.invalidSellShareTest");
     }
+
     @Test
     public void purchaseTest(){
         System.out.println("webserviceTest.purchaseTest");
@@ -117,6 +121,7 @@ public class webserviceTest {
         //reset user currency
         this.web_service.setUserMoney(10000);
     }
+
     @Test
     public void invalidPurchaseTest(){
         System.out.println("webserviceTest.invalidPurchaseTest");
@@ -160,7 +165,7 @@ public class webserviceTest {
 
         //start up api to test price
         apiService testApi = this.web_service.get_apiService();
-        
+
         //assert price
         shareItem expectedShare = testApi.getBySymb(testShare.getSymbol());
         assertEquals(testShare.get_price(),expectedShare.get_price());
