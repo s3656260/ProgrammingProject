@@ -38,8 +38,8 @@ public class databaseTest {
         int amnt = 1;
         String userId = "1", symbol = "OHI";
 
-        this.dbService.setStockAmount(userId,"OHI",amnt);
-        this.dbService.setStockAmount(userId,"OHI",amnt);
+        this.dbService.transaction(userId,"OHI",amnt,null);
+        this.dbService.transaction(userId,"OHI",amnt,null);
 
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
     }

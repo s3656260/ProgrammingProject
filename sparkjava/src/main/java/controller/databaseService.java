@@ -59,7 +59,7 @@ public class databaseService {
         }
     }
 
-    public void setStockAmount(String user_id,String stock_symbol,int amount){
+    public void transaction(String user_id,String stock_symbol,int amount,String type){
         insertOwnedStock(user_id,stock_symbol,amount);
     }
 

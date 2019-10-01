@@ -2,6 +2,7 @@ package unitTests;
 
 import com.google.gson.JsonArray;
 import controller.apiService;
+import controller.databaseService;
 import model.shareItem;
 import model.userItem;
 import org.junit.*;
@@ -9,6 +10,7 @@ import view.webService;
 
 import java.io.IOException;
 
+import static controller.databaseService.TEST_DB;
 import static org.junit.Assert.*;
 
 public class webserviceTest {
@@ -27,7 +29,7 @@ public class webserviceTest {
     public void setUp() throws Exception{
         System.out.println("webserviceTest.setUp");
         //setup webservice
-        this.web_service = new webService(service_name,service_func);
+        this.web_service = new webService(service_name,service_func,new databaseService(TEST_DB));
         this.web_service.startService();
     }
 
