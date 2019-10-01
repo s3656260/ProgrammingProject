@@ -8,7 +8,9 @@ public class shareItem {
     private String _symbol;
     private String _name;
     private String _price;
+    private int _amount;
 
+    public int get_amount() { return _amount; }
     public String get_price() {
         return _price;
     }
@@ -30,6 +32,10 @@ public class shareItem {
     public shareItem(String symbol,String price){
         _symbol = symbol;
         _price = price;
+    }
+    public shareItem(String symbol, int amount){
+        _symbol = symbol;
+        _amount = amount;
     }
 
     public void updateStock(apiService api){
