@@ -31,12 +31,14 @@ public class webserviceTest {
         //setup webservice
         this.web_service = new webService(service_name,service_func,new databaseService(TEST_DB));
         this.web_service.startService();
+        this.web_service.getDBservice().inititialiseTables();
     }
 
     @After
     public void tearDown() throws Exception{
         System.out.println("webserviceTest.tearDown");
         //remove webservice
+        this.web_service.getDBservice().destroyTables();
         this.web_service.stopService();
         this.web_service = null;
     }
@@ -212,7 +214,10 @@ public class webserviceTest {
         //assert variable in db is correct
         assertEquals(amount,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
 
+        //assert sale
+        assertTrue("couldn't complete purchase",this.web_service.testSale(symbol,userId,amount));
 
-
+        //assert variable in db is correct (function return -1 as it shouldnt find any share purchases int the db
+        assertEquals(-1,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
     }
 }
