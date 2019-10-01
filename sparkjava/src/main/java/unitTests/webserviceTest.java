@@ -61,7 +61,14 @@ public class webserviceTest {
         assertNotNull(this.web_service.getTestListStock(index));
         //
     }
-
+    @Test
+    public void sellShareTest(){
+        System.out.println("webserviceTest.sellShareTest");
+    }
+    @Test
+    public void invalidSellShareTest(){
+        System.out.println("webserviceTest.invalidSellShareTest");
+    }
     @Test
     public void purchaseTest(){
         System.out.println("webserviceTest.purchaseTest");
