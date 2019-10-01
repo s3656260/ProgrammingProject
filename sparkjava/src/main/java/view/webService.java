@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import controller.apiService;
+import controller.databaseService;
 import model.shareItem;
 import model.userItem;
 import org.json.JSONArray;
@@ -16,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static controller.databaseService.PURCHASE_TYPE;
+import static controller.databaseService.SELL_TYPE;
 import static spark.Spark.*;
 
 public class webService {
@@ -28,6 +31,7 @@ public class webService {
     private List<shareItem> allShares;
     private JsonArray list;
     private boolean haveList;
+    private databaseService database;
     //
     //                            test functions
     //------------------------------------------------------------------------------
@@ -88,27 +92,27 @@ public class webService {
 
     public boolean testSale(String sym,String userId, int amount){ return doShareSale(sym,userId,amount); }
 
+    public databaseService getDBservice(){ return database; }
+
     //------------------------------------------------------------------------------
     //
     //
-    public webService(String serviceName, String serviceAction) throws IOException {
+    public webService(String serviceName, String serviceAction, databaseService db) throws IOException {
         _serviceAction = serviceAction;
         _serviceName = serviceName;
+        database = db;
         _apiService = new apiService();
         CurrentUser = new userItem(10000);
         StockList = new ArrayList<JSONObject>();
         genStocklist();
         haveList = false;
     }
-    public void testFn(){
-        doPurchase("OHI","String userId", 12);
-        doPurchase("OHI","String userId", 1);
-    }
 
     public void stopService(){
         stop();
+        database.deleteDatabase();
+        database = null;
     }
-
     public void startService(){
         options("/*",
                 (request, response) -> {
@@ -172,6 +176,7 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                     CurrentUser.add_money(cost);
+                    database.transaction(userId,s,nAmount,SELL_TYPE);
                     return true;
                 }
             }
@@ -196,8 +201,10 @@ public class webService {
                     int nAmount = o.getInt("uAmount") + amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
+                    database.transaction(userId,s,nAmount,PURCHASE_TYPE);
+                    return true;
                 }
-                return true;
+
             }
             return false;
         }
@@ -211,7 +218,7 @@ public class webService {
     }
 
     private int checkForUserStock(String symbol){
-        //loop through array
+        //loop through array TODO: update to dbservice
         int res = 0;
         for (JSONObject json: StockList) {
             String symC = json.getString("symbol");
@@ -233,42 +240,5 @@ public class webService {
 
     private Object getTop() throws IOException {
         return list;
-    }
-
-    public Object addUserAmounts(JsonArray list){
-        JsonParser jsonParser = new JsonParser();
-        // Convert JSON Array String into JSON Array
-        String jsonArrayString = "[\n" +
-                "            {\"symbol\":\"GE\",\"company\":\"General Electric Co.\",\"price\":\"7.93\"},\n" +
-                "            {\"symbol\":\"MO\",\"company\":\"Altria Group, Inc.\",\"price\":\"45.25\"},\n" +
-                "            {\"symbol\":\"CHK\",\"company\":\"Chesapeake Energy Corp.\",\"price\":\"1.39\"},\n" +
-                "            {\"symbol\":\"AMD\",\"company\":\"Advanced Micro Devices, Inc.\",\"price\":\"30.2\"},\n" +
-                "            {\"symbol\":\"BAC\",\"company\":\"Bank of America Corp.\",\"price\":\"26.47\"},\n" +
-                "            {\"symbol\":\"PM\",\"company\":\"Philip Morris International, Inc.\",\"price\":\"71.7\"},\n" +
-                "            {\"symbol\":\"T\",\"company\":\"AT&T, Inc.\",\"price\":\"34.72\"},\n" +
-                "            {\"symbol\":\"SNAP\",\"company\":\"Snap, Inc.\",\"price\":\"15.51\"},\n" +
-                "            {\"symbol\":\"NLY\",\"company\":\"Annaly Capital Management, Inc.\",\"price\":\"8.42\"},\n" +
-                "            {\"symbol\":\"ECA\",\"company\":\"Encana Corp.\",\"price\":\"4.31\"}]";
-
-        JsonArray arrayFromString = jsonParser.parse(jsonArrayString).getAsJsonArray();
-        JsonArray jArray = new JsonArray();
-        JsonObject listJson = new JsonObject();
-
-        for (JsonElement x :arrayFromString) {
-
-            JsonObject pack = new JsonObject();
-            JsonObject y = x.getAsJsonObject();
-            String sym = y.get("symbol").toString();
-            int userAmount = checkForUserStock(sym);
-
-            pack.addProperty("symbol",sym);
-            pack.addProperty("company",y.get("company").toString());
-            pack.addProperty("price",y.get("price").toString());
-            pack.addProperty("userStock",userAmount);
-
-            jArray.add(pack);
-        }
-        listJson.add("items",jArray);
-        return listJson;
     }
 }
