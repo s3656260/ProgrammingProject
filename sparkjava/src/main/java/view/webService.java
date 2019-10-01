@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static controller.databaseService.PURCHASE_TYPE;
+import static controller.databaseService.SELL_TYPE;
 import static spark.Spark.*;
 
 public class webService {
@@ -106,13 +108,6 @@ public class webService {
         haveList = false;
     }
 
-
-
-    public void testFn(){
-        doPurchase("OHI","String userId", 12);
-        doPurchase("OHI","String userId", 1);
-    }
-
     public void stopService(){
         stop();
         database.deleteDatabase();
@@ -181,6 +176,7 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                     CurrentUser.add_money(cost);
+                    database.transaction(userId,s,nAmount,SELL_TYPE);
                     return true;
                 }
             }
@@ -205,6 +201,7 @@ public class webService {
                     int nAmount = o.getInt("uAmount") + amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
+                    database.transaction(userId,s,nAmount,PURCHASE_TYPE);
                     return true;
                 }
 

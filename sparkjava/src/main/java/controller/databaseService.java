@@ -12,6 +12,8 @@ import static junit.framework.TestCase.assertNotNull;
 public class databaseService {
     public static String DEFAULT_DB = "projectdata.sql";
     public static String TEST_DB = "test_db.sql";
+    public static String PURCHASE_TYPE = "PURCHASE";
+    public static String SELL_TYPE = "SELL";
 
     private final String OWNED_STOCK_TABLE = "ownedstocks";
     private final String USER_ID_FIELD = "user_id";
@@ -74,7 +76,8 @@ public class databaseService {
             // loop through the result set
             while (rs.next()) {
                 id = rs.getString("id");
-                res.add(new shareItem(rs.getString(SYMBOL_FIELD),rs.getInt(AMOUNT_FIELD)));
+                shareItem si = new shareItem(rs.getString(SYMBOL_FIELD),rs.getInt(AMOUNT_FIELD));
+                res.add(si);
             }
         }catch(SQLException e) {
             e.printStackTrace();

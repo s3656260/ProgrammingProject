@@ -190,4 +190,29 @@ public class webserviceTest {
         shareItem expectedShare = testApi.getBySymb(testShare.getSymbol());
         assertEquals(testShare.get_price(),expectedShare.get_price());
     }
+
+    @Test
+    public void databaseTest() {
+        System.out.println("webserviceTest.databaseTest");
+        int index = 1;
+
+        //set test variables
+        shareItem testShare = web_service.getTestShare(index);
+        String symbol = testShare.getSymbol(), userId = "1";
+        double price;
+        int amount = 1;
+
+        //test purchase
+        price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
+        this.web_service.setUserMoney(1000);
+
+        //assert purchase
+        assertTrue("couldn't complete purchase",this.web_service.testPurchase(symbol,userId,amount));
+
+        //assert variable in db is correct
+        assertEquals(amount,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
+
+
+
+    }
 }
