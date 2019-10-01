@@ -133,6 +133,13 @@ public class webService {
         });
 
     }
+    private boolean doShareSale(String sym,String userId, int amount){
+        shareItem q = _apiService.getBySymb(sym);
+        double price = Double.parseDouble(q.get_price());
+        double cost = price*amount;
+        double userM = CurrentUser.get_Money();
+
+    }
 
     private boolean doPurchase(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
