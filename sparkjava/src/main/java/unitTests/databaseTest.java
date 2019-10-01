@@ -4,6 +4,7 @@ import controller.databaseService;
 import org.junit.*;
 
 import static controller.databaseService.TEST_DB;
+import static org.testng.Assert.*;
 
 public class databaseTest {
 
@@ -34,7 +35,13 @@ public class databaseTest {
     public void testOwnededTable(){
         System.out.println("databaseTest.testOwnededTable");
         this.dbService.mkOwnedStockTable();
-        this.dbService.addStockPurchase("1","OHI",3);
+        int amnt = 1;
+        String userId = "1", symbol = "OHI";
+
+        this.dbService.addStockPurchase(userId,"OHI",amnt);
+        this.dbService.addStockPurchase(userId,"OHI",amnt);
+
+        assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt+amnt);
     }
 
 }

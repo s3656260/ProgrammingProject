@@ -70,7 +70,7 @@ public class databaseService {
             // loop through the result set
             while (rs.next()) {
                 id = rs.getString("id");
-                res.add(new shareItem(rs.getString(SYMBOL_FIELD),rs.getString(AMOUNT_FIELD)));
+                res.add(new shareItem(rs.getString(SYMBOL_FIELD),rs.getInt(AMOUNT_FIELD)));
             }
         }catch(SQLException e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class databaseService {
             ResultSet rs    = stmt.executeQuery(sql);
                 // loop through the result set
                 while (rs.next()) {
-                    res.add(new shareItem(rs.getString(SYMBOL_FIELD),rs.getString(AMOUNT_FIELD)));
+                    res.add(new shareItem(rs.getString(SYMBOL_FIELD),rs.getInt(AMOUNT_FIELD)));
                 }
         }catch(SQLException e) {
             e.printStackTrace();
@@ -103,6 +103,27 @@ public class databaseService {
         return res;
     }
 
+    public int getAmountUserOwnes(String user_id, String symbol){
+        //gets amount user ownes of specific stock TODO: add functions to get total list of owned stocks
+        String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set
+            String compare;
+            while (rs.next()) {
+                compare = rs.getString(SYMBOL_FIELD);
+                if (compare.equals(symbol)){
+                    return rs.getInt(AMOUNT_FIELD);
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return -1;
+    }
 
     private void execute(String statment){
         //works for table make, insert,
