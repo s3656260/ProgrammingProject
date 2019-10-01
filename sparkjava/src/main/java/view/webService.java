@@ -86,6 +86,8 @@ public class webService {
         else return res;
     }
 
+    public boolean testSale(String sym,String userId, int amount){ return doShareSale(sym,userId,amount); }
+
     //------------------------------------------------------------------------------
     //
     //
@@ -155,11 +157,11 @@ public class webService {
         });
 
     }
+
     private boolean doShareSale(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
-        double userM = CurrentUser.get_Money();
         for (int i = 0; i < list.size(); i++) {
             JSONObject o = new JSONObject(list.get(i).toString());
             String s = (String) o.get("symbol");
@@ -169,9 +171,10 @@ public class webService {
                     int nAmount = oAmnt - amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
+                    CurrentUser.add_money(cost);
                     return true;
                 }
-            }else return false;
+            }
         }
         return false;
     }

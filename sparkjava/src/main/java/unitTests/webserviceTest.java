@@ -78,8 +78,26 @@ public class webserviceTest {
         String symbol = testShare.getSymbol();
         String userId = "1";
         double price = Double.parseDouble(this.web_service.get_apiService().getBySymb(symbol).get_price());
-        int amount = 10;
+        int amount = 1;
         userItem testUser = this.web_service.getCurrentUser();
+
+        //test expected variables
+        int stockListLength = this.web_service.getStockList().size();
+        double expectedEarn = testUser.get_Money()+(price*amount);
+
+        //run a test purchase
+        boolean saleRes = this.web_service.testSale(symbol,userId,amount);
+
+        //assert sale happened
+        assertTrue("couldnt complete test sale",saleRes);
+
+        //assert user has earnt amount equal to price time amount
+        assertEquals(expectedEarn,this.web_service.getCurrentUser().get_Money(),0);
+
+        //not to change
+        assertEquals("Stock list size changed unexpectedly",stockListLength,this.web_service.getStockList().size(),0);
+
+
     }
 
     @Test
