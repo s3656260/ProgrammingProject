@@ -32,8 +32,8 @@ public class databaseTest {
     }
 
     @Test
-    public void testOwnededTable(){
-        System.out.println("databaseTest.testOwnededTable");
+    public void testOwnedTable(){
+        System.out.println("databaseTest.testOwnedTable");
         this.dbService.mkOwnedStockTable();
         int amnt = 1;
         String userId = "1", symbol = "OHI";
@@ -44,6 +44,11 @@ public class databaseTest {
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
         this.dbService.transaction(userId,"OHI",0,null);
+    }
+
+    @Test
+    public void testTransactionTable(){
+        System.out.println("databaseTest.testTransactionTable");
     }
 
 }
