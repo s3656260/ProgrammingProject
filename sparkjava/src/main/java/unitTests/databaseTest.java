@@ -31,8 +31,10 @@ public class databaseTest {
     }
 
     @Test
-    public void testTableCreation(){
-        System.out.println("databaseTest.testTableCreation");
+    public void testOwnededTable(){
+        System.out.println("databaseTest.testOwnededTable");
         this.dbService.mkOwnedStockTable();
+        this.dbService.addStockPerchase("1","OHI",3);
     }
+
 }
