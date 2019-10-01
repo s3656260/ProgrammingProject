@@ -42,6 +42,8 @@ public class databaseTest {
         this.dbService.transaction(userId,"OHI",amnt,null);
 
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
+
+        this.dbService.transaction(userId,"OHI",0,null);
     }
 
 }

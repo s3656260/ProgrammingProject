@@ -110,7 +110,6 @@ public class webService {
 
     public void stopService(){
         stop();
-        database.deleteDatabase();
         database = null;
     }
     public void startService(){

@@ -48,7 +48,14 @@ public class databaseService {
     }
 
     public void inititialiseTables(){
+        //WARNING!!!! RUNNING this will erase all tables
+        //use update table method to updat tables to a new format TODO: add update method
         this.mkOwnedStockTable();
+    }
+
+    public void destroyTables(){
+        //WARNING!!!! TESTING ONLY do not run this on production
+        dropTable(OWNED_STOCK_TABLE);
     }
 
     public boolean deleteDatabase(){
@@ -114,19 +121,18 @@ public class databaseService {
 
     public int getAmountUserOwnes(String user_id, String symbol){
         //gets amount user ownes of specific stock TODO: add functions to get total list of owned stocks
-        String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
+        String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"' AND "+SYMBOL_FIELD+" = '"+symbol+"';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
             // loop through the result set
-            String compare;
+            int res = -1;
             while (rs.next()) {
-                compare = rs.getString(SYMBOL_FIELD);
-                if (compare.equals(symbol)){
-                    return rs.getInt(AMOUNT_FIELD);
-                }
+                res = rs.getInt(AMOUNT_FIELD);
+
             }
+            return res;
         }catch (SQLException e) {
             e.printStackTrace();
 
@@ -145,7 +151,9 @@ public class databaseService {
             e.printStackTrace();
         }
     }
-
+    private void dropTable(String tableName){
+        execute("DROP TABLE IF EXISTS "+tableName+";");
+    }
     public void mkOwnedStockTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+OWNED_STOCK_TABLE+";");
