@@ -26,6 +26,8 @@ public class databaseTest {
     public void tearDown() throws Exception{
         System.out.println("databaseTest.tearDown");
         //remove connection
+        dbService.deleteDatabase();
+        dbService = null;
     }
 
     @Test
