@@ -38,10 +38,10 @@ public class databaseTest {
         int amnt = 1;
         String userId = "1", symbol = "OHI";
 
-        this.dbService.addStockPurchase(userId,"OHI",amnt);
-        this.dbService.addStockPurchase(userId,"OHI",amnt);
+        this.dbService.setStockAmount(userId,"OHI",amnt);
+        this.dbService.setStockAmount(userId,"OHI",amnt);
 
-        assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt+amnt);
+        assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
     }
 
 }

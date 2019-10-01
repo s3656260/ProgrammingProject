@@ -45,6 +45,10 @@ public class databaseService {
         }
     }
 
+    public void inititialiseTables(){
+        this.mkOwnedStockTable();
+    }
+
     public boolean deleteDatabase(){
         try {
             conn.close();
@@ -55,11 +59,11 @@ public class databaseService {
         }
     }
 
-    public void addStockPurchase(String user_id,String stock_symbol,int amount_purchased){
-        insertOwnedStock(user_id,stock_symbol,amount_purchased);
+    public void setStockAmount(String user_id,String stock_symbol,int amount){
+        insertOwnedStock(user_id,stock_symbol,amount);
     }
 
-    private void insertOwnedStock(String user_id,String stock_symbol,int amount_purchased){
+    private void insertOwnedStock(String user_id,String stock_symbol,int amount){
         //check if user ownes any of this stock already
         String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
         String id = null;
@@ -76,17 +80,19 @@ public class databaseService {
             e.printStackTrace();
         }
         if (res.size()==0){
-            String s = "INSERT INTO "+OWNED_STOCK_TABLE+" ("+USER_ID_FIELD+","+SYMBOL_FIELD+","+AMOUNT_FIELD+") VALUES('"+user_id+"','"+stock_symbol+"',"+amount_purchased+");";
+            String s = "INSERT INTO "+OWNED_STOCK_TABLE+" ("+USER_ID_FIELD+","+SYMBOL_FIELD+","+AMOUNT_FIELD+") VALUES('"+user_id+"','"+stock_symbol+"',"+amount+");";
             execute(s);
         }
         else if(res.size() == 1){
-            int updatedAmount = amount_purchased+ res.get(0).get_amount();
-            assertNotNull(id);
-            String s = "UPDATE "+OWNED_STOCK_TABLE+" SET "+AMOUNT_FIELD+" = "+updatedAmount+" WHERE id = "+id+";";
-            execute(s);
+            if(amount == 0){
+                String s = "DELETE FROM " + OWNED_STOCK_TABLE + " WHERE id = " + id + ";";
+                execute(s);
+            }else {
+                String s = "UPDATE " + OWNED_STOCK_TABLE + " SET " + AMOUNT_FIELD + " = " + amount + " WHERE id = " + id + ";";
+                execute(s);
+            }
         }
     }
-
     public List<shareItem> getUserStocks(String user_id){
         String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
         List<shareItem> res = null;

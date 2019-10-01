@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import controller.apiService;
+import controller.databaseService;
 import model.shareItem;
 import model.userItem;
 import org.json.JSONArray;
@@ -91,7 +92,7 @@ public class webService {
     //------------------------------------------------------------------------------
     //
     //
-    public webService(String serviceName, String serviceAction) throws IOException {
+    public webService(String serviceName, String serviceAction, databaseService db) throws IOException {
         _serviceAction = serviceAction;
         _serviceName = serviceName;
         _apiService = new apiService();
