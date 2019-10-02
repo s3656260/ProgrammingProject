@@ -49,12 +49,18 @@ public class databaseTest {
         int amnt = 1;
         String userId = "1", symbol = "OHI";
 
-        this.dbService.transaction(userId,"OHI",amnt,null);
-        this.dbService.transaction(userId,"OHI",amnt,null);
-
+        //test insert
+        this.dbService.transaction(userId,"OHI",amnt,null,0);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
-        this.dbService.transaction(userId,"OHI",0,null);
+        //test update
+        amnt = 2;
+        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
+
+        //test delete
+
+
     }
 
     @Test
@@ -70,16 +76,33 @@ public class databaseTest {
         String u_id = "1",symbol = "OHI";
 
         //test transaction function standalone
-        this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
+        this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE,10);
 
         //assert list has right size
         lst = this.dbService.getUserTransactionList(u_id);
         assertEquals(1,lst.size());
+    }
 
-        //test transactions as part of process
-        this.dbService.transaction(u_id,symbol,1,PURCHASE_TYPE);
-        lst =this.dbService.getUserTransactionList(u_id);
-        assertEquals(2,lst.size());
+    @Test
+    public void testFullTransProcess(){
+        System.out.println("databaseTest.testFullTransProcess");
+
+        //init all tables
+        this.dbService.inititialiseTables();
+
+        //set test variables
+        List<transaction> lst;
+        String u_id = "1",symbol = "OHI";
+        int amount = 1;
+        double val = 10.01;
+
+        //run transaction with full params
+        this.dbService.transaction(u_id,symbol,amount,PURCHASE_TYPE,val);
+
+        //test successul database edit
+        assertEquals(this.dbService.getAmountUserOwnes(u_id,symbol),amount);
+
+
     }
 
 }

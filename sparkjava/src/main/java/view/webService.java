@@ -175,7 +175,7 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                     CurrentUser.add_money(cost);
-                    database.transaction(userId,s,nAmount,SELL_TYPE);
+                    database.transaction(userId,s,nAmount,SELL_TYPE,cost);
                     return true;
                 }
             }
@@ -200,7 +200,7 @@ public class webService {
                     int nAmount = o.getInt("uAmount") + amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
-                    database.transaction(userId,s,nAmount,PURCHASE_TYPE);
+                    database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost);
                     return true;
                 }
 
