@@ -1,4 +1,5 @@
 import controller.apiService;
+import controller.databaseService;
 import controller.jsonService;
 import org.apache.log4j.BasicConfigurator;
 import org.json.JSONArray;
@@ -9,17 +10,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static controller.databaseService.DEFAULT_DB;
+import static controller.databaseService.TEST_DB;
+
 public class app {
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
-        liveService();
-        test();
+        //liveService();
+        testService();
     }
-    private static void test() throws IOException {
-
+    private static void testService() throws IOException {
+        databaseService db = new databaseService(TEST_DB);
+        db.inititialiseTables();
+        webService test = new webService("test","foo",db);
+        test.startService();
     }
     private static void liveService() throws IOException {
-        webService test = new webService("test","foo");
+        databaseService db = new databaseService(DEFAULT_DB);
+        webService test = new webService("test","foo",db);
         test.startService();
     }
 }
