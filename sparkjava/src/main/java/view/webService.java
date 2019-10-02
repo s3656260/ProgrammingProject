@@ -166,8 +166,13 @@ public class webService {
 
     }
 
-    private Object  userTransList(){
-        
+    private Object userTransList(){
+        genTransactionList();
+        JsonArray res = new JsonArray();
+        for (transaction x: userTransactions) {
+            res.add(x.toJson());
+        }
+        return res;
     }
 
     private void genTransactionList(){
