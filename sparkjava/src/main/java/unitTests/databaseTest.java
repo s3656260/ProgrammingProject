@@ -3,6 +3,9 @@ package unitTests;
 import controller.databaseService;
 import org.junit.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 import static controller.databaseService.*;
 import static org.testng.Assert.*;
 
@@ -54,10 +57,13 @@ public class databaseTest {
     @Test
     public void testTransactionTable(){
         System.out.println("databaseTest.testTransactionTable");
+        //test table creation
         this.dbService.mkTransactionTable();
-
         assertTrue(this.dbService.checkTableExists(TRANSACTION_TABLE));
-
+        //set test variables
+        String u_id = "1",symbol = "OHI";
+        //test transaction function standalone
+        this.dbService.insertToTransactions();
     }
 
 }

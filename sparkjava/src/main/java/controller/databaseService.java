@@ -4,6 +4,7 @@ import model.shareItem;
 
 import java.io.File;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +18,12 @@ public class databaseService {
     public static String OWNED_STOCK_TABLE = "ownedstocks";
     public static String TRANSACTION_TABLE = "transactions";
 
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
     private final String USER_ID_FIELD = "user_id";
     private final String SYMBOL_FIELD = "symbol";
     private final String AMOUNT_FIELD = "amount";
     private final String TYPE_FIELD = "type";
+    private final String DATE_TIME_FIELD = "datetime";
 
     private String fileName;
     private String url;
@@ -97,6 +100,9 @@ public class databaseService {
 
     public void transaction(String user_id,String stock_symbol,int amount,String type){
         insertOwnedStock(user_id,stock_symbol,amount);
+        if(type != null){
+            insertToTransactions(user_id,stock_symbol,amount,type);
+        }
     }
 
     private void insertOwnedStock(String user_id,String stock_symbol,int amount){
@@ -178,6 +184,14 @@ public class databaseService {
             e.printStackTrace();
         }
     }
+
+    public void insertToTransactions(String user_id, String symbol, int amount,String type){
+        //get timestamp
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String dt = sdf.format(timestamp);
+        String sql = "INSERT INTO "+TRANSACTION_TABLE+" ("+USER_ID_FIELD+","+SYMBOL_FIELD+","+AMOUNT_FIELD+","+DATE_TIME_FIELD+","+TYPE_FIELD+") VALUES("+user_id+","+symbol+","+amount+","+dt+","+type+");";
+    }
+
     private void dropTable(String tableName){
         execute("DROP TABLE IF EXISTS "+tableName+";");
     }
@@ -190,7 +204,7 @@ public class databaseService {
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer, "+TYPE_FIELD+" text NOT NULL );";
+        String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL );";
         execute(query);
     }
 }
