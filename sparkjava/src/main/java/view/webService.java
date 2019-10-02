@@ -9,6 +9,7 @@ import controller.databaseService;
 import model.shareItem;
 import model.transaction;
 import model.userItem;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
@@ -33,6 +34,7 @@ public class webService {
     private JsonArray list;
     private boolean haveList;
     private databaseService database;
+    private List<transaction> userTransactions;
     //
     //                            test functions
     //------------------------------------------------------------------------------
@@ -160,7 +162,7 @@ public class webService {
             return 200;
         });
         pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
-        get(pathStr, (req, res) -> getUserMoney());
+        get(pathStr, (req, res) -> userTransList());
 
     }
 
@@ -169,7 +171,7 @@ public class webService {
     }
 
     private void genTransactionList(){
-
+        userTransactions = database.getUserTransactionList(CurrentUser.get_user_id());
     }
 
     private boolean doShareSale(String sym,String userId, int amount){
