@@ -1,6 +1,8 @@
 package controller;
 
+import com.google.gson.JsonObject;
 import model.shareItem;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.sql.*;
@@ -173,6 +175,33 @@ public class databaseService {
         return -1;
     }
 
+    public List<JSONObject> getUserTransactionList(String user_id){
+        List<JSONObject> res = new ArrayList<>();
+        String sql = "SELECT * FROM "+TRANSACTION_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set
+            JSONObject o = new JSONObject();
+
+            while (rs.next()) {
+                o.put(AMOUNT_FIELD,rs.getInt(AMOUNT_FIELD));
+                o.put(SYMBOL_FIELD,rs.getString(SYMBOL_FIELD));
+                o.put(TYPE_FIELD,rs.getString(TYPE_FIELD));
+                Date parsedDate = dateFormat.parse(yourString);
+                Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+                Object save = rs.getString(DATE_TIME_FIELD);
+                System.out.println("point");
+            }
+            return res;
+        }catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
     private void execute(String statment){
         //works for table make, insert,
         String sql = statment;
@@ -189,7 +218,8 @@ public class databaseService {
         //get timestamp
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String dt = sdf.format(timestamp);
-        String sql = "INSERT INTO "+TRANSACTION_TABLE+" ("+USER_ID_FIELD+","+SYMBOL_FIELD+","+AMOUNT_FIELD+","+DATE_TIME_FIELD+","+TYPE_FIELD+") VALUES("+user_id+","+symbol+","+amount+","+dt+","+type+");";
+        String sql = "INSERT INTO "+TRANSACTION_TABLE+" ("+USER_ID_FIELD+","+SYMBOL_FIELD+","+AMOUNT_FIELD+","+DATE_TIME_FIELD+","+TYPE_FIELD+") VALUES('"+user_id+"','"+symbol+"',"+amount+",'"+dt+"','"+type+"');";
+        execute(sql);
     }
 
     private void dropTable(String tableName){

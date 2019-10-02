@@ -1,10 +1,12 @@
 package unitTests;
 
 import controller.databaseService;
+import org.json.JSONObject;
 import org.junit.*;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static controller.databaseService.*;
 import static org.testng.Assert.*;
@@ -63,7 +65,10 @@ public class databaseTest {
         //set test variables
         String u_id = "1",symbol = "OHI";
         //test transaction function standalone
-        this.dbService.insertToTransactions();
+        this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
+        this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
+        List<JSONObject> lst =this.dbService.getUserTransactionList(u_id);
+        assertEquals(2,lst.size());
     }
 
 }
