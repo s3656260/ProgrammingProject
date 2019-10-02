@@ -1,6 +1,7 @@
 package unitTests;
 
 import controller.databaseService;
+import model.transaction;
 import org.json.JSONObject;
 import org.junit.*;
 
@@ -67,7 +68,7 @@ public class databaseTest {
         //test transaction function standalone
         this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
         this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
-        List<JSONObject> lst =this.dbService.getUserTransactionList(u_id);
+        List<transaction> lst =this.dbService.getUserTransactionList(u_id);
         assertEquals(2,lst.size());
     }
 

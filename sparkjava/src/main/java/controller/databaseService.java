@@ -1,16 +1,16 @@
 package controller;
 
-import com.google.gson.JsonObject;
 import model.shareItem;
-import org.json.JSONObject;
+import model.transaction;
 
 import java.io.File;
 import java.sql.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNotNull;
 
 public class databaseService {
     public static String DEFAULT_DB = "projectdata.sql";
@@ -175,27 +175,29 @@ public class databaseService {
         return -1;
     }
 
-    public List<JSONObject> getUserTransactionList(String user_id){
-        List<JSONObject> res = new ArrayList<>();
+    public List<transaction> getUserTransactionList(String user_id){
+        List<transaction> res = new ArrayList<>();
         String sql = "SELECT * FROM "+TRANSACTION_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
             // loop through the result set
-            JSONObject o = new JSONObject();
-
             while (rs.next()) {
-                o.put(AMOUNT_FIELD,rs.getInt(AMOUNT_FIELD));
-                o.put(SYMBOL_FIELD,rs.getString(SYMBOL_FIELD));
-                o.put(TYPE_FIELD,rs.getString(TYPE_FIELD));
-                Date parsedDate = dateFormat.parse(yourString);
+
+                int amount = rs.getInt(AMOUNT_FIELD);
+                String symbol = rs.getString(SYMBOL_FIELD);
+                String type = rs.getString(TYPE_FIELD);
+                String dtString = rs.getString(DATE_TIME_FIELD);
+
+                Date parsedDate = sdf.parse(dtString);
                 Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-                Object save = rs.getString(DATE_TIME_FIELD);
+
+                res.add(new transaction(user_id,symbol,type, amount,timestamp));
                 System.out.println("point");
             }
             return res;
-        }catch (SQLException e) {
+        }catch (SQLException | ParseException e) {
             e.printStackTrace();
 
         }
