@@ -161,7 +161,7 @@ public class webService {
             doPurchase(sym,id,amount);
             return 200;
         });
-        pathStr = "/"+_serviceName+"/userSell/";
+        pathStr = "/"+_serviceName+"/userSellShare/";
         post(pathStr, (req, res) -> {
             res.type("application/json");
 

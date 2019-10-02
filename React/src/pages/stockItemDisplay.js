@@ -54,8 +54,24 @@ export default class StockItemDisplay extends React.Component {
     }
     
     handleSellSubmit(event){
-        alert('A name was submitted: ' + this.state.sellVal);
-    event.preventDefault();
+        var id = 0;
+        console.log("doing Sale");
+        var url = "http://localhost:4567/test/userSellShare/";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sym: this.state.stock.symbol,
+                userId: id,
+                amount: this.state.sellVal
+            })
+        })    
+        event.preventDefault();
+        //need to check if user can afford
+        this.props.updateUserAmount(this.state.sellVal,true,this.state.stock.symbol);
     }
     render() {
         var price = this.state.stock.price;
@@ -68,13 +84,17 @@ export default class StockItemDisplay extends React.Component {
                 <div class="stockItemH1">User stocks held : {this.state.stock.uAmount}</div>
                 <div class="stockItemH1">Price : ${roundStr(price)}</div>
                 <div class="stockItemH1">Current Value of held stock : ${roundStr(userVal)}</div>
-                <form onSubmit={this.handleSubmit}>
+
+                <form onSubmit={this.handleSellSubmit}>
                 <div class="stockItemH1"><input type="number" name="quantity" min="1" value={this.state.sellVal} onChange={this.handleSellChange}/>
-                <button onclick="myFunction()">Sell</button><input type="submit" value="Sell"/>Value : ${roundStr(this.state.sellVal*price)}</div>
-                </form><form onSubmit={this.handleBuySubmit}>
+                <input type="submit" value="Sell"/>Value : ${roundStr(this.state.sellVal*price)}</div>
+                </form>
+                
+                <form onSubmit={this.handleBuySubmit}>
                 <div class="stockItemH1"><input type="number" name="quantity" min="1" value={this.state.buyVal} onChange={this.handleBuyChange}/>
                 <input type="submit" value="buy"/>Value : ${roundStr(this.state.buyVal*price)}</div>
                 </form>
+
                 </div>
                 
             );
