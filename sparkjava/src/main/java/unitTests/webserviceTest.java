@@ -217,7 +217,7 @@ public class webserviceTest {
         //assert sale
         assertTrue("couldn't complete purchase",this.web_service.testSale(symbol,userId,amount));
 
-        //assert variable in db is correct (function return -1 as it shouldnt find any share purchases int the db
-        assertEquals(-1,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
+        //assert variable in db is correct / now should return 0 as to better report stocks as values
+        assertEquals(0,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
     }
 }
