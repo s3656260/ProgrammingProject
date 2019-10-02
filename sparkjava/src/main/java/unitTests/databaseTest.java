@@ -3,7 +3,7 @@ package unitTests;
 import controller.databaseService;
 import org.junit.*;
 
-import static controller.databaseService.TEST_DB;
+import static controller.databaseService.*;
 import static org.testng.Assert.*;
 
 public class databaseTest {
@@ -27,6 +27,8 @@ public class databaseTest {
     public void tearDown() throws Exception{
         System.out.println("databaseTest.tearDown");
         //remove connection
+        dbService.destroyTables();
+        dbService.close();
         dbService.deleteDatabase();
         dbService = null;
     }
@@ -35,6 +37,9 @@ public class databaseTest {
     public void testOwnedTable(){
         System.out.println("databaseTest.testOwnedTable");
         this.dbService.mkOwnedStockTable();
+        //assert table is created
+        assertTrue(this.dbService.checkTableExists(OWNED_STOCK_TABLE));
+
         int amnt = 1;
         String userId = "1", symbol = "OHI";
 
@@ -49,6 +54,10 @@ public class databaseTest {
     @Test
     public void testTransactionTable(){
         System.out.println("databaseTest.testTransactionTable");
+        this.dbService.mkTransactionTable();
+
+        assertTrue(this.dbService.checkTableExists(TRANSACTION_TABLE));
+
     }
 
 }
