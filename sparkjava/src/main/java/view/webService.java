@@ -156,9 +156,21 @@ public class webService {
             JSONObject bod = new JSONObject(req.body());
 
             String sym = bod.getString("sym");
-            String id = "1";
+            String id = CurrentUser.get_user_id();
             int amount = bod.getInt("amount");
             doPurchase(sym,id,amount);
+            return 200;
+        });
+        pathStr = "/"+_serviceName+"/userSell/";
+        post(pathStr, (req, res) -> {
+            res.type("application/json");
+
+            JSONObject bod = new JSONObject(req.body());
+
+            String sym = bod.getString("sym");
+            String id = CurrentUser.get_user_id();
+            int amount = bod.getInt("amount");
+            doShareSale(sym,id,amount);
             return 200;
         });
         pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";

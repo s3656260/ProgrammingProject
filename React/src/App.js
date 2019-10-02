@@ -5,7 +5,7 @@ import SignInForm from './pages/SignInForm';
 import Home from './pages/Home';
 
 import './App.css';
-import StockItemDisplay from './pages/StockItemDisplay';
+import StockItemDisplay from './pages/stockItemDisplay';
 
 class App extends Component {
   constructor(props) {
