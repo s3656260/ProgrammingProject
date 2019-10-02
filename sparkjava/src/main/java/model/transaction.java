@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.JsonObject;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -45,5 +47,13 @@ public class transaction {
         this._Value = value;
     }
 
-
+    public JsonObject toJson(){
+        JsonObject res = new JsonObject();
+        res.addProperty("symbol",_Symbol);
+        res.addProperty("type",_Type);
+        res.addProperty("amount",get_Amount());
+        res.addProperty("value",_Value);
+        res.addProperty("date/time",_DTime.toString());
+        return res;
+    }
 }

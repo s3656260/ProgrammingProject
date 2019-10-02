@@ -29,9 +29,10 @@ public class webserviceTest {
     public void setUp() throws Exception{
         System.out.println("webserviceTest.setUp");
         //setup webservice
-        this.web_service = new webService(service_name,service_func,new databaseService(TEST_DB));
+        databaseService db = new databaseService(TEST_DB);
+        db.inititialiseTables();
+        this.web_service = new webService(service_name,service_func,db);
         this.web_service.startService();
-        this.web_service.getDBservice().inititialiseTables();
     }
 
     @After

@@ -7,7 +7,9 @@ import com.google.gson.JsonParser;
 import controller.apiService;
 import controller.databaseService;
 import model.shareItem;
+import model.transaction;
 import model.userItem;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.zankowski.iextrading4j.api.stocks.Quote;
@@ -32,6 +34,7 @@ public class webService {
     private JsonArray list;
     private boolean haveList;
     private databaseService database;
+    private List<transaction> userTransactions;
     //
     //                            test functions
     //------------------------------------------------------------------------------
@@ -102,7 +105,7 @@ public class webService {
         _serviceName = serviceName;
         database = db;
         _apiService = new apiService();
-        CurrentUser = new userItem(10000);
+        CurrentUser = new userItem(10000,"1");
         StockList = new ArrayList<JSONObject>();
         genStocklist();
         haveList = false;
@@ -158,7 +161,22 @@ public class webService {
             doPurchase(sym,id,amount);
             return 200;
         });
+        pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
+        get(pathStr, (req, res) -> userTransList());
 
+    }
+
+    private Object userTransList(){
+        genTransactionList();
+        JsonArray res = new JsonArray();
+        for (transaction x: userTransactions) {
+            res.add(x.toJson());
+        }
+        return res;
+    }
+
+    private void genTransactionList(){
+        userTransactions = database.getUserTransactionList(CurrentUser.get_user_id());
     }
 
     private boolean doShareSale(String sym,String userId, int amount){
@@ -217,22 +235,17 @@ public class webService {
     }
 
     private int checkForUserStock(String symbol){
-        //loop through array TODO: update to dbservice
-        int res = 0;
-        for (JSONObject json: StockList) {
-            String symC = json.getString("symbol");
-            if((symC).equals(symbol)){
-                res= json.getInt("value");
-            }
-        }
-        //find stocks
-        return res;
+        //returns amount database user holds
+        return this.database.getAmountUserOwnes(CurrentUser.get_user_id(),symbol);
     }
 
     private void genStocklist() throws IOException {
         list = new JsonArray();
         allShares  = _apiService.genList();
         for (shareItem x :allShares) {
+
+            //get amount of stock for each symbol from db, afterwards any transaction should be synced to reflect the db
+            x.set_amount(checkForUserStock(x.getSymbol()));
             list.add(x.toJson());
         }
     }
