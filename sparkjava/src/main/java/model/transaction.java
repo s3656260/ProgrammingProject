@@ -10,6 +10,7 @@ public class transaction {
     private String _Type;
     private int _Amount;
     private Timestamp _DTime;
+    private double _Value;
 
     public String get_UserID() {
         return _UserID;
@@ -31,12 +32,17 @@ public class transaction {
         return _DTime;
     }
 
-    public transaction(String userid,String symbol, String type, int amount, Timestamp dTime) {
+    public double get_Value() {
+        return _Value;
+    }
+
+    public transaction(String userid, String symbol, String type, int amount, Timestamp dTime, double value) {
         this._UserID = userid;
         this._Symbol = symbol;
         this._Type = type;
         this._Amount = amount;
         this._DTime = dTime;
+        this._Value = value;
     }
 
 

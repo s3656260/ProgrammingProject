@@ -162,14 +162,17 @@ public class databaseService {
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-
-            // loop through the result set
-            int res = -1;
-            while (rs.next()) {
-                res = rs.getInt(AMOUNT_FIELD);
-
+            if (!rs.next()){
+                return 0;
+            }else{
+                int res;
+                do {
+                    res = rs.getInt(AMOUNT_FIELD);
+                }while (rs.next());
+                return res;
             }
-            return res;
+            // loop through the result set
+
         }catch (SQLException e) {
             e.printStackTrace();
 
