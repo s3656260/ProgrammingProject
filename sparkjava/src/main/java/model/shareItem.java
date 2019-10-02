@@ -21,6 +21,10 @@ public class shareItem {
         return _symbol;
     }
 
+    public void set_amount(int _amount) {
+        this._amount = _amount;
+    }
+
     public shareItem(String symbol){
         _symbol = symbol;
     }
@@ -28,6 +32,12 @@ public class shareItem {
         _symbol = symbol;
         _name = name;
         _price = price;
+    }
+    public shareItem(String symbol,String name,String price,int amount){
+        _symbol = symbol;
+        _name = name;
+        _price = price;
+        _amount = amount;
     }
     public shareItem(String symbol,String price){
         _symbol = symbol;
@@ -50,7 +60,7 @@ public class shareItem {
         res.addProperty("symbol",_symbol);
         res.addProperty("company",_name);
         res.addProperty("price",_price);
-        res.addProperty("uAmount",0);
+        res.addProperty("uAmount",_amount);
         return res;
     }
     @Override
