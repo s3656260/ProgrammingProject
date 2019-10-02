@@ -100,7 +100,7 @@ public class databaseService {
         }
     }
 
-    public void transaction(String user_id,String stock_symbol,int amount,String type){
+    public void transaction(String user_id,String stock_symbol,int amount,String type,double value){
         insertOwnedStock(user_id,stock_symbol,amount);
         if(type != null){
             insertToTransactions(user_id,stock_symbol,amount,type);
@@ -194,7 +194,6 @@ public class databaseService {
                 Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 
                 res.add(new transaction(user_id,symbol,type, amount,timestamp));
-                System.out.println("point");
             }
             return res;
         }catch (SQLException | ParseException e) {

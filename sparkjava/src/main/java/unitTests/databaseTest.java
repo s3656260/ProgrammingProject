@@ -60,15 +60,25 @@ public class databaseTest {
     @Test
     public void testTransactionTable(){
         System.out.println("databaseTest.testTransactionTable");
+
         //test table creation
         this.dbService.mkTransactionTable();
         assertTrue(this.dbService.checkTableExists(TRANSACTION_TABLE));
+
         //set test variables
+        List<transaction> lst;
         String u_id = "1",symbol = "OHI";
+
         //test transaction function standalone
         this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
-        this.dbService.insertToTransactions(u_id,symbol,1,PURCHASE_TYPE);
-        List<transaction> lst =this.dbService.getUserTransactionList(u_id);
+
+        //assert list has right size
+        lst = this.dbService.getUserTransactionList(u_id);
+        assertEquals(1,lst.size());
+
+        //test transactions as part of process
+        this.dbService.transaction(u_id,symbol,1,PURCHASE_TYPE);
+        lst =this.dbService.getUserTransactionList(u_id);
         assertEquals(2,lst.size());
     }
 
