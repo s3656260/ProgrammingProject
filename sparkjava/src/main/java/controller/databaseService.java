@@ -69,8 +69,9 @@ public class databaseService {
 
     public void inititialiseTables(){
         //WARNING!!!! RUNNING this will erase all tables
-        //use update table method to updat tables to a new format TODO: add update method
+        //use update table method to update tables to a new format TODO: add update method
         this.mkOwnedStockTable();
+        this.mkTransactionTable();
     }
 
     public void destroyTables(){
