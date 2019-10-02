@@ -59,7 +59,9 @@ public class databaseTest {
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
         //test delete
-
+        amnt = 0;
+        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
     }
 
@@ -98,10 +100,10 @@ public class databaseTest {
 
         //run transaction with full params
         this.dbService.transaction(u_id,symbol,amount,PURCHASE_TYPE,val);
-
+        lst = this.dbService.getUserTransactionList(u_id);
         //test successul database edit
         assertEquals(this.dbService.getAmountUserOwnes(u_id,symbol),amount);
-
+        assertEquals(lst.size(),1);
 
     }
 

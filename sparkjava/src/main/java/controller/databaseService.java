@@ -82,6 +82,7 @@ public class databaseService {
         }
         this.startDBService();
         dropTable(OWNED_STOCK_TABLE);
+        dropTable(TRANSACTION_TABLE);
     }
 
     public boolean deleteDatabase(){
@@ -194,11 +195,12 @@ public class databaseService {
                 String symbol = rs.getString(SYMBOL_FIELD);
                 String type = rs.getString(TYPE_FIELD);
                 String dtString = rs.getString(DATE_TIME_FIELD);
+                double value = rs.getDouble(VALUE_FIELD);
 
                 Date parsedDate = sdf.parse(dtString);
                 Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 
-                res.add(new transaction(user_id,symbol,type, amount,timestamp));
+                res.add(new transaction(user_id,symbol,type, amount,timestamp,value));
             }
             return res;
         }catch (SQLException | ParseException e) {
