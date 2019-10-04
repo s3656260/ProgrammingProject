@@ -2,6 +2,7 @@ package unitTests;
 
 import controller.databaseService;
 import model.transaction;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.junit.*;
 
@@ -106,5 +107,18 @@ public class databaseTest {
         assertEquals(lst.size(),1);
 
     }
+
+    @Test
+    public void testLogin(){
+        System.out.println("databaseTest.testLogin");
+    }
+
+    @Test
+    public void testRegesterUser(){
+        System.out.println("databaseTest.testRegesterUser");
+        this.dbService.mkUserTable();
+        System.out.println();
+    }
+
 
 }
