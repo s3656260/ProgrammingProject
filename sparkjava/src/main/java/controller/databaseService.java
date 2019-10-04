@@ -229,8 +229,18 @@ public class databaseService {
     }
 
     public userItem getUserLogin(String userName, String passwords){
-
-        return null;
+        String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_NAME_FIELD+"='"+userName+"' AND "+USER_PASSWORD_FIELD+" = '"+passwords+"';";
+        userItem res = null;
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                res = new userItem(userName,rs.getString(USER_ID_FIELD));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public boolean regesterUser(String username,String password){
