@@ -221,4 +221,14 @@ public class webserviceTest {
         //assert variable in db is correct / now should return 0 as to better report stocks as values
         assertEquals(0,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
     }
+
+    @Test
+    public void loginTest(){
+        System.out.println("webserviceTest.loginTest");
+    }
+
+    @Test
+    public void logoutTest(){
+        System.out.println("webserviceTest.logoutTest");
+    }
 }
