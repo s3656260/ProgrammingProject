@@ -2,6 +2,7 @@ package controller;
 
 import model.shareItem;
 import model.transaction;
+import model.userItem;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
@@ -227,19 +228,24 @@ public class databaseService {
         }
     }
 
+    public userItem getUserLogin(String userName, String passwords){
+
+        return null;
+    }
+
     public boolean regesterUser(String username,String password){
         //generate user ID
         String user_id = RandomStringUtils.randomAlphanumeric(17).toUpperCase();
-        String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+" OR "+USER_NAME_FIELD+" = '"+username+"';";
+        String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"' OR "+USER_NAME_FIELD+" = '"+username+"';";
         try{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            if(rs.next()==false) return false;
+            if(rs.next()==true) return false;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         //insert user
-        sql = "INSERT INTO "+USER_TABLE+" ("+USER_ID_FIELD+","+USER_NAME_FIELD+","+USER_PASSWORD_FIELD+") VALUES('"+user_id+"','"+username+"',"+password+");";
+        sql = "INSERT INTO "+USER_TABLE+" ("+USER_ID_FIELD+","+USER_NAME_FIELD+","+USER_PASSWORD_FIELD+") VALUES('"+user_id+"','"+username+"','"+password+"');";
         execute(sql);
         return true;
     }
@@ -255,12 +261,14 @@ public class databaseService {
     private void dropTable(String tableName){
         execute("DROP TABLE IF EXISTS "+tableName+";");
     }
+
     public void mkOwnedStockTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+OWNED_STOCK_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ OWNED_STOCK_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer );";
         execute(query);
     }
+
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
