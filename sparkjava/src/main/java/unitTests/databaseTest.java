@@ -2,6 +2,7 @@ package unitTests;
 
 import controller.databaseService;
 import model.transaction;
+import model.userItem;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.junit.*;
@@ -116,8 +117,18 @@ public class databaseTest {
     @Test
     public void testRegesterUser(){
         System.out.println("databaseTest.testRegesterUser");
+
+        //make test table
         this.dbService.mkUserTable();
-        System.out.println();
+
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        assertFalse(this.dbService.regesterUser(username,password));
+        userItem user = this.dbService.getUserLogin(username,password);
+        assertNotNull(user);
     }
 
 
