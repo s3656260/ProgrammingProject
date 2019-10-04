@@ -107,4 +107,15 @@ public class databaseTest {
 
     }
 
+    @Test
+    public void testLogin(){
+
+    }
+
+    @Test
+    public void testRegesterUser(){
+
+    }
+
+
 }

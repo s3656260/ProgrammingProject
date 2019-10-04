@@ -19,9 +19,12 @@ public class databaseService {
     public static String SELL_TYPE = "SELL";
     public static String OWNED_STOCK_TABLE = "ownedstocks";
     public static String TRANSACTION_TABLE = "transactions";
+    public static String USER_TABLE = "users";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
     private final String USER_ID_FIELD = "user_id";
+    private final String USER_NAME_FIELD = "user_name";
+    private final String USER_PASSWORD_FIELD = "password";
     private final String SYMBOL_FIELD = "symbol";
     private final String AMOUNT_FIELD = "amount";
     private final String TYPE_FIELD = "type";
@@ -244,6 +247,13 @@ public class databaseService {
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL,"+VALUE_FIELD+" REAL NOT NULL );";
+        execute(query);
+    }
+
+    public void userTable(){
+        //vars to have, user id, stock symbol, owned amount
+        execute("DROP TABLE IF EXISTS "+USER_TABLE+";");
+        String query = "CREATE TABLE IF NOT EXISTS "+ USER_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+USER_NAME_FIELD+" text NOT NULL,"+USER_PASSWORD_FIELD+" text NOT NULL );";
         execute(query);
     }
 }
