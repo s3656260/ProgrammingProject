@@ -2,6 +2,7 @@ package controller;
 
 import model.shareItem;
 import model.transaction;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
 import java.sql.*;
@@ -226,6 +227,23 @@ public class databaseService {
         }
     }
 
+    public boolean regesterUser(String username,String password){
+        //generate user ID
+        String user_id = RandomStringUtils.randomAlphanumeric(17).toUpperCase();
+        String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+" OR "+USER_NAME_FIELD+" = '"+username+"';";
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if(rs.next()==false) return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //insert user
+        sql = "INSERT INTO "+USER_TABLE+" ("+USER_ID_FIELD+","+USER_NAME_FIELD+","+USER_PASSWORD_FIELD+") VALUES('"+user_id+"','"+username+"',"+password+");";
+        execute(sql);
+        return true;
+    }
+
     public void insertToTransactions(String user_id, String symbol, int amount,String type,double value){
         //get timestamp
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -250,7 +268,7 @@ public class databaseService {
         execute(query);
     }
 
-    public void userTable(){
+    public void mkUserTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+USER_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ USER_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+USER_NAME_FIELD+" text NOT NULL,"+USER_PASSWORD_FIELD+" text NOT NULL );";
