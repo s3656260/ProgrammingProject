@@ -35,15 +35,20 @@ public class userService {
                     return "OK";
                 });
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-        String pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
+        String pathStr = "/"+_serviceName+"/login/:userName/:password";
         get(pathStr, (req, res) -> userLogin());
+        pathStr = "/"+_serviceName+"/Regester/:userId";
+        post(pathStr, (req, res) -> userRegester());
 
     }
     public userService(String serviceName,databaseService database){
         _serviceName = serviceName;
     }
 
-    public userItem userLogin(){
-        
+    private userItem userLogin(String uName, String pWord){
+        return null;
+    }
+    private userItem userRegester(String uName, String pWord){
+        return null;
     }
 }
