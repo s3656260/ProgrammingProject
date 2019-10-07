@@ -1,12 +1,13 @@
 package view;
 
+import controller.databaseService;
 import model.userItem;
 
-import static spark.Spark.before;
-import static spark.Spark.options;
+import static spark.Spark.*;
 
 public class userService {
     public static String DEFULT_LOGIN_API = "loginService";
+    private String _serviceName;
     /*TODO
      * Open service endpoint that recieves username, and hash password
      * -check db if login matches
@@ -34,18 +35,15 @@ public class userService {
                     return "OK";
                 });
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-
-
-    }
-    public userService(String "serviceName"){
+        String pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
+        get(pathStr, (req, res) -> userLogin());
 
     }
-
-    public void startDatabase(){
-
+    public userService(String serviceName,databaseService database){
+        _serviceName = serviceName;
     }
 
     public userItem userLogin(){
-
+        
     }
 }
