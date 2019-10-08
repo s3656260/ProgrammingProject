@@ -23,7 +23,9 @@ public class databaseService {
     public static String TRANSACTION_TABLE = "transactions";
     public static String USER_TABLE = "users";
 
+
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+    private final double NEW_USER_BALANCE = 1000;
     private final String USER_ID_FIELD = "user_id";
     private final String USER_NAME_FIELD = "user_name";
     private final String USER_PASSWORD_FIELD = "password";
