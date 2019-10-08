@@ -3,6 +3,9 @@ package view;
 import controller.databaseService;
 import model.userItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static spark.Spark.*;
 /*TODO
  * Open service endpoint that recieves username, and hash password
@@ -15,8 +18,10 @@ import static spark.Spark.*;
 public class userService {
     public static String DEFULT_LOGIN_API = "loginService";
     private String _serviceName;
+    private List<webService> sessions;
 
     public void startService(){
+        sessions = new ArrayList<>();
         options("/*",
                 (request, response) -> {
                     String accessControlRequestHeaders = request
