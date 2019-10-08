@@ -112,6 +112,17 @@ public class databaseTest {
     @Test
     public void testLogin(){
         System.out.println("databaseTest.testLogin");
+
+        //make test table
+        this.dbService.mkUserTable();
+
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        userItem user = this.dbService.getUserLogin(username,password);
+        assertNotNull(user);
     }
 
     @Test
