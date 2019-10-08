@@ -11,14 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static spark.Spark.*;
-/*TODO
- * Open service endpoint that recieves username, and hash password
- * -check db if login matches
- * -return api session url
- * Open service endpoint for regester recieve uname pword
- * -check if already exists
- * -return success
- */
+
 public class userService {
     public static String DEFULT_LOGIN_API = "loginService";
     private String _serviceName;
@@ -27,7 +20,16 @@ public class userService {
     private apiService _apiService;
     private List<userItem> loggedUsers;
 
+    public userService(String serviceName,databaseService database){
+        _sessions = new ArrayList<>();
+        _serviceName = serviceName;
+        _database = database;
+        _apiService = new apiService();
+        loggedUsers = new ArrayList<>();
+    }
+
     public void startService(){
+
         options("/*",
                 (request, response) -> {
 
@@ -57,10 +59,10 @@ public class userService {
             return quote.get_price();
         });
         //top share list
-        pathStr = "/"+_serviceName+"/top";
-        get(pathStr, (req, res) -> getTop());
+        pathStr = "/"+_serviceName+"/:userId/top";
+        get(pathStr, (req, res) -> getTop(req.params(":userid")));
         pathStr = "/"+_serviceName+"/userCash/:userId";
-        get(pathStr, (req, res) -> getUserMoney());
+        get(pathStr, (req, res) -> getUserMoney(req.params(":userid")));
         pathStr = "/"+_serviceName+"/userPurchase/";
         post(pathStr, (req, res) -> {
             res.type("application/json");
@@ -86,20 +88,62 @@ public class userService {
             return 200;
         });
         pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
-        get(pathStr, (req, res) -> userTransList());
+        get(pathStr, (req, res) -> userTransList(req.params(":userid")));
         pathStr = "/"+_serviceName+"/login/:userName/:password";
         get(pathStr, (req, res) -> userLogin(req.params(":userName"),req.params(":password")));
         pathStr = "/"+_serviceName+"/regester/:userName/:password";
         post(pathStr, (req, res) -> userRegester(req.params(":userName"),req.params(":password")));
 
     }
-    public userService(String serviceName,databaseService database){
-        _sessions = new ArrayList<>();
-        _serviceName = serviceName;
-        _database = database;
-        _apiService = new apiService();
-        loggedUsers = new ArrayList<>();
+
+
+    private Object getTop(String userId) {
+        for(webService x :_sessions){
+            if(userId.equals(x.getCurrentUser().get_user_id())){
+                try {
+                    return x.getTop();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }}}
+        return null;
     }
+
+    private Object getUserMoney(String userId) {
+        for(webService x :_sessions){
+            if(userId.equals(x.getCurrentUser().get_user_id())){
+                return x.getCurrentUser().get_Money();
+            }
+        }
+        return null;
+    }
+
+    private boolean doShareSale(String sym, String id, int amount) {
+        for(webService x :_sessions){
+            if(id.equals(x.getCurrentUser().get_user_id())){
+                return x.doShareSale(sym,id,amount);
+            }
+        }
+        return false;
+    }
+
+    private Object userTransList(String userId) {
+        for(webService x :_sessions){
+            if(userId.equals(x.getCurrentUser().get_user_id())){
+                return x.userTransList();
+            }
+        }
+        return false;
+    }
+    private boolean doPurchase(String sym, String id, int amount) {
+        for(webService x :_sessions){
+            if(id.equals(x.getCurrentUser().get_user_id())){
+                return x.doPurchase(sym,id,amount);
+            }
+        }
+        return false;
+    }
+
+
 
     private String userLogin(String uName, String pWord){
         userItem user = _database.getUserLogin(uName,pWord);
@@ -128,5 +172,9 @@ public class userService {
             }
         }
         return null;
+    }
+    public void stopService(){
+        stop();
+        _database = null;
     }
 }

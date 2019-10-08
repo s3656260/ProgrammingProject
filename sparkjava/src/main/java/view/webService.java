@@ -120,13 +120,10 @@ public class webService {
         genStocklist();
         haveList = false;
     }
-
     public void stopService(){
         stop();
-        database = null;
     }
-
-    private Object userTransList(){
+    public Object userTransList(){
         genTransactionList();
         JsonArray res = new JsonArray();
         for (transaction x: userTransactions) {
@@ -139,7 +136,7 @@ public class webService {
         userTransactions = database.getUserTransactionList(CurrentUser.get_user_id());
     }
 
-    private boolean doShareSale(String sym,String userId, int amount){
+    public boolean doShareSale(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -161,7 +158,7 @@ public class webService {
         return false;
     }
 
-    private boolean doPurchase(String sym,String userId, int amount){
+    public boolean doPurchase(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -210,7 +207,7 @@ public class webService {
         }
     }
 
-    private Object getTop() throws IOException {
+    public Object getTop() throws IOException {
         return list;
     }
 }
