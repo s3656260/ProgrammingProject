@@ -4,19 +4,18 @@ import controller.databaseService;
 import model.userItem;
 
 import static spark.Spark.*;
-
+/*TODO
+ * Open service endpoint that recieves username, and hash password
+ * -check db if login matches
+ * -return api session url
+ * Open service endpoint for regester recieve uname pword
+ * -check if already exists
+ * -return success
+ */
 public class userService {
     public static String DEFULT_LOGIN_API = "loginService";
     private String _serviceName;
-    /*TODO
-     * Open service endpoint that recieves username, and hash password
-     * -check db if login matches
-     * -return api session url
-     *
-     * Open service endpoint for regester recieve unam pword
-     * -check if already exists
-     * -return success
-     */
+
     public void startService(){
         options("/*",
                 (request, response) -> {
