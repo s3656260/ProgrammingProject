@@ -151,15 +151,10 @@
   .row:nth-child(2n+1) {
     background: rgba(85, 95, 107, 0.411);
 }
-.tableheight{overflow: scroll;
-  height: 480px; background-color: rgb(206, 208, 224);}
 .cell{display: table-cell;
   margin: auto;
   width: 30%;
   padding-left:30px; padding-top: 10px}
-
-.cell.one{color: white;}
-.cell.two{color: black;}
 
 #shareItem:hover{
   background-color:rgba(0, 0, 0, 0.199);
