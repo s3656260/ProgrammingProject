@@ -103,11 +103,4 @@ public class userServiceTest {
         assertNotEquals(" ",res);
 
     }
-
-    @Test
-    public void getCurrentUser(){
-        System.out.println("userServiceTest.getCurrentUser");
-        //
-
-    }
 }
