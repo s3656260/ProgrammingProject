@@ -31,6 +31,7 @@ public class webserviceTest {
         databaseService db = new databaseService(TEST_DB);
         db.inititialiseTables();
         this.web_service = new webService(service_name,service_func,db);
+        this.web_service.startService();
     }
 
     @After

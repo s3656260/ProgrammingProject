@@ -2,8 +2,6 @@ package controller;
 
 import model.shareItem;
 import model.transaction;
-import model.userItem;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
 import java.sql.*;
@@ -21,14 +19,9 @@ public class databaseService {
     public static String SELL_TYPE = "SELL";
     public static String OWNED_STOCK_TABLE = "ownedstocks";
     public static String TRANSACTION_TABLE = "transactions";
-    public static String USER_TABLE = "users";
-
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-    private final double NEW_USER_BALANCE = 1000;
     private final String USER_ID_FIELD = "user_id";
-    private final String USER_NAME_FIELD = "user_name";
-    private final String USER_PASSWORD_FIELD = "password";
     private final String SYMBOL_FIELD = "symbol";
     private final String AMOUNT_FIELD = "amount";
     private final String TYPE_FIELD = "type";
@@ -230,38 +223,6 @@ public class databaseService {
         }
     }
 
-    public userItem getUserLogin(String userName, String passwords){
-        String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_NAME_FIELD+"='"+userName+"' AND "+USER_PASSWORD_FIELD+" = '"+passwords+"';";
-        userItem res = null;
-        try{
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while(rs.next()){
-                res = new userItem(userName,rs.getString(USER_ID_FIELD));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return res;
-    }
-
-    public boolean regesterUser(String username,String password){
-        //generate user ID
-        String user_id = RandomStringUtils.randomAlphanumeric(17).toUpperCase();
-        String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"' OR "+USER_NAME_FIELD+" = '"+username+"';";
-        try{
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if(rs.next()==true) return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //insert user
-        sql = "INSERT INTO "+USER_TABLE+" ("+USER_ID_FIELD+","+USER_NAME_FIELD+","+USER_PASSWORD_FIELD+") VALUES('"+user_id+"','"+username+"','"+password+"');";
-        execute(sql);
-        return true;
-    }
-
     public void insertToTransactions(String user_id, String symbol, int amount,String type,double value){
         //get timestamp
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -273,25 +234,16 @@ public class databaseService {
     private void dropTable(String tableName){
         execute("DROP TABLE IF EXISTS "+tableName+";");
     }
-
     public void mkOwnedStockTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+OWNED_STOCK_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ OWNED_STOCK_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer );";
         execute(query);
     }
-
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL,"+VALUE_FIELD+" REAL NOT NULL );";
-        execute(query);
-    }
-
-    public void mkUserTable(){
-        //vars to have, user id, stock symbol, owned amount
-        execute("DROP TABLE IF EXISTS "+USER_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ USER_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+USER_NAME_FIELD+" text NOT NULL,"+USER_PASSWORD_FIELD+" text NOT NULL );";
         execute(query);
     }
 }

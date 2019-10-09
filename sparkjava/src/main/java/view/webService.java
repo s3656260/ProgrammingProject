@@ -71,6 +71,7 @@ public class webService {
     public void testGenList() throws IOException {genStocklist();}
 
     public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
+<<<<<<< HEAD
 
     public void testAddStockOwnership(int index,int amount){
         JSONObject o = new JSONObject(list.get(index).toString());
@@ -96,10 +97,13 @@ public class webService {
     public boolean testSale(String sym,String userId, int amount){ return doShareSale(sym,userId,amount); }
 
     public databaseService getDBservice(){ return database; }
+
+=======
+>>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
     //------------------------------------------------------------------------------
     //
     //
-    public webService(String serviceName, String serviceAction, databaseService db) throws IOException {//test constructor
+    public webService(String serviceName, String serviceAction, databaseService db) throws IOException {
         _serviceAction = serviceAction;
         _serviceName = serviceName;
         database = db;
@@ -109,20 +113,75 @@ public class webService {
         genStocklist();
         haveList = false;
     }
-    webService(String serviceName, databaseService db,userItem user) throws IOException {
-        _serviceAction = null;
-        _serviceName = serviceName;
-        database = db;
-        _apiService = new apiService();
-        CurrentUser = user;
-        StockList = new ArrayList<JSONObject>();
-        genStocklist();
-        haveList = false;
-    }
+
     public void stopService(){
         stop();
+        database = null;
     }
-    public Object userTransList(){
+    public void startService(){
+        options("/*",
+                (request, response) -> {
+
+                    String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers",
+                                accessControlRequestHeaders);
+                    }
+
+                    String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods",
+                                accessControlRequestMethod);
+                    }
+
+                    return "OK";
+                });
+
+        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+        //pricecheck api
+        String pathStr = "/"+_serviceName+"/sym/:name";
+        get(pathStr, (req, res) -> {
+            String name = req.params(":name");
+            shareItem quote = _apiService.getBySymb(name);
+            return quote.get_price();
+        });
+        //top share list
+        pathStr = "/"+_serviceName+"/top";
+        get(pathStr, (req, res) -> getTop());
+        pathStr = "/"+_serviceName+"/userCash/:userId";
+        get(pathStr, (req, res) -> getUserMoney());
+        pathStr = "/"+_serviceName+"/userPurchase/";
+        post(pathStr, (req, res) -> {
+            res.type("application/json");
+
+            JSONObject bod = new JSONObject(req.body());
+
+            String sym = bod.getString("sym");
+            String id = CurrentUser.get_user_id();
+            int amount = bod.getInt("amount");
+            doPurchase(sym,id,amount);
+            return 200;
+        });
+        pathStr = "/"+_serviceName+"/userSellShare/";
+        post(pathStr, (req, res) -> {
+            res.type("application/json");
+
+            JSONObject bod = new JSONObject(req.body());
+
+            String sym = bod.getString("sym");
+            String id = CurrentUser.get_user_id();
+            int amount = bod.getInt("amount");
+            doShareSale(sym,id,amount);
+            return 200;
+        });
+        pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
+        get(pathStr, (req, res) -> userTransList());
+
+    }
+
+    private Object userTransList(){
         genTransactionList();
         JsonArray res = new JsonArray();
         for (transaction x: userTransactions) {
@@ -135,8 +194,8 @@ public class webService {
         userTransactions = database.getUserTransactionList(CurrentUser.get_user_id());
     }
 
-    public boolean doShareSale(String sym,String userId, int amount){
-
+<<<<<<< HEAD
+    private boolean doShareSale(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -158,7 +217,9 @@ public class webService {
         return false;
     }
 
-    public boolean doPurchase(String sym,String userId, int amount){
+=======
+>>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
+    private boolean doPurchase(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -178,6 +239,10 @@ public class webService {
                     database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost);
                     return true;
                 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
             }
             return true;
         }
@@ -206,7 +271,7 @@ public class webService {
         }
     }
 
-    public Object getTop() throws IOException {
+    private Object getTop() throws IOException {
         return list;
     }
 }
