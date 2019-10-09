@@ -96,6 +96,9 @@ public class userService {
 
     }
 
+    public databaseService getDbService(){
+        return _database;
+    }
 
     private Object getTop(String userId) {
         for(webService x :_sessions){
