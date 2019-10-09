@@ -96,7 +96,6 @@ public class webService {
     public boolean testSale(String sym,String userId, int amount){ return doShareSale(sym,userId,amount); }
 
     public databaseService getDBservice(){ return database; }
-
     //------------------------------------------------------------------------------
     //
     //
@@ -137,6 +136,7 @@ public class webService {
     }
 
     public boolean doShareSale(String sym,String userId, int amount){
+
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -178,9 +178,8 @@ public class webService {
                     database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost);
                     return true;
                 }
-
             }
-            return false;
+            return true;
         }
     }
 

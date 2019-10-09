@@ -13,28 +13,28 @@ import static org.junit.Assert.*;
 public class apiServiceTest {
     private apiService api_service;
     @BeforeClass
-    public static void initExpensiveResource(){System.out.println("apiServiceTest.init");}
+    public static void initExpensiveResource(){System.out.println("webserviceTest.init");}
 
     @AfterClass
-    public static void destroyExpensiveResource(){System.out.println("apiServiceTest.destroy");}
+    public static void destroyExpensiveResource(){System.out.println("webserviceTest.destroy");}
 
     @Before
     public void setUp() throws Exception{
-        System.out.println("apiServiceTest.setUp");
+        System.out.println("webserviceTest.setUp");
         //setup apiService
         api_service = new apiService();
     }
 
     @After
     public void tearDown() throws Exception{
-        System.out.println("apiServiceTest.tearDown");
+        System.out.println("webserviceTest.tearDown");
         //remove apiservice
         api_service = null;
     }
 
     @Test
     public void connectionTest(){
-        System.out.println("apiServiceTest.connectionTest");
+        System.out.println("webserviceTest.connectionTest");
         //test url
         assertTrue(this.api_service.tryUrl());
         //test connection returns true
@@ -42,7 +42,7 @@ public class apiServiceTest {
     }
     @Test
     public void connectionReturnTest(){
-        System.out.println("apiServiceTest.connectionReturnTest");
+        System.out.println("webserviceTest.connectionReturnTest");
         //test list generation
         List<shareItem> testList = this.api_service.genList();
         //test return is not null
@@ -52,7 +52,7 @@ public class apiServiceTest {
     }
     @Test
     public void testIndividualStockConsistancy(){
-        System.out.println("apiServiceTest.testIndividualStockConsistancy");
+        System.out.println("webserviceTest.testIndividualStockConsistancy");
         //test case variables
         int index = 50;
         //test list generation
