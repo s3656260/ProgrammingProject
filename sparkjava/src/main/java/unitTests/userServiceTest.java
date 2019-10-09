@@ -9,6 +9,7 @@ import view.userService;
 import view.webService;
 
 import static controller.databaseService.TEST_DB;
+import static org.junit.Assert.*;
 import static spark.Spark.*;
 
 public class userServiceTest {
@@ -68,6 +69,7 @@ public class userServiceTest {
 
     @Test
     public void doPurchase() {
+        System.out.println("userServiceTest.tearDown");
 
     }
 
@@ -75,15 +77,31 @@ public class userServiceTest {
 
     @Test
     public void userLogin(){
+        System.out.println("userServiceTest.userLogin");
 
+        //setup test variables
+        String uname="user", pword="pass";
+
+        //test
+        
     }
-    
+
+    @Test
     public void userRegester(){
+        System.out.println("userServiceTest.userRegester");
+
+        //setup test variables
+        String uname="user", pword="pass";
+
+        //test putting user in works
+        assertNotEquals(" ",this.UserService.userRegester(uname,pword));
 
     }
 
     @Test
     public void getCurrentUser(){
+        System.out.println("userServiceTest.getCurrentUser");
+        //
 
     }
 }
