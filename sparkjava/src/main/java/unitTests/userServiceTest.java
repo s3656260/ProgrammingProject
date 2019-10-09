@@ -4,10 +4,7 @@ import controller.databaseService;
 import model.shareItem;
 import model.userItem;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.*;
 import view.userService;
 import view.webService;
 
@@ -45,5 +42,48 @@ public class userServiceTest {
         this.UserService.getDbService().destroyTables();
         this.UserService.stopService();
         this.UserService = null;
+    }
+
+    /*
+
+    @Test
+    public void getTopTest() {
+
+    }
+
+    @Test
+    public void getUserMoneyTest() {
+
+    }
+
+    @Test
+    public void doShareSale() {
+
+    }
+
+    @Test
+    public void userTransList() {
+
+    }
+
+    @Test
+    public void doPurchase() {
+
+    }
+
+     */
+
+    @Test
+    public void userLogin(){
+
+    }
+    
+    public void userRegester(){
+
+    }
+
+    @Test
+    public void getCurrentUser(){
+
     }
 }
