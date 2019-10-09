@@ -81,9 +81,13 @@ public class userServiceTest {
 
         //setup test variables
         String uname="user", pword="pass";
+        this.UserService.userRegester(uname,pword);
 
-        //test
-        
+        //test putting user in works
+        String res = this.UserService.userLogin(uname,pword);
+        System.out.println(res);
+        assertNotEquals(" ",res);
+
     }
 
     @Test
@@ -94,7 +98,9 @@ public class userServiceTest {
         String uname="user", pword="pass";
 
         //test putting user in works
-        assertNotEquals(" ",this.UserService.userRegester(uname,pword));
+        String res = this.UserService.userRegester(uname,pword);
+        System.out.println(res);
+        assertNotEquals(" ",res);
 
     }
 

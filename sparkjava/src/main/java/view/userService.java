@@ -146,8 +146,6 @@ public class userService {
         return false;
     }
 
-
-
     public String userLogin(String uName, String pWord){
         userItem user = _database.getUserLogin(uName,pWord);
         //add webservice to sessions
@@ -160,6 +158,7 @@ public class userService {
         //
         return user.get_user_id();
     }
+
     public String userRegester(String uName, String pWord){
         userItem user;
         if(_database.regesterUser(uName,pWord)){
