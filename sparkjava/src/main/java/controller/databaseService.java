@@ -49,6 +49,26 @@ public class databaseService {
             return false;
         }
     }
+
+    public List<userItem> getAllUsers(){
+        List<userItem> res = new ArrayList<>();
+        //
+        String sql = "SELECT * FROM "+USER_TABLE+";";
+        try{
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+            // loop through the result set
+            while (rs.next()) {
+                String id = rs.getString(USER_ID_FIELD);
+                String uName = rs.getString(USER_NAME_FIELD);
+                res.add(new userItem(uName,id));
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        //
+        return res;
+    }
     //------------------------------------------------------
     //
     //
@@ -77,6 +97,7 @@ public class databaseService {
         //use update table method to update tables to a new format TODO: add update method
         this.mkOwnedStockTable();
         this.mkTransactionTable();
+        this.mkUserTable();
     }
 
     public void destroyTables(){
@@ -89,6 +110,7 @@ public class databaseService {
         this.startDBService();
         dropTable(OWNED_STOCK_TABLE);
         dropTable(TRANSACTION_TABLE);
+        dropTable(USER_TABLE);
     }
 
     public boolean deleteDatabase(){

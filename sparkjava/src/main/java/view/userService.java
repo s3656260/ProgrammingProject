@@ -96,8 +96,11 @@ public class userService {
 
     }
 
+    public databaseService getDbService(){
+        return _database;
+    }
 
-    private Object getTop(String userId) {
+    public Object getTop(String userId) {
         for(webService x :_sessions){
             if(userId.equals(x.getCurrentUser().get_user_id())){
                 try {
@@ -108,7 +111,7 @@ public class userService {
         return null;
     }
 
-    private Object getUserMoney(String userId) {
+    public Object getUserMoney(String userId) {
         for(webService x :_sessions){
             if(userId.equals(x.getCurrentUser().get_user_id())){
                 return x.getCurrentUser().get_Money();
@@ -117,7 +120,7 @@ public class userService {
         return null;
     }
 
-    private boolean doShareSale(String sym, String id, int amount) {
+    public boolean doShareSale(String sym, String id, int amount) {
         for(webService x :_sessions){
             if(id.equals(x.getCurrentUser().get_user_id())){
                 return x.doShareSale(sym,id,amount);
@@ -126,7 +129,7 @@ public class userService {
         return false;
     }
 
-    private Object userTransList(String userId) {
+    public Object userTransList(String userId) {
         for(webService x :_sessions){
             if(userId.equals(x.getCurrentUser().get_user_id())){
                 return x.userTransList();
@@ -134,7 +137,7 @@ public class userService {
         }
         return false;
     }
-    private boolean doPurchase(String sym, String id, int amount) {
+    public boolean doPurchase(String sym, String id, int amount) {
         for(webService x :_sessions){
             if(id.equals(x.getCurrentUser().get_user_id())){
                 return x.doPurchase(sym,id,amount);
@@ -143,9 +146,7 @@ public class userService {
         return false;
     }
 
-
-
-    private String userLogin(String uName, String pWord){
+    public String userLogin(String uName, String pWord){
         userItem user = _database.getUserLogin(uName,pWord);
         //add webservice to sessions
         try {
@@ -157,7 +158,8 @@ public class userService {
         //
         return user.get_user_id();
     }
-    private String userRegester(String uName, String pWord){
+
+    public String userRegester(String uName, String pWord){
         userItem user;
         if(_database.regesterUser(uName,pWord)){
             user = _database.getUserLogin(uName,pWord);
