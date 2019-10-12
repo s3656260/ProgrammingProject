@@ -15,6 +15,8 @@ import java.util.List;
 
 
 public class databaseService {
+    public static double InitialUserBalance = 1000;
+
     public static String DEFAULT_DB = "projectdata.sql";
     public static String TEST_DB = "test_db.sql";
     public static String PURCHASE_TYPE = "PURCHASE";
@@ -22,6 +24,7 @@ public class databaseService {
     public static String OWNED_STOCK_TABLE = "ownedstocks";
     public static String TRANSACTION_TABLE = "transactions";
     public static String USER_TABLE = "users";
+    public static String BALANCE_TABLE = "user_balances";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
     private final String USER_ID_FIELD = "user_id";
@@ -32,6 +35,7 @@ public class databaseService {
     private final String TYPE_FIELD = "type";
     private final String DATE_TIME_FIELD = "datetime";
     private final String VALUE_FIELD = "value";
+    private final String BALANCE_FIELD = "balance";
 
     private String fileName;
     private String url;
@@ -77,6 +81,7 @@ public class databaseService {
         fileName = database;
         this.startDBService();
     }
+
     public void startDBService(){
         url = "jdbc:sqlite:database/" + fileName;
         try {
@@ -98,6 +103,7 @@ public class databaseService {
         this.mkOwnedStockTable();
         this.mkTransactionTable();
         this.mkUserTable();
+        this.mkBalanceTable();
     }
 
     public void destroyTables(){
@@ -111,6 +117,7 @@ public class databaseService {
         dropTable(OWNED_STOCK_TABLE);
         dropTable(TRANSACTION_TABLE);
         dropTable(USER_TABLE);
+        dropTable(BALANCE_TABLE);
     }
 
     public boolean deleteDatabase(){
@@ -279,7 +286,15 @@ public class databaseService {
         //insert user
         sql = "INSERT INTO "+USER_TABLE+" ("+USER_ID_FIELD+","+USER_NAME_FIELD+","+USER_PASSWORD_FIELD+") VALUES('"+user_id+"','"+username+"','"+password+"');";
         execute(sql);
+        //make balance table
+        sql = "INSERT INTO "+BALANCE_TABLE+" ("+USER_ID_FIELD+","+BALANCE_FIELD+") VALUES('"+user_id+"',"+InitialUserBalance+");";
+        execute(sql);
         return true;
+    }
+
+    public void updateUserCurrency(String user_id, double balance){
+        String sql = "UPDATE "+BALANCE_TABLE+" SET "+BALANCE_FIELD+"="+balance+" WHERE "+USER_ID_FIELD+"="+user_id+";";
+        execute(sql);
     }
 
     public void insertToTransactions(String user_id, String symbol, int amount,String type,double value){
@@ -312,6 +327,13 @@ public class databaseService {
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+USER_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ USER_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+USER_NAME_FIELD+" text NOT NULL,"+USER_PASSWORD_FIELD+" text NOT NULL );";
+        execute(query);
+    }
+
+    public void mkBalanceTable(){
+        //vars to have, user id, stock symbol, owned amount
+        execute("DROP TABLE IF EXISTS "+BALANCE_TABLE+";");
+        String query = "CREATE TABLE IF NOT EXISTS "+ BALANCE_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+BALANCE_FIELD+" text NOT NULL );";
         execute(query);
     }
 }
