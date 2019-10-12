@@ -4,11 +4,13 @@ import com.google.gson.JsonArray;
 import controller.apiService;
 import controller.databaseService;
 import model.shareItem;
+import model.transaction;
 import model.userItem;
 import org.junit.*;
 import view.webService;
 
 import java.io.IOException;
+import java.util.List;
 
 import static controller.databaseService.TEST_DB;
 import static org.junit.Assert.*;
@@ -219,5 +221,22 @@ public class webserviceTest {
 
         //assert variable in db is correct / now should return 0 as to better report stocks as values
         assertEquals(0,this.web_service.getDBservice().getAmountUserOwnes(userId,symbol));
+    }
+
+    @Test
+    public void transactionTest(){
+        System.out.println("webserviceTest.transactionTest");
+
+        //setup test vars
+        String symbol ="OHI", id = "1";
+        int amount = 1;
+
+        //run test transactions
+        assertTrue(this.web_service.testPurchase(symbol, id, amount));
+        assertTrue(this.web_service.testSale(symbol, id, amount));
+
+        //get test list
+        List<transaction> res = this.web_service.testTransactionList();
+        assertEquals(2,res.size());
     }
 }

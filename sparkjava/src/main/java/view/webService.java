@@ -79,7 +79,10 @@ public class webService {
         JSONObject n = new JSONObject(list.get(index).toString());
 
     }
-
+    public List<transaction> testTransactionList(){
+        genTransactionList();
+        return userTransactions;
+    }
     public JsonArray getStocksOwned(){
         JsonArray res = new JsonArray();
         for (int i = 0; i < list.size(); i++) {
