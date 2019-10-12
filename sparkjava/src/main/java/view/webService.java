@@ -127,6 +127,7 @@ public class webService {
     public void stopService(){
         stop();
     }
+
     public JsonArray userTransList(){
         genTransactionList();
         JsonArray res = new JsonArray();
