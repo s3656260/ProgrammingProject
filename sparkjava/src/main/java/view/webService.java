@@ -119,6 +119,7 @@ public class webService {
         database = db;
         _apiService = new apiService();
         CurrentUser = user;
+        CurrentUser.add_money(10000);
         StockList = new ArrayList<JSONObject>();
         genStocklist();
         haveList = false;
@@ -126,7 +127,7 @@ public class webService {
     public void stopService(){
         stop();
     }
-    public Object userTransList(){
+    public JsonArray userTransList(){
         genTransactionList();
         JsonArray res = new JsonArray();
         for (transaction x: userTransactions) {
