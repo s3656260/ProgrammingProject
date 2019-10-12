@@ -50,19 +50,19 @@ public class userServiceTest {
     }
 
     /*
+     */
 
     @Test
     public void getTopTest() {
+        System.out.println("userServiceTest.getTopTest");
 
     }
 
     @Test
     public void getUserMoneyTest() {
+        System.out.println("userServiceTest.getUserMoneyTest");
 
     }
-
-
-     */
 
     @Test
     public void doShareSale() {
