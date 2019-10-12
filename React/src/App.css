@@ -5,15 +5,17 @@
 }
 
 .App__Aside {
-  width: 50%;
-  background-color: #66DAC7;
+  width: 30%;
+  background-color: rgb(77, 123, 133);
 }
 
 .App__Form {
-  width: 50%;
-  background-color: #2E4158;
-  padding: 25px 40px;
+  width: 70%;
+  background-color: rgb(94, 104, 116);
+  padding: 2px, 1px;
   overflow: auto;
+  border-left: 2px solid black;
+  
 }
 
 .PageSwitcher {
@@ -141,6 +143,27 @@
   margin-left: 5px;
 }
 
+.my-custom-scrollbar {
+  position: relative;
+  height: 700px;
+  overflow: auto;
+  }
+  .table-wrapper-scroll-y {
+  display: block;
+  }
+#navMoney{
+  color:gold;
+  /* font-size: 25px; */
+}
+
+#TableData{
+  width:90%;
+  margin: 0 auto;
+}
+.table{
+  border-radius: 15px;
+}
+
 #shareTable{display:table;}
 .row{display: table-row;padding-top: 10px; -webkit-transition-duration: 0.4s; /* Safari */transition-duration: 0.4s;
   user-select: none; /* supported by Chrome and Opera */
@@ -161,10 +184,20 @@
 }
 #stockDisplay{
   margin: auto;
-  width: 50%;
-  border: 3px solid green;
+  width: 70%;
+  border: 3px solid rgb(255, 255, 255);
   padding: 10px;
+  color: black;
+  background-color:rgb(190, 214, 214);
+  border-radius: 15px;
+  position:relative;
+  top:20%;
+  height: 400px;
+  line-height: 30pt;
 }
-.stockItemH1{
 
+#stockDisplay.Button{
+  margin-left:15px;
 }
+
+
