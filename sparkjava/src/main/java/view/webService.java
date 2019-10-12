@@ -127,7 +127,7 @@ public class webService {
     public void stopService(){
         stop();
     }
-    public Object userTransList(){
+    public JsonArray userTransList(){
         genTransactionList();
         JsonArray res = new JsonArray();
         for (transaction x: userTransactions) {

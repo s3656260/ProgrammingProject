@@ -1,5 +1,6 @@
 package unitTests;
 
+import com.google.gson.JsonArray;
 import controller.databaseService;
 import model.shareItem;
 import model.userItem;
@@ -93,6 +94,9 @@ public class userServiceTest {
         //Run assertion
         assertTrue(this.UserService.doPurchase(symbol,id,amount));
         assertTrue(this.UserService.doShareSale(symbol,id,amount));
+        JsonArray arr = this.UserService.userTransList(id);
+        assertNotNull(arr);
+        assertEquals(2,arr.size());
     }
 
     @Test

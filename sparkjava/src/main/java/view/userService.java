@@ -1,5 +1,6 @@
 package view;
 
+import com.google.gson.JsonArray;
 import controller.apiService;
 import controller.databaseService;
 import model.shareItem;
@@ -129,13 +130,13 @@ public class userService {
         return false;
     }
 
-    public Object userTransList(String userId) {
+    public JsonArray userTransList(String userId) {
         for(webService x :_sessions){
             if(userId.equals(x.getCurrentUser().get_user_id())){
                 return x.userTransList();
             }
         }
-        return false;
+        return null;
     }
     public boolean doPurchase(String sym, String id, int amount) {
         for(webService x :_sessions){
