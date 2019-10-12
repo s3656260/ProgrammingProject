@@ -29,6 +29,7 @@ public class databaseTest {
         System.out.println("databaseTest.setUp");
         //setup database conn
         dbService = new databaseService(TEST_DB);
+        this.dbService.inititialiseTables();
     }
 
     @After
