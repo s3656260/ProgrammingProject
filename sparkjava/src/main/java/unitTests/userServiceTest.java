@@ -65,7 +65,7 @@ public class userServiceTest {
 
     @Test
     public void doShareSale() {
-        System.out.println("userServiceTest.doPurchase");
+        System.out.println("userServiceTest.doShareSale");
 
         //login to test account
         String id = this.UserService.userLogin(test_user,test_pass);
@@ -75,12 +75,26 @@ public class userServiceTest {
         int amount = 1;
 
         //Run assertion
+        assertTrue(this.UserService.doPurchase(symbol,id,amount));
         assertTrue(this.UserService.doShareSale(symbol,id,amount));
     }
+
     @Test
     public void userTransList() {
+        System.out.println("userServiceTest.userTransList");
 
+        //login to test account
+        String id = this.UserService.userLogin(test_user,test_pass);
+
+        //test vars
+        String symbol = "OHI";
+        int amount = 1;
+
+        //Run assertion
+        assertTrue(this.UserService.doPurchase(symbol,id,amount));
+        assertTrue(this.UserService.doShareSale(symbol,id,amount));
     }
+
     @Test
     public void doPurchase() {
         System.out.println("userServiceTest.doPurchase");
