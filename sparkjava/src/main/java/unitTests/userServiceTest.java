@@ -16,6 +16,8 @@ public class userServiceTest {
     userService UserService;
     private final String service_name = "test";
     private final String service_func = "test";
+    private final String test_user = "tUser";
+    private final String test_pass = "tPass";
 
     @BeforeClass
     public static void initExpensiveResource() {
@@ -34,6 +36,7 @@ public class userServiceTest {
         databaseService db = new databaseService(TEST_DB);
         db.inititialiseTables();
         this.UserService = new userService(service_name, db);
+        this.UserService.userRegester(test_user,test_pass);
     }
 
     @After
@@ -57,34 +60,49 @@ public class userServiceTest {
 
     }
 
-    @Test
-    public void doShareSale() {
-
-    }
-
-    @Test
-    public void userTransList() {
-
-    }
-
-    @Test
-    public void doPurchase() {
-        System.out.println("userServiceTest.tearDown");
-
-    }
 
      */
 
     @Test
+    public void doShareSale() {
+        System.out.println("userServiceTest.doPurchase");
+
+        //login to test account
+        String id = this.UserService.userLogin(test_user,test_pass);
+
+        //test vars
+        String symbol = "OHI";
+        int amount = 1;
+
+        //Run assertion
+        assertTrue(this.UserService.doShareSale(symbol,id,amount));
+    }
+    @Test
+    public void userTransList() {
+
+    }
+    @Test
+    public void doPurchase() {
+        System.out.println("userServiceTest.doPurchase");
+
+        //login to test account
+        String id = this.UserService.userLogin(test_user,test_pass);
+
+        //test vars
+        String symbol = "OHI";
+        int amount = 1;
+
+        //Run assertion
+        assertTrue(this.UserService.doPurchase(symbol,id,amount));
+
+    }
+
+
+    @Test
     public void userLogin(){
         System.out.println("userServiceTest.userLogin");
-
-        //setup test variables
-        String uname="user", pword="pass";
-        this.UserService.userRegester(uname,pword);
-
         //test putting user in works
-        String res = this.UserService.userLogin(uname,pword);
+        String res = this.UserService.userLogin(test_user,test_pass);
         System.out.println(res);
         assertNotEquals(" ",res);
 

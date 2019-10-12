@@ -156,6 +156,7 @@ public class userService {
             return " ";
         }
         //
+        loggedUsers.add(user);
         return user.get_user_id();
     }
 
