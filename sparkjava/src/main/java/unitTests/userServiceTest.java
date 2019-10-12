@@ -49,19 +49,27 @@ public class userServiceTest {
         this.UserService = null;
     }
 
-    /*
-     */
-
     @Test
     public void getTopTest() {
         System.out.println("userServiceTest.getTopTest");
 
+        //login to test account
+        String id = this.UserService.userLogin(test_user,test_pass);
+
+        //get test list
+        JsonArray test = (JsonArray) this.UserService.getTop(id);
+        assertNotNull(test);
     }
 
     @Test
     public void getUserMoneyTest() {
         System.out.println("userServiceTest.getUserMoneyTest");
 
+        //login to test account
+        String id = this.UserService.userLogin(test_user,test_pass);
+
+        //get test balance
+        assertNotEquals(-1,this.UserService.getUserMoney(id));
     }
 
     @Test

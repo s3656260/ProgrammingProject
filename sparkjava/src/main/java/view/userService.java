@@ -112,13 +112,13 @@ public class userService {
         return null;
     }
 
-    public Object getUserMoney(String userId) {
+    public double getUserMoney(String userId) {
         for(webService x :_sessions){
             if(userId.equals(x.getCurrentUser().get_user_id())){
                 return x.getCurrentUser().get_Money();
             }
         }
-        return null;
+        return -1;
     }
 
     public boolean doShareSale(String sym, String id, int amount) {
