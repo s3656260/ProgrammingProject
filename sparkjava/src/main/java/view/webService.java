@@ -108,7 +108,7 @@ public class webService {
         _serviceName = serviceName;
         database = db;
         _apiService = new apiService();
-        CurrentUser = new userItem(10000,"1");
+        CurrentUser = new userItem(10000,"1",db);
         StockList = new ArrayList<JSONObject>();
         genStocklist();
         haveList = false;

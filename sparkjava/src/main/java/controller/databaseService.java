@@ -298,6 +298,10 @@ public class databaseService {
         execute(sql);
     }
 
+    public void getUserCurrency(String id){
+        
+    }
+
     public void insertToTransactions(String user_id, String symbol, int amount,String type,double value){
         //get timestamp
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
