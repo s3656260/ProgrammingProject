@@ -145,8 +145,17 @@ public class databaseTest {
     @Test
     public void TestBalance() {
         System.out.println("databaseTest.TestBalance");
+        //make test table
+        this.dbService.mkUserTable();
 
-        userItem user = new userItem();
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        userItem user = this.dbService.getUserLogin(username,password);
+
+        
     }
 
 }

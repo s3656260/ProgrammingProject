@@ -270,6 +270,7 @@ public class databaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        res.set_Database(this);
         return res;
     }
 
@@ -299,7 +300,7 @@ public class databaseService {
     }
 
     public double getUserCurrency(String user_id){
-        String sql = "SELECT * "+BALANCE_TABLE+" WHERE "+USER_ID_FIELD+"="+user_id+";";
+        String sql = "SELECT * FROM "+BALANCE_TABLE+" WHERE "+USER_ID_FIELD+"='"+user_id+"';";
         double res = -1;
         try{
             Statement stmt = conn.createStatement();
