@@ -188,14 +188,6 @@ public class webService {
             return false;
         }
     }
-
-    private JSONObject getUserMoney(){
-        double val = CurrentUser.get_Money();
-        JSONObject json = new JSONObject();
-        json.put("userMoney",val);
-        return json;
-    }
-
     private int checkForUserStock(String symbol){
         //returns amount database user holds
         return this.database.getAmountUserOwnes(CurrentUser.get_user_id(),symbol);
