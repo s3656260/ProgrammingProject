@@ -142,6 +142,24 @@ public class databaseTest {
         userItem user = this.dbService.getUserLogin(username,password);
         assertNotNull(user);
     }
+    @Test
+    public void TestBalance() {
+        System.out.println("databaseTest.TestBalance");
+        //make test table
+        this.dbService.mkUserTable();
 
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        userItem user = this.dbService.getUserLogin(username,password);
+
+        assertEquals(InitialUserBalance,user.get_Money());
+
+        double testVar = 100;
+        user.rmv_Money(testVar);
+        assertEquals(InitialUserBalance-testVar,this.dbService.getUserCurrency(user.get_user_id()));
+    }
 
 }

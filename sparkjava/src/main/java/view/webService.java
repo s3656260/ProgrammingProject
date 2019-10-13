@@ -108,7 +108,7 @@ public class webService {
         _serviceName = serviceName;
         database = db;
         _apiService = new apiService();
-        CurrentUser = new userItem(10000,"1");
+        CurrentUser = new userItem(10000,"1",db);
         StockList = new ArrayList<JSONObject>();
         genStocklist();
         haveList = false;
@@ -188,14 +188,6 @@ public class webService {
             return false;
         }
     }
-
-    private JSONObject getUserMoney(){
-        double val = CurrentUser.get_Money();
-        JSONObject json = new JSONObject();
-        json.put("userMoney",val);
-        return json;
-    }
-
     private int checkForUserStock(String symbol){
         //returns amount database user holds
         return this.database.getAmountUserOwnes(CurrentUser.get_user_id(),symbol);
