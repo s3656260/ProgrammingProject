@@ -295,7 +295,7 @@ public class databaseService {
     }
 
     public void updateUserCurrency(String user_id, double balance){
-        String sql = "UPDATE "+BALANCE_TABLE+" SET "+BALANCE_FIELD+"="+balance+" WHERE "+USER_ID_FIELD+"="+user_id+";";
+        String sql = "UPDATE "+BALANCE_TABLE+" SET "+BALANCE_FIELD+"="+balance+" WHERE "+USER_ID_FIELD+"='"+user_id+"';";
         execute(sql);
     }
 

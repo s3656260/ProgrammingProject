@@ -155,7 +155,11 @@ public class databaseTest {
         this.dbService.regesterUser(username,password);
         userItem user = this.dbService.getUserLogin(username,password);
 
-        
+        assertEquals(InitialUserBalance,user.get_Money());
+
+        double testVar = 100;
+        user.rmv_Money(testVar);
+        assertEquals(InitialUserBalance-testVar,this.dbService.getUserCurrency(user.get_user_id()));
     }
 
 }
