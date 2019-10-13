@@ -36,7 +36,7 @@ public class userItem {
 
     public void set_Database(databaseService _Database) {
         this._Database = _Database;
-        _Database.get
+        //_Database.get
     }
 
     public void rmv_Money(double money){

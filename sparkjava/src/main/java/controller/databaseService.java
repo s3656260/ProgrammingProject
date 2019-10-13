@@ -298,8 +298,19 @@ public class databaseService {
         execute(sql);
     }
 
-    public void getUserCurrency(String id){
-        
+    public double getUserCurrency(String user_id){
+        String sql = "SELECT * "+BALANCE_TABLE+" WHERE "+USER_ID_FIELD+"="+user_id+";";
+        double res = -1;
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                res = rs.getDouble(BALANCE_FIELD);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public void insertToTransactions(String user_id, String symbol, int amount,String type,double value){
@@ -324,7 +335,7 @@ public class databaseService {
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL,"+VALUE_FIELD+" REAL NOT NULL );";
+        String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL,"+VALUE_FIELD+" real NOT NULL );";
         execute(query);
     }
 
@@ -338,7 +349,7 @@ public class databaseService {
     public void mkBalanceTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+BALANCE_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ BALANCE_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+BALANCE_FIELD+" text NOT NULL );";
+        String query = "CREATE TABLE IF NOT EXISTS "+ BALANCE_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+BALANCE_FIELD+" real NOT NULL );";
         execute(query);
     }
 }
