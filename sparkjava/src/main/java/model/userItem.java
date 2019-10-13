@@ -16,6 +16,7 @@ public class userItem {
     }
     public void set_Money(double _Money) {
         this._Money = _Money;
+        _Database.updateUserCurrency(_user_id,_Money);
     }
     public double get_Money() {
         return _Money;
@@ -25,9 +26,9 @@ public class userItem {
     }
 
     public userItem(double money, String id,databaseService Database){
-        _Money = money;
         _user_id = id;
         _Database = Database;
+        this.set_Money(money);
     }
     public userItem(String userName, String userId){
         _user_id = userId;
@@ -36,13 +37,13 @@ public class userItem {
 
     public void set_Database(databaseService _Database) {
         this._Database = _Database;
-        //_Database.get
+        this._Money = _Database.getUserCurrency(this._user_id);
     }
 
     public void rmv_Money(double money){
-        _Money = _Money - money;
+        this.set_Money(_Money - money);
     }
     public void add_money(double money){
-        _Money = _Money + money;
+        this.set_Money(_Money + money);
     }
 }

@@ -142,6 +142,11 @@ public class databaseTest {
         userItem user = this.dbService.getUserLogin(username,password);
         assertNotNull(user);
     }
+    @Test
+    public void TestBalance() {
+        System.out.println("databaseTest.TestBalance");
 
+        userItem user = new userItem();
+    }
 
 }
