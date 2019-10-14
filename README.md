@@ -36,10 +36,10 @@ response: jsonlist
         "uAmount": integer(amount of this stock user ownes)  
     },...  
 ]  
-
+gets the current user balance
 >GET--address/service/userCash/:userId  
 response : double (user balance)  
-  
+Runs a Stock purchase for user  
 >POST--address/service/userPurchase/:userId  
 request: json  
 {  
