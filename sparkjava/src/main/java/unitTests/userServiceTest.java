@@ -9,6 +9,8 @@ import org.junit.*;
 import view.userService;
 import view.webService;
 
+import java.util.List;
+
 import static controller.databaseService.TEST_DB;
 import static org.junit.Assert.*;
 import static spark.Spark.*;
@@ -129,9 +131,25 @@ public class userServiceTest {
         System.out.println("userServiceTest.userLogin");
         //test putting user in works
         String res = this.UserService.userLogin(test_user,test_pass);
-        System.out.println(res);
+
         assertNotEquals(" ",res);
 
+    }
+
+    @Test
+    public void userLogout(){
+        System.out.println("userServiceTest.userLogout");
+
+        //put in test user
+        String id = this.UserService.userLogin(test_user,test_pass);
+
+        //get length before
+        List<webService> loggedUsers = this.UserService.get_sessions();
+        assertEquals(1,loggedUsers.size());
+        // do logout
+        assertTrue(this.UserService.userLogout(id));
+        //test size decreaseed
+        assertEquals(0,loggedUsers.size());
     }
 
     @Test

@@ -124,9 +124,6 @@ public class webService {
         genStocklist();
         haveList = false;
     }
-    public void stopService(){
-        stop();
-    }
 
     public JsonArray userTransList(){
         genTransactionList();

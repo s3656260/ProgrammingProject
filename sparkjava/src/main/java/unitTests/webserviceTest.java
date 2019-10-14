@@ -41,7 +41,6 @@ public class webserviceTest {
         System.out.println("webserviceTest.tearDown");
         //remove webservice
         this.web_service.getDBservice().destroyTables();
-        this.web_service.stopService();
         this.web_service = null;
     }
 
