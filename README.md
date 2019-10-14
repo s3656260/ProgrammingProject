@@ -38,7 +38,8 @@ response: jsonlist
 ]  
 gets the current user balance
 >GET--address/service/userCash/:userId  
-response : double (user balance)  
+response : double (user balance) 
+  
 Runs a Stock purchase for user  
 >POST--address/service/userPurchase/:userId  
 request: json  
