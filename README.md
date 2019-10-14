@@ -36,7 +36,8 @@ response: jsonlist
         "uAmount": integer(amount of this stock user ownes)  
     },...  
 ]  
-gets the current user balance
+  
+gets the current user balance  
 >GET--address/service/userCash/:userId  
 response : double (user balance) 
   
@@ -49,6 +50,7 @@ request: json
 }  
 returns 200 if success  
   
+Runs a stock sale for the user
 >POST--address/service/userSellShare/:userid  
 request: json  
 {  
@@ -57,6 +59,7 @@ request: json
 }  
 returns 200 if success  
   
+gets all the sales and purchases the user has conducted
 >GET--address/service/userTransactionHistory/:userId  
 result: jsonarray  
 [  
