@@ -102,7 +102,12 @@ public class userService {
         get(pathStr, (req, res) -> userLogin(req.params(":userName"),req.params(":password")));
         pathStr = "/"+_serviceName+"/regester/:userName/:password";
         post(pathStr, (req, res) -> userRegester(req.params(":userName"),req.params(":password")));
-
+        pathStr = "/"+_serviceName+"/logout/:userId";
+        get(pathStr, (req, res) -> {
+            if(userLogout(req.params(":userid"))){
+                return 200;
+            }else return 400;
+        });
     }
 
     public databaseService getDbService(){
@@ -158,7 +163,7 @@ public class userService {
     public Boolean userLogout(String user_id){
         for(webService x :_sessions){
             if(user_id.equals(x.getCurrentUser().get_user_id())){
-
+                _sessions.remove(x);
                 return true;
             }
         }

@@ -144,13 +144,12 @@ public class userServiceTest {
         String id = this.UserService.userLogin(test_user,test_pass);
 
         //get length before
-        List<webService> initial = this.UserService.get_sessions();
-        assertEquals(1,initial.size());
+        List<webService> loggedUsers = this.UserService.get_sessions();
+        assertEquals(1,loggedUsers.size());
         // do logout
         assertTrue(this.UserService.userLogout(id));
         //test size decreaseed
-        List<webService> after = this.UserService.get_sessions();
-        assertEquals(0,after.size());
+        assertEquals(0,loggedUsers.size());
     }
 
     @Test
