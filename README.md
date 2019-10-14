@@ -16,7 +16,7 @@ first send the username and password for authenticating:
 this will return a string to be used as an Identifier in all user related services where ":userId" is  
   
 Then to log out by calling:  
->GET--address/service/login/:userId
+>GET--address/service/logout/:userId
   
 **Regester process**  
 send the username and password to check if the user exists:  
