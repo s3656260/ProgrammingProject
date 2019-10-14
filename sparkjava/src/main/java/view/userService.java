@@ -21,6 +21,14 @@ public class userService {
     private apiService _apiService;
     private List<userItem> loggedUsers;
 
+    //--TEST FUNCTIONS--
+
+    public List<webService> get_sessions() {
+        return _sessions;
+    }
+
+    //------------------
+
     public userService(String serviceName,databaseService database){
         _sessions = new ArrayList<>();
         _serviceName = serviceName;
@@ -142,6 +150,16 @@ public class userService {
         for(webService x :_sessions){
             if(id.equals(x.getCurrentUser().get_user_id())){
                 return x.doPurchase(sym,id,amount);
+            }
+        }
+        return false;
+    }
+
+    public Boolean userLogout(String user_id){
+        for(webService x :_sessions){
+            if(user_id.equals(x.getCurrentUser().get_user_id())){
+
+                return true;
             }
         }
         return false;
