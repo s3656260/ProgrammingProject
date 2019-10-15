@@ -17,8 +17,8 @@ import static controller.databaseService.TEST_DB;
 public class app {
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
-        //liveService();
-        testService();
+        liveService();
+        //testService();
     }
     private static void testService() throws IOException {
         databaseService db = new databaseService(TEST_DB);
@@ -28,6 +28,8 @@ public class app {
     }
     private static void liveService() throws IOException {
         databaseService db = new databaseService(DEFAULT_DB);
-        webService test = new webService("test","foo",db);
+        db.inititialiseTables();
+        userService test = new userService("test",db);
+        test.startService();
     }
 }
