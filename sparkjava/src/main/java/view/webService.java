@@ -38,6 +38,12 @@ public class webService {
     //
     //                            test functions
     //------------------------------------------------------------------------------
+
+    public List<transaction> getUserTransactions() {
+        genTransactionList();
+        return userTransactions;
+    }
+
     public String get_serviceName() { return _serviceName; }
 
     public String get_serviceAction() { return _serviceAction; }
@@ -103,6 +109,7 @@ public class webService {
     //------------------------------------------------------------------------------
     //
     //
+
     public webService(String serviceName, String serviceAction, databaseService db) throws IOException {//test constructor
         _serviceAction = serviceAction;
         _serviceName = serviceName;
@@ -113,6 +120,7 @@ public class webService {
         genStocklist();
         haveList = false;
     }
+
     webService(String serviceName, databaseService db,userItem user) throws IOException {
         _serviceAction = null;
         _serviceName = serviceName;
