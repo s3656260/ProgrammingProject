@@ -241,7 +241,7 @@ public class webserviceTest {
 
     @Test
     public void shareOwnership(){
-        System.out.println("webserviceTest.transactionTest");
+        System.out.println("webserviceTest.shareOwnership");
 
         //setup test vars
         String symbol ="OHI", id = "1";
@@ -256,7 +256,7 @@ public class webserviceTest {
         //get test list
         List<transaction> res = this.web_service.testTransactionList();
         assertEquals(3,res.size());
-        //transaction
-        //assertEquals(amountSec,res[1].getAmount);
+        transaction testTrans = res.get(1);
+        assertEquals(amountSec,testTrans.get_Amount());
     }
 }
