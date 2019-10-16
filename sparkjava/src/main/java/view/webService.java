@@ -72,7 +72,6 @@ public class webService {
 
     public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
 
-
     public void testAddStockOwnership(int index,int amount){
         JSONObject o = new JSONObject(list.get(index).toString());
         int nAmount = o.getInt("uAmount") + amount;
@@ -150,7 +149,7 @@ public class webService {
                     int nAmount = oAmnt - amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
-                    //CurrentUser.add_money(cost);
+                    CurrentUser.add_money(cost);
                     database.transaction(userId,s,nAmount,SELL_TYPE,cost);
                     return true;
                 }
