@@ -71,7 +71,7 @@ public class webService {
     public void testGenList() throws IOException {genStocklist();}
 
     public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
-<<<<<<< HEAD
+
 
     public void testAddStockOwnership(int index,int amount){
         JSONObject o = new JSONObject(list.get(index).toString());
@@ -98,8 +98,6 @@ public class webService {
 
     public databaseService getDBservice(){ return database; }
 
-=======
->>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
     //------------------------------------------------------------------------------
     //
     //
@@ -194,7 +192,6 @@ public class webService {
         userTransactions = database.getUserTransactionList(CurrentUser.get_user_id());
     }
 
-<<<<<<< HEAD
     private boolean doShareSale(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
@@ -208,7 +205,7 @@ public class webService {
                     int nAmount = oAmnt - amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
-                    CurrentUser.add_money(cost);
+                    //CurrentUser.add_money(cost);
                     database.transaction(userId,s,nAmount,SELL_TYPE,cost);
                     return true;
                 }
@@ -217,8 +214,6 @@ public class webService {
         return false;
     }
 
-=======
->>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
     private boolean doPurchase(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
@@ -239,10 +234,6 @@ public class webService {
                     database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost);
                     return true;
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
             }
             return true;
         }
