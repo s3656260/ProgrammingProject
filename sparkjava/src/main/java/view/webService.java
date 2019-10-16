@@ -38,6 +38,12 @@ public class webService {
     //
     //                            test functions
     //------------------------------------------------------------------------------
+
+    public List<transaction> getUserTransactions() {
+        genTransactionList();
+        return userTransactions;
+    }
+
     public String get_serviceName() { return _serviceName; }
 
     public String get_serviceAction() { return _serviceAction; }
@@ -103,6 +109,7 @@ public class webService {
     //------------------------------------------------------------------------------
     //
     //
+
     public webService(String serviceName, String serviceAction, databaseService db) throws IOException {//test constructor
         _serviceAction = serviceAction;
         _serviceName = serviceName;
@@ -113,6 +120,7 @@ public class webService {
         genStocklist();
         haveList = false;
     }
+
     webService(String serviceName, databaseService db,userItem user) throws IOException {
         _serviceAction = null;
         _serviceName = serviceName;
@@ -152,7 +160,7 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                     CurrentUser.add_money(cost);
-                    database.transaction(userId,s,nAmount,SELL_TYPE,cost);
+                    database.transaction(userId,s,nAmount,SELL_TYPE,cost,amount);
                     return true;
                 }
             }
@@ -177,7 +185,7 @@ public class webService {
                     int nAmount = o.getInt("uAmount") + amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
-                    database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost);
+                    database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost,amount);
                     return true;
                 }
 

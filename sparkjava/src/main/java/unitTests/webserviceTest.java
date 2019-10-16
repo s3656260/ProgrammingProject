@@ -238,4 +238,25 @@ public class webserviceTest {
         List<transaction> res = this.web_service.testTransactionList();
         assertEquals(2,res.size());
     }
+
+    @Test
+    public void shareOwnership(){
+        System.out.println("webserviceTest.shareOwnership");
+
+        //setup test vars
+        String symbol ="OHI", id = "1";
+        int amount = 1;
+        int amountSec = 10;
+
+        //run test transactions
+        assertTrue(this.web_service.testPurchase(symbol, id, amount));
+        assertTrue(this.web_service.testPurchase(symbol, id, amountSec));
+        assertTrue(this.web_service.testSale(symbol, id, amount));
+
+        //get test list
+        List<transaction> res = this.web_service.testTransactionList();
+        assertEquals(3,res.size());
+        transaction testTrans = res.get(1);
+        assertEquals(amountSec,testTrans.get_Amount());
+    }
 }

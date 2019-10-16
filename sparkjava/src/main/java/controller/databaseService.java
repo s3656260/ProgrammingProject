@@ -138,10 +138,10 @@ public class databaseService {
         }
     }
 
-    public void transaction(String user_id,String stock_symbol,int amount,String type,double value){
+    public void transaction(String user_id,String stock_symbol,int amount,String type,double value, int change){
         insertOwnedStock(user_id,stock_symbol,amount);
         if(type != null){
-            insertToTransactions(user_id,stock_symbol,amount,type,value);
+            insertToTransactions(user_id,stock_symbol,change,type,value);
         }
     }
 

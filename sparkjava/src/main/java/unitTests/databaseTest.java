@@ -53,17 +53,17 @@ public class databaseTest {
         String userId = "1", symbol = "OHI";
 
         //test insert
-        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        this.dbService.transaction(userId,"OHI",amnt,null,0,amnt);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
         //test update
         amnt = 2;
-        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        this.dbService.transaction(userId,"OHI",amnt,null,0,amnt);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
         //test delete
         amnt = 0;
-        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        this.dbService.transaction(userId,"OHI",amnt,null,0,amnt);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
     }
@@ -102,7 +102,7 @@ public class databaseTest {
         double val = 10.01;
 
         //run transaction with full params
-        this.dbService.transaction(u_id,symbol,amount,PURCHASE_TYPE,val);
+        this.dbService.transaction(u_id,symbol,amount,PURCHASE_TYPE,val,amount);
         lst = this.dbService.getUserTransactionList(u_id);
         //test successul database edit
         assertEquals(this.dbService.getAmountUserOwnes(u_id,symbol),amount);

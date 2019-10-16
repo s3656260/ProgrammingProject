@@ -68,11 +68,11 @@ public class userService {
             return quote.get_price();
         });
         //top share list
-        pathStr = "/"+_serviceName+"/:userId/top";
+        pathStr = "/"+_serviceName+"/top/:userId";
         get(pathStr, (req, res) -> getTop(req.params(":userid")));
         pathStr = "/"+_serviceName+"/userCash/:userId";
         get(pathStr, (req, res) -> getUserMoney(req.params(":userid")));
-        pathStr = "/"+_serviceName+"/userPurchase/";
+        pathStr = "/"+_serviceName+"/userPurchase/:userId";
         post(pathStr, (req, res) -> {
             res.type("application/json");
             userItem CurrentUser = getCurrentUser(req.params(":userid"));
