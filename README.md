@@ -81,8 +81,8 @@ to run the frontend as a local server...
 open the react folder in a terminal, makes sure node.js is installed and type "npm install"  
 then to start the server run "npm start"
 GitHub
------------------------------------------
+-----------------------------------------  
 https://github.com/s3656260/ProgrammingProject  
 GitHub
------------------------------------------
+-----------------------------------------  
 Currently the live site solution we had has run into issues, and we are currently looking into new inexpensive options.  
