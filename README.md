@@ -71,3 +71,12 @@ result: jsonarray
         "date/time": text (date and time of transaction formatted "yyyy-MM-dd hh:mm:ss")  
     },...  
 ]  
+  
+Local Installation guide
+-----------------------------------------
+to run the backend open sparkjava folder in an ide  
+compile and run the app.java file  
+
+to run the frontend as a local server...  
+open the react folder in a terminal, makes sure node.js is installed and type "npm install"  
+then to start the server run "npm start"
