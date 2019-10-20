@@ -38,6 +38,12 @@ public class webService {
     //
     //                            test functions
     //------------------------------------------------------------------------------
+
+    public List<transaction> getUserTransactions() {
+        genTransactionList();
+        return userTransactions;
+    }
+
     public String get_serviceName() { return _serviceName; }
 
     public String get_serviceAction() { return _serviceAction; }
@@ -71,7 +77,6 @@ public class webService {
     public void testGenList() throws IOException {genStocklist();}
 
     public JSONObject getTestListStock(int index){ return new JSONObject(list.get(index).toString()); }
-<<<<<<< HEAD
 
     public void testAddStockOwnership(int index,int amount){
         JSONObject o = new JSONObject(list.get(index).toString());
@@ -80,7 +85,10 @@ public class webService {
         JSONObject n = new JSONObject(list.get(index).toString());
 
     }
-
+    public List<transaction> testTransactionList(){
+        genTransactionList();
+        return userTransactions;
+    }
     public JsonArray getStocksOwned(){
         JsonArray res = new JsonArray();
         for (int i = 0; i < list.size(); i++) {
@@ -98,90 +106,34 @@ public class webService {
 
     public databaseService getDBservice(){ return database; }
 
-=======
->>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
     //------------------------------------------------------------------------------
     //
     //
-    public webService(String serviceName, String serviceAction, databaseService db) throws IOException {
+
+    public webService(String serviceName, String serviceAction, databaseService db) throws IOException {//test constructor
         _serviceAction = serviceAction;
         _serviceName = serviceName;
         database = db;
         _apiService = new apiService();
-        CurrentUser = new userItem(10000,"1");
+        CurrentUser = new userItem(10000,"1",db);
         StockList = new ArrayList<JSONObject>();
         genStocklist();
         haveList = false;
     }
 
-    public void stopService(){
-        stop();
-        database = null;
-    }
-    public void startService(){
-        options("/*",
-                (request, response) -> {
-
-                    String accessControlRequestHeaders = request
-                            .headers("Access-Control-Request-Headers");
-                    if (accessControlRequestHeaders != null) {
-                        response.header("Access-Control-Allow-Headers",
-                                accessControlRequestHeaders);
-                    }
-
-                    String accessControlRequestMethod = request
-                            .headers("Access-Control-Request-Method");
-                    if (accessControlRequestMethod != null) {
-                        response.header("Access-Control-Allow-Methods",
-                                accessControlRequestMethod);
-                    }
-
-                    return "OK";
-                });
-
-        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-        //pricecheck api
-        String pathStr = "/"+_serviceName+"/sym/:name";
-        get(pathStr, (req, res) -> {
-            String name = req.params(":name");
-            shareItem quote = _apiService.getBySymb(name);
-            return quote.get_price();
-        });
-        //top share list
-        pathStr = "/"+_serviceName+"/top";
-        get(pathStr, (req, res) -> getTop());
-        pathStr = "/"+_serviceName+"/userCash/:userId";
-        get(pathStr, (req, res) -> getUserMoney());
-        pathStr = "/"+_serviceName+"/userPurchase/";
-        post(pathStr, (req, res) -> {
-            res.type("application/json");
-
-            JSONObject bod = new JSONObject(req.body());
-
-            String sym = bod.getString("sym");
-            String id = CurrentUser.get_user_id();
-            int amount = bod.getInt("amount");
-            doPurchase(sym,id,amount);
-            return 200;
-        });
-        pathStr = "/"+_serviceName+"/userSellShare/";
-        post(pathStr, (req, res) -> {
-            res.type("application/json");
-
-            JSONObject bod = new JSONObject(req.body());
-
-            String sym = bod.getString("sym");
-            String id = CurrentUser.get_user_id();
-            int amount = bod.getInt("amount");
-            doShareSale(sym,id,amount);
-            return 200;
-        });
-        pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
-        get(pathStr, (req, res) -> userTransList());
-
+    webService(String serviceName, databaseService db,userItem user) throws IOException {
+        _serviceAction = null;
+        _serviceName = serviceName;
+        database = db;
+        _apiService = new apiService();
+        CurrentUser = user;
+        CurrentUser.add_money(10000);
+        StockList = new ArrayList<JSONObject>();
+        genStocklist();
+        haveList = false;
     }
 
-    private Object userTransList(){
+    public JsonArray userTransList(){
         genTransactionList();
         JsonArray res = new JsonArray();
         for (transaction x: userTransactions) {
@@ -194,8 +146,7 @@ public class webService {
         userTransactions = database.getUserTransactionList(CurrentUser.get_user_id());
     }
 
-<<<<<<< HEAD
-    private boolean doShareSale(String sym,String userId, int amount){
+    public boolean doShareSale(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -209,7 +160,7 @@ public class webService {
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
                     CurrentUser.add_money(cost);
-                    database.transaction(userId,s,nAmount,SELL_TYPE,cost);
+                    database.transaction(userId,s,nAmount,SELL_TYPE,cost,amount);
                     return true;
                 }
             }
@@ -217,9 +168,7 @@ public class webService {
         return false;
     }
 
-=======
->>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
-    private boolean doPurchase(String sym,String userId, int amount){
+    public boolean doPurchase(String sym,String userId, int amount){
         shareItem q = _apiService.getBySymb(sym);
         double price = Double.parseDouble(q.get_price());
         double cost = price*amount;
@@ -236,25 +185,14 @@ public class webService {
                     int nAmount = o.getInt("uAmount") + amount;
                     list.get(i).getAsJsonObject().addProperty("uAmount", nAmount);
                     JSONObject n = new JSONObject(list.get(i).toString());
-                    database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost);
+                    database.transaction(userId,s,nAmount,PURCHASE_TYPE,cost,amount);
                     return true;
                 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 0176c57268c1a337b97a21e057b0a8786203565c
             }
-            return true;
+            return false;
         }
     }
-
-    private JSONObject getUserMoney(){
-        double val = CurrentUser.get_Money();
-        JSONObject json = new JSONObject();
-        json.put("userMoney",val);
-        return json;
-    }
-
     private int checkForUserStock(String symbol){
         //returns amount database user holds
         return this.database.getAmountUserOwnes(CurrentUser.get_user_id(),symbol);
@@ -271,7 +209,7 @@ public class webService {
         }
     }
 
-    private Object getTop() throws IOException {
+    public Object getTop() throws IOException {
         return list;
     }
 }

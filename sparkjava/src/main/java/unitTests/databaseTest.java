@@ -2,6 +2,8 @@ package unitTests;
 
 import controller.databaseService;
 import model.transaction;
+import model.userItem;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.junit.*;
 
@@ -27,6 +29,7 @@ public class databaseTest {
         System.out.println("databaseTest.setUp");
         //setup database conn
         dbService = new databaseService(TEST_DB);
+        this.dbService.inititialiseTables();
     }
 
     @After
@@ -50,17 +53,17 @@ public class databaseTest {
         String userId = "1", symbol = "OHI";
 
         //test insert
-        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        this.dbService.transaction(userId,"OHI",amnt,null,0,amnt);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
         //test update
         amnt = 2;
-        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        this.dbService.transaction(userId,"OHI",amnt,null,0,amnt);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
         //test delete
         amnt = 0;
-        this.dbService.transaction(userId,"OHI",amnt,null,0);
+        this.dbService.transaction(userId,"OHI",amnt,null,0,amnt);
         assertEquals(this.dbService.getAmountUserOwnes(userId,symbol),amnt);
 
     }
@@ -99,12 +102,64 @@ public class databaseTest {
         double val = 10.01;
 
         //run transaction with full params
-        this.dbService.transaction(u_id,symbol,amount,PURCHASE_TYPE,val);
+        this.dbService.transaction(u_id,symbol,amount,PURCHASE_TYPE,val,amount);
         lst = this.dbService.getUserTransactionList(u_id);
         //test successul database edit
         assertEquals(this.dbService.getAmountUserOwnes(u_id,symbol),amount);
         assertEquals(lst.size(),1);
 
+    }
+
+    @Test
+    public void testLogin(){
+        System.out.println("databaseTest.testLogin");
+
+        //make test table
+        this.dbService.mkUserTable();
+
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        userItem user = this.dbService.getUserLogin(username,password);
+        assertNotNull(user);
+    }
+
+    @Test
+    public void testRegesterUser(){
+        System.out.println("databaseTest.testRegesterUser");
+
+        //make test table
+        this.dbService.mkUserTable();
+
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        assertFalse(this.dbService.regesterUser(username,password));
+        userItem user = this.dbService.getUserLogin(username,password);
+        assertNotNull(user);
+    }
+    @Test
+    public void TestBalance() {
+        System.out.println("databaseTest.TestBalance");
+        //make test table
+        this.dbService.mkUserTable();
+
+        //setup test variables
+        String username = "uName", password = "pWord";
+
+        //run assertions
+        this.dbService.regesterUser(username,password);
+        userItem user = this.dbService.getUserLogin(username,password);
+
+        assertEquals(InitialUserBalance,user.get_Money());
+
+        double testVar = 100;
+        user.rmv_Money(testVar);
+        assertEquals(InitialUserBalance-testVar,this.dbService.getUserCurrency(user.get_user_id()));
     }
 
 }
