@@ -36,7 +36,7 @@ export default class StockItemDisplay extends React.Component {
     handleBuySubmit(event) {
         var id = 0;
         console.log("doing purchase");
-        var url = "http://localhost:4567/test/userPurchase/";
+        var url = "http://localhost:4567/test/userPurchase/9FWCCA1RJDTHBNGXN";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -58,7 +58,7 @@ export default class StockItemDisplay extends React.Component {
     handleSellSubmit(event) {
         var id = 0;
         console.log("doing Sale");
-        var url = "http://localhost:4567/test/userSellShare/";
+        var url = "http://localhost:4567/test/userSellShare/9FWCCA1RJDTHBNGXN";
         fetch(url, {
             method: 'POST',
             headers: {
