@@ -2,8 +2,6 @@ package controller;
 
 import model.shareItem;
 import model.transaction;
-import model.userItem;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
 import java.sql.*;
@@ -28,8 +26,6 @@ public class databaseService {
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
     private final String USER_ID_FIELD = "user_id";
-    private final String USER_NAME_FIELD = "user_name";
-    private final String USER_PASSWORD_FIELD = "password";
     private final String SYMBOL_FIELD = "symbol";
     private final String AMOUNT_FIELD = "amount";
     private final String TYPE_FIELD = "type";
@@ -325,14 +321,12 @@ public class databaseService {
     private void dropTable(String tableName){
         execute("DROP TABLE IF EXISTS "+tableName+";");
     }
-
     public void mkOwnedStockTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+OWNED_STOCK_TABLE+";");
         String query = "CREATE TABLE IF NOT EXISTS "+ OWNED_STOCK_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer );";
         execute(query);
     }
-
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");

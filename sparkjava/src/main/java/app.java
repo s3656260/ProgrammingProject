@@ -4,7 +4,6 @@ import controller.jsonService;
 import org.apache.log4j.BasicConfigurator;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import view.userService;
 import view.webService;
 
 import java.io.FileWriter;
@@ -23,7 +22,7 @@ public class app {
     private static void testService() throws IOException {
         databaseService db = new databaseService(TEST_DB);
         db.inititialiseTables();
-        userService test = new userService("test",db);
+        webService test = new webService("test","foo",db);
         test.startService();
     }
     private static void liveService() throws IOException {

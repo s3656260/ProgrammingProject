@@ -2,8 +2,6 @@ package unitTests;
 
 import controller.databaseService;
 import model.transaction;
-import model.userItem;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.junit.*;
 
