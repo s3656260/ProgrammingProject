@@ -10,7 +10,7 @@ class login extends React.Component {
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
 
@@ -24,27 +24,23 @@ class login extends React.Component {
 
     }
 
-    handleSubmit(event) {
+    async handleLogin(event) {
         var id = 0;
         console.log("signing in");
-        var url = "http://localhost:4567/test/login/:" + this.state.username + "/:" + this.state.password;
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
-
-        })
+        var url = "http://localhost:4567/test/login/" + this.state.username + "/" + this.state.password;
+        const fetchResult = fetch(url, {method: 'GET'})
+        var res = await fetchResult;
+        var token = await res.text();
+        console.log(token);
+        //jump to new page here
         event.preventDefault();
-        //need to check if user can afford
 
     }
 
     render() {
         return (
             <div className="container">
-                <form className="white" onSubmit={this.handleSubmit}>
+                <form className="white" onSubmit={this.handleLogin}>
                     <h5 className="grey-text text-darken-3">Sign In</h5>
                     <div className="input-field">
                         <label htmlFor="input">UsertestName</label>

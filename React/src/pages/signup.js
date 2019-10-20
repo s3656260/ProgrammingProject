@@ -30,13 +30,9 @@ class signup extends React.Component {
   handleSubmit(event) {
     var id = 0;
     console.log("signing in");
-    var url = "http://localhost:4567/test/register/:" + this.state.username + "/:" + this.state.password;
+    var url = "http://localhost:4567/test/regester/" + this.state.username + "/" + this.state.password;
     fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
+      method: 'POST'
 
     })
     event.preventDefault();
