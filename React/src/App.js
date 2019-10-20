@@ -3,6 +3,9 @@ import { HashRouter as Router, Route, Link, NavLink } from 'react-router-dom';
 import SignUpForm from './pages/SignUpForm';
 import SignInForm from './pages/SignInForm';
 import Home from './pages/Home';
+import login from './pages/login';
+import signup from './pages/signup';
+
 
 import './App.css';
 import StockItemDisplay from './pages/stockItemDisplay';
@@ -27,10 +30,14 @@ class App extends Component {
     return (
       <Router basename="/react-auth-ui/">
         <div className="App">
+
           <div className="App__Aside">
+            <Route exact path='/' component={login} />
+            <Route exact path='/' component={signup} />
             <StockItemDisplay ref="stockPage" updateUserAmount={this.updateUserAmount} />
           </div>
           <div className="App__Form">
+            <Route path="Home" component={Home} />
             <Home ref="Home" currentStock={this.stockData} />
 
             {/*
