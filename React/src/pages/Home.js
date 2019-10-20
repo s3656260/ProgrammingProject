@@ -58,13 +58,13 @@ export default class Home extends React.Component {
     }
     async getApi() {
         console.log("getting api");
-        const fetchResult = fetch("http://localhost:4567/test/userCash/1")
+        const fetchResult = fetch("http://localhost:4567/test/userCash/9FWCCA1RJDTHBNGXN")
         var res = await fetchResult;
-        var json = await res.json();
-        this.setState({ userMoney: json.userMoney });
-        console.log(json.userMoney);
+        var json = await res.text();
+        this.setState({ userMoney: parseFloat(json) });
+        console.log(this.state);
 
-        fetch("http://localhost:4567/test/top").then(res => res.json()).then(
+        fetch("http://localhost:4567/test/top/9FWCCA1RJDTHBNGXN").then(res => res.json()).then(
             (result) => { this.setState({ isLoaded: true, items: result }); },
             (error) => { this.setState({ isLoaded: true, error }); })
         //console.log(this.state.userMoney);
