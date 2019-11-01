@@ -106,6 +106,10 @@ public class databaseService {
         this.mkBalanceTable();
     }
 
+    public void buildIfNone(){
+        if (checkTableExists(USER_TABLE)){ this.inititialiseTables(); }
+    }
+
     public void destroyTables(){
         //WARNING!!!! TESTING ONLY do not run this on production
         try {

@@ -28,7 +28,7 @@ public class app {
     }
     private static void liveService() throws IOException {
         databaseService db = new databaseService(DEFAULT_DB);
-        //db.inititialiseTables();
+        db.buildIfNone();
         userService test = new userService("test",db);
         test.startService();
         test.userLogin("admin","admin");
