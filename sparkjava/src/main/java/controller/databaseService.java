@@ -79,13 +79,28 @@ public class databaseService {
 
     public databaseService(String database){
         fileName = database;
+        conn = null;
         this.startDBService();
     }
-
+//jdbc:sqlserver://takestock.database.windows.net:1433;
+// database=takestock;
+// user=stockadm@takestock;
+// password={your_password_here};
+// encrypt=true;
+// trustServerCertificate=false;
+// hostNameInCertificate=*.database.windows.net;loginTimeout=30;
     public void startDBService(){
-        url = "jdbc:sqlite:database/" + fileName;
+        String hostName = "takestock.database.windows.net"; // update me
+        String dbName = "takestock"; // update me
+        String user = "stockadm@takestock"; // update me
+        String password = "PASsword123"; // update me
+        String url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;"+
+                "hostNameInCertificate=*.database.windows.net;loginTimeout=30;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+                , hostName, dbName, user, password);
         try {
             conn = DriverManager.getConnection(url);
+            String schema = conn.getSchema();
+            System.out.println("Successful connection - Schema: " + schema);
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
                 System.out.println("The driver name is " + meta.getDriverName());
@@ -107,7 +122,8 @@ public class databaseService {
     }
 
     public void buildIfNone(){
-        if (checkTableExists(USER_TABLE)){ this.inititialiseTables(); }
+        File tempFile = new File("c:/temp/temp.txt");
+        boolean exists = tempFile.exists();
     }
 
     public void destroyTables(){
@@ -127,7 +143,7 @@ public class databaseService {
     public boolean deleteDatabase(){
         try {
             conn.close();
-            return new File(url).delete();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -274,7 +290,7 @@ public class databaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        res.set_Database(this);
+        //res.set_Database(this);
         return res;
     }
 
@@ -333,28 +349,28 @@ public class databaseService {
     public void mkOwnedStockTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+OWNED_STOCK_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ OWNED_STOCK_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer );";
+        String query = "CREATE TABLE  "+ OWNED_STOCK_TABLE +" ( id integer NOT NULL IDENTITY PRIMARY KEY, "+USER_ID_FIELD+" varchar(50) NOT NULL, "+SYMBOL_FIELD+" varchar(50) NOT NULL, "+AMOUNT_FIELD+" integer );";
         execute(query);
     }
 
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL,"+VALUE_FIELD+" real NOT NULL );";
+        String query = "CREATE TABLE "+ TRANSACTION_TABLE +" ( id integer NOT NULL IDENTITY PRIMARY KEY, "+USER_ID_FIELD+" varchar(50) NOT NULL, "+SYMBOL_FIELD+" varchar(50) NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" varchar(50) NOT NULL, "+TYPE_FIELD+" varchar(50) NOT NULL,"+VALUE_FIELD+" real NOT NULL );";
         execute(query);
     }
 
     public void mkUserTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+USER_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ USER_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+USER_NAME_FIELD+" text NOT NULL,"+USER_PASSWORD_FIELD+" text NOT NULL );";
+        String query = "CREATE TABLE "+ USER_TABLE +" ( id integer NOT NULL IDENTITY PRIMARY KEY, "+USER_ID_FIELD+" varchar(50) NOT NULL,"+USER_NAME_FIELD+" varchar(50) NOT NULL,"+USER_PASSWORD_FIELD+" varchar(50) NOT NULL );";
         execute(query);
     }
 
     public void mkBalanceTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+BALANCE_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ BALANCE_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+BALANCE_FIELD+" real NOT NULL );";
+        String query = "CREATE TABLE "+ BALANCE_TABLE +" ( id integer NOT NULL IDENTITY PRIMARY KEY, "+USER_ID_FIELD+" varchar(50) NOT NULL,"+BALANCE_FIELD+" real NOT NULL );";
         execute(query);
     }
 }
