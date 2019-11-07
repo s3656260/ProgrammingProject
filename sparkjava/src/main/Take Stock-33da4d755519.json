@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "take-stock-258303",
+  "private_key_id": "33da4d7555190bc86bf14afb9a6dab865ac04a17",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0diLpk3RpzOsx\nS8psaSSgG9yU0wq8OROyBoQmIxBWVas/QsjA9LohYnMFjAcsP1Zr5xCQK4+04ITS\n+/cJn7JdozAPYZUEm15sZGIUHQ5jLKwZZGywVxd2vJmrFVTdzBppIzDkyHelB1Yi\n9itoO7GEEpu2PNKPTdN34O0EoYe7hbg5MKwKOwKpHr+gZ29fT2Rjw86qVhBMVuVm\nFqp4+wBDLGurhtVxgH2dqe1WYxWzIXMNwAxWjvPFe9jo0qliJRM9FNqO99wewuyy\n8g5leU8V1Sht2OqFQ2R/wuoB2SiTYcB217j8NHEaQB1viVad3xB87RIsqHvve/cX\nsHAHl/sPAgMBAAECggEAHclwKtDJgtstqRXjBDD4uCrRJomNOJNNQnHb5zWbcTyz\nxv3diCf8/xyycqRx3KZZu/bIX5upHUh/9Bld5etDtDwG50sKn1eL5uVM4RgIs2sA\nvzI51IOTnmg0Dy62suOJKniCDgle4lELMTsj4BEWVIADzrlMYhYNBTkNtll5P4Tk\nVvL+Rz35dKv71NNPYAx/AaXKQeFoHn+XOOfUKxNk3XbFOaLeP3ZRQUCmgJXOsc5V\nlfNWh0Ktdf62qnUdY2+HwlKnXTCrW6/YIN/XafVoKJmR/Mr/EXXmpK8rzOFYd8JP\nlvprXT/b78vOtCd8XZsk8vsLBeCa8YAqco/gmva7RQKBgQDj9ehVpw+EeWV0cQXR\n8qrIwK3cvRjE73Y+diWTudv88o4Qz+InpPlYIeyaKg+p/C6mf7hsTmxuaxNjwInL\ngArDvbidIfgUO20FXPeZqdTKMq5KEfqSshcDpzk1NT3xI6VwpAFNl1DNUC6dw0Ot\nDiFpXTST4uu8KzMinhPvwr7BHQKBgQDKqI/6m4joQEd2l4RyEqKGK07u9uoocmJn\nbm6PkoKuVgLVYzhLV940xP92qmVOHlFqa27OfAr7AFtzIULfB6BJj5vQADh1TKE5\nGDBVzp1biC1BlEBqZDIFIPVTJ56s35JMLBpj4FiZ9uuWOhgYH7Vzk+ryoPoC1/u6\nvtMm+LKBGwKBgAzc6Vk77gI5n2HsprlsCfr99FGKUgV6xZ9Mp14olKM3RJDqSgaW\npoM0ltc0HGIpGrDGcC+cVT39yMBOMvhKp1DYObyUGB18JPCyiD4heSJXrcH8Nbll\nVysbmnzIHlCnBETQ3En2idar+ZVpWT5Al94MJlVZ7pdVkLMZXGKhCIZ5AoGAbSEm\nHyKAL+jlUrQ2yyLDyBIsODxYTZ2C5gWunbuciXqhnf0HBHN1od7vXhxV3yIuX2so\nySI823sOw8mGdAlsRBCELBbiUDAKpW8kICDZ1b9X93d41JHN6bscwEGWjar64e/h\n6iSWMZqotEXmUZ9Jm8pse2k6GCvsT1yQ4eyMWz8CgYBiCu1Jv8u2gdf6oeBoTkWg\ndoHrPXiStl8VScYISqO/wdR+RSNRBjffyiK1X0cmlVZ09Br1FHBaI2TTj7G1ULoM\nnFR8K3aK9dVm5GrKiutx+HUVdLy+696QgtnH58jvWKsjeYHY2X2kiZwhuTCWB2KJ\nnmiyjfAwn9zixcppYv6K4g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "backend@take-stock-258303.iam.gserviceaccount.com",
+  "client_id": "106842608848787532813",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/backend%40take-stock-258303.iam.gserviceaccount.com"
+}

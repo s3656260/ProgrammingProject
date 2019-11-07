@@ -1,11 +1,17 @@
 package controller;
 
+import com.beust.jcommander.internal.Lists;
+import com.google.auth.oauth2.GoogleCredentials;
+import io.grpc.Context;
+import io.opencensus.metrics.export.Distribution;
 import model.shareItem;
 import model.transaction;
 import model.userItem;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,22 +88,27 @@ public class databaseService {
         conn = null;
         this.startDBService();
     }
-//jdbc:sqlserver://takestock.database.windows.net:1433;
-// database=takestock;
-// user=stockadm@takestock;
-// password={your_password_here};
-// encrypt=true;
-// trustServerCertificate=false;
-// hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+
+//4/swHaNRZSn3EIPLwzsG6v8q5LBtDuwAbeRHhCcmBMEXoXfy9V7DHLwQA
     public void startDBService(){
-        String hostName = "takestock.database.windows.net"; // update me
-        String dbName = "takestock"; // update me
-        String user = "stockadm@takestock"; // update me
-        String password = "PASsword123"; // update me
-        String url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;"+
-                "hostNameInCertificate=*.database.windows.net;loginTimeout=30;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
-                , hostName, dbName, user, password);
+        String IP_of_instance = "google"; // update me
+        String databaseName = "takestockdb"; // update me
+
+        String instanceConnectionName = "take-stock-258303:us-central1:takestockdata";
+        String username = "a.har979@gmail.com";
+        String password = "PASsword";
+        String url = String.format("jdbc:mysql://google/%s?cloudSqlInstance=%s" +
+                        "&socketFactory=com.google.cloud.sql.mysql.SocketFactory" +
+                        "&useSSL=false" +
+                        "&user=%s" +
+                        "&password=%s",
+                databaseName,
+                instanceConnectionName,
+                username,
+                password);
+        //url = String.format("jdbc:mysql://google/%s",databaseName);
         try {
+           // Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url);
             String schema = conn.getSchema();
             System.out.println("Successful connection - Schema: " + schema);
@@ -107,7 +118,7 @@ public class databaseService {
                 System.out.println("Successfully connected to database "+ fileName);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException  e) {
             System.out.println(e.getMessage());
         }
     }
