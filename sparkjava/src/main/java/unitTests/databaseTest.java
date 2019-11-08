@@ -154,7 +154,6 @@ public class databaseTest {
         //run assertions
         this.dbService.regesterUser(username,password);
         userItem user = this.dbService.getUserLogin(username,password);
-
         assertEquals(InitialUserBalance,user.get_Money());
 
         double testVar = 100;
