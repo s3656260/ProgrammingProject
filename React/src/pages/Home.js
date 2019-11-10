@@ -30,7 +30,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID:"IEZPLSTQRPH2NFJHN",
+            userID:"",
             error: null,
             isLoaded: false,
             items: [],
@@ -76,7 +76,7 @@ export default class Home extends React.Component {
 
     }
     doStockPurchase = (item) => {
-        this.props.currentStock(item)
+        this.props.currentStock(item,this.state.userID)
     }
 
     async componentDidMount() {

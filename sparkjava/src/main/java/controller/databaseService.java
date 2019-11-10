@@ -244,7 +244,7 @@ public class databaseService {
 
     public List<shareItem> getUserStocks(String user_id){
         String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"';";
-        List<shareItem> res = null;
+        List<shareItem> res = new ArrayList<>();
         try{
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);

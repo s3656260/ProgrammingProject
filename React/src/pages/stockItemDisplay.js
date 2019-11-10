@@ -12,6 +12,7 @@ export default class StockItemDisplay extends React.Component {
         super(props);
         this.state = {
             hasStock: false,
+            userid:"",
             stock: [],
             sellVal: 0,
             buyVal: 0,
@@ -28,8 +29,8 @@ export default class StockItemDisplay extends React.Component {
         this.setState({isLoading:false});
         this.render();
     }
-    updateStock(item) {
-        this.setState({ hasStock: true, stock: item })
+    updateStock(item,id) {
+        this.setState({ hasStock: true, stock: item,userid:id })
     }
     handleBuyChange(event) {
         this.setState({ buyVal: event.target.value })
@@ -42,7 +43,7 @@ export default class StockItemDisplay extends React.Component {
         var id = 0;
         console.log("doing purchase");
         this.setState({isLoading:true});
-        var url = "http://34.70.170.35:8080/test/userPurchase/IEZPLSTQRPH2NFJHN";
+        var url = "http://34.70.170.35:8080/test/userPurchase/"+this.state.userid;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -66,7 +67,7 @@ export default class StockItemDisplay extends React.Component {
         var id = 0;
         console.log("doing Sale");
         this.setState({isLoading:true});
-        var url = "http://34.70.170.35:8080/test/userSellShare/IEZPLSTQRPH2NFJHN";
+        var url = "http://34.70.170.35:8080/test/userSellShare/"+this.state.userid;
         fetch(url, {
             method: 'POST',
             headers: {

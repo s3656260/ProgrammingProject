@@ -25,8 +25,8 @@ class App extends Component {
     console.log(this.refs);
     this.refs.Home.stockUChange(amount, type, symbol);
   }
-  stockData = (dataFromChild) => {
-    this.refs.stockPage.updateStock(dataFromChild);
+  stockData = (dataFromChild,id) => {
+    this.refs.stockPage.updateStock(dataFromChild,id);
   }
   render() {
     return (
