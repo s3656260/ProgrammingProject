@@ -1,13 +1,11 @@
-# ProgrammingProject
+# ProgrammingProject  
 
 Backend api endpoints
 -----------------------------------------
-Run the java program found in "ProgrammingProject/sparkjava/src/main/java/app.java" for the following API's to work  
-
-*address = http://localhost:4567/  
+*address = http://34.70.170.35:8080/  
 *service = test  
 
-replace text with : infront of it with values e.g. "/:username/" would be "/tom/"  
+replace text with : infront of it with values e.g. "/:username/" would be "/andrew/"  
 
 **Login process**  
 first send the username and password for authenticating:  
@@ -74,13 +72,13 @@ result: jsonarray
   
 Local Installation guide
 -----------------------------------------
-to run the backend open sparkjava folder in an ide  
-compile and run the app.java file  
-
-to run the frontend as a local server...  
-open the react folder in a terminal, makes sure node.js is installed and type "npm install"  
-then to start the server run "npm start"  
+Run sparkjava.jar found in \sparkjava\out\artifacts\sparkjava_jar for the following API's to work  
+prompt command : "java -jar sparkjava.jar" 
+  
+*address = http://localhost:8080/  
+*service = test  
   
 GitHub : https://github.com/s3656260/ProgrammingProject  
   
-Currently the live site solution we had has run into issues, and we are currently looking into new inexpensive options.  
+Live site link https://take-stock-258303.appspot.com/#/  
+*note it may have issues with some scripts, if prompted allow unsecure scripts    
