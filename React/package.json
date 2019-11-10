@@ -1,10 +1,13 @@
 {
-  "proxy": "https://localhost:4567/",
   "name": "signup-signin-ui",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=8"
+  },
   "homepage": "http://iamfaiz.github.io/react-auth-ui/",
   "dependencies": {
+    "express": "^4.16.4",
     "@material-ui/core": "^4.3.3",
     "bootstrap": "^4.3.1",
     "gh-pages": "^1.1.0",
@@ -17,11 +20,16 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --host 0.0.0.0 --disableHostCheck true",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "^3.0.0",
+    "ava": "^0.25.0",
+    "supertest": "^4.0.0"
   }
 }

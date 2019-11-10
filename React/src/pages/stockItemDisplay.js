@@ -12,19 +12,25 @@ export default class StockItemDisplay extends React.Component {
         super(props);
         this.state = {
             hasStock: false,
+            userid:"",
             stock: [],
             sellVal: 0,
-            buyVal: 0
+            buyVal: 0,
+            isLoading:false
         };
         this.handleSellChange = this.handleSellChange.bind(this);
         this.handleSellSubmit = this.handleSellSubmit.bind(this);
 
         this.handleBuyChange = this.handleBuyChange.bind(this);
         this.handleBuySubmit = this.handleBuySubmit.bind(this);
-
+        this.endLoading = this.endLoading.bind(this);
     }
-    updateStock(item) {
-        this.setState({ hasStock: true, stock: item })
+    endLoading(){
+        this.setState({isLoading:false});
+        this.render();
+    }
+    updateStock(item,id) {
+        this.setState({ hasStock: true, stock: item,userid:id })
     }
     handleBuyChange(event) {
         this.setState({ buyVal: event.target.value })
@@ -36,7 +42,8 @@ export default class StockItemDisplay extends React.Component {
     handleBuySubmit(event) {
         var id = 0;
         console.log("doing purchase");
-        var url = "http://localhost:4567/test/userPurchase/9FWCCA1RJDTHBNGXN";
+        this.setState({isLoading:true});
+        var url = "http://34.70.170.35:8080/test/userPurchase/"+this.state.userid;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -48,17 +55,19 @@ export default class StockItemDisplay extends React.Component {
                 userId: id,
                 amount: this.state.buyVal
             })
-        })
-        event.preventDefault();
+        }).then(this.props.updateUserAmount(this.state.buyVal, true, this.state.stock.symbol));
+        
+        //event.preventDefault();
         //need to check if user can afford
-        this.props.updateUserAmount(this.state.buyVal, true, this.state.stock.symbol);
+        
 
     }
 
     handleSellSubmit(event) {
         var id = 0;
         console.log("doing Sale");
-        var url = "http://localhost:4567/test/userSellShare/9FWCCA1RJDTHBNGXN";
+        this.setState({isLoading:true});
+        var url = "http://34.70.170.35:8080/test/userSellShare/"+this.state.userid;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -71,14 +80,21 @@ export default class StockItemDisplay extends React.Component {
                 amount: this.state.sellVal
             })
         })
-        event.preventDefault();
+        .then(this.props.updateUserAmount(this.state.sellVal, true, this.state.stock.symbol));
+        
+        //event.preventDefault();
         //need to check if user can afford
-        this.props.updateUserAmount(this.state.sellVal, true, this.state.stock.symbol);
+        
     }
     render() {
         var price = this.state.stock.price;
         var userVal = (this.state.stock.uAmount) * price;
-        if (this.state.hasStock == true) {
+        console.log("rendering details");
+        console.log(this.state);
+        if(this.state.isLoading == true){
+            return(<div>loading purchase</div>)
+        }
+        else if (this.state.hasStock == true) {
             return (
                 <div id="stockDisplay">
                     <div class="stockItemH1" >Company : {this.state.stock.company}</div>

@@ -9,19 +9,24 @@ import StockItemDisplay from './pages/stockItemDisplay';
 
 class App extends Component {
   constructor(props) {
+    
     super(props);
     this.state = {
       homeR: null,
-      listDataFromChild: null
+      listDataFromChild: null,
+      id:"TEST ID HERE"
     };
+    
   }
+  
   updateUserAmount = (amount, type, symbol) => {//type is wether its buy or sell, true for but, false for sell
+    this.refs.stockPage.endLoading();
     console.log("refs:");
     console.log(this.refs);
     this.refs.Home.stockUChange(amount, type, symbol);
   }
-  stockData = (dataFromChild) => {
-    this.refs.stockPage.updateStock(dataFromChild);
+  stockData = (dataFromChild,id) => {
+    this.refs.stockPage.updateStock(dataFromChild,id);
   }
   render() {
     return (
@@ -31,7 +36,7 @@ class App extends Component {
             <StockItemDisplay ref="stockPage" updateUserAmount={this.updateUserAmount} />
           </div>
           <div className="App__Form">
-            <Home ref="Home" currentStock={this.stockData} />
+            <Home ref="Home" currentStock={this.stockData} id={this.state.id}/>
 
             {/*
           <div className="PageSwitcher">

@@ -38,7 +38,9 @@ public class userService {
     }
 
     public void startService(){
-        port(8080);
+        int port = 8080;
+        port(port);
+        String addr = "http://localhost:"+port;
         options("/*",
                 (request, response) -> {
 
@@ -62,17 +64,24 @@ public class userService {
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
         //pricecheck api
         String pathStr = "/"+_serviceName+"/sym/:name";
+        System.out.println(addr+pathStr);
         get(pathStr, (req, res) -> {
             String name = req.params(":name");
             shareItem quote = _apiService.getBySymb(name);
             return quote.get_price();
         });
         //top share list
+
         pathStr = "/"+_serviceName+"/top/:userId";
+        System.out.println(addr+pathStr);
         get(pathStr, (req, res) -> getTop(req.params(":userid")));
+
         pathStr = "/"+_serviceName+"/userCash/:userId";
+        System.out.println(addr+pathStr);
         get(pathStr, (req, res) -> getUserMoney(req.params(":userid")));
+
         pathStr = "/"+_serviceName+"/userPurchase/:userId";
+        System.out.println(addr+pathStr);
         post(pathStr, (req, res) -> {
             res.type("application/json");
             userItem CurrentUser = getCurrentUser(req.params(":userid"));
@@ -84,7 +93,9 @@ public class userService {
             doPurchase(sym,id,amount);
             return 200;
         });
+
         pathStr = "/"+_serviceName+"/userSellShare/:userid";
+        System.out.println(addr+pathStr);
         post(pathStr, (req, res) -> {
             res.type("application/json");
             userItem CurrentUser = getCurrentUser(req.params(":userid"));
@@ -96,13 +107,21 @@ public class userService {
             doShareSale(sym,id,amount);
             return 200;
         });
+
         pathStr = "/"+_serviceName+"/userTransactionHistory/:userId";
+        System.out.println(addr+pathStr);
         get(pathStr, (req, res) -> userTransList(req.params(":userid")));
+
         pathStr = "/"+_serviceName+"/login/:userName/:password";
+        System.out.println(addr+pathStr);
         get(pathStr, (req, res) -> userLogin(req.params(":userName"),req.params(":password")));
+
         pathStr = "/"+_serviceName+"/regester/:userName/:password";
+        System.out.println(addr+pathStr);
         post(pathStr, (req, res) -> userRegester(req.params(":userName"),req.params(":password")));
+
         pathStr = "/"+_serviceName+"/logout/:userId";
+        System.out.println(addr+pathStr);
         get(pathStr, (req, res) -> {
             if(userLogout(req.params(":userid"))){
                 return 200;
