@@ -1,9 +1,20 @@
 package controller;
 
+import com.beust.jcommander.internal.Lists;
+import com.google.auth.oauth2.GoogleCredentials;
+import io.grpc.Context;
+import io.opencensus.metrics.export.Distribution;
 import model.shareItem;
 import model.transaction;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.apache.log4j.Logger;
+
+import javax.sql.DataSource;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +44,10 @@ public class databaseService {
     private final String VALUE_FIELD = "value";
     private final String BALANCE_FIELD = "balance";
 
+    private String username = "root";
+    private String password = "pass";
+    private String databaseName = "userdata";
+    private String instanceConnectionName = "take-stock-258303:us-central1:userdata";
     private String fileName;
     private String url;
     private Connection conn;
@@ -75,20 +90,64 @@ public class databaseService {
 
     public databaseService(String database){
         fileName = database;
+        conn = null;
         this.startDBService();
     }
+/*
+    private DataSource createConnectionPool() {
+        // [START cloud_sql_mysql_servlet_create]
+        // The configuration object specifies behaviors for the connection pool.
 
+        // Configure which instance and what database user to connect with.
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(String.format("jdbc:mysql:///%s", databaseName));
+        config.setUsername(username); // e.g. "root", "postgres"
+        config.setPassword(password); // e.g. "my-password"
+        config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
+        config.addDataSourceProperty("cloudSqlInstance", instanceConnectionName);
+        config.addDataSourceProperty("useSSL", "false");
+        config.setMaximumPoolSize(5);
+        config.setMinimumIdle(5);
+        config.setConnectionTimeout(10000); // 10 seconds
+        config.setIdleTimeout(600000); // 10 minutes
+        config.setMaxLifetime(1800000); // 30 minutes
+        DataSource pool = new HikariDataSource(config);
+        return pool;
+    }
+*/
     public void startDBService(){
-        url = "jdbc:sqlite:database/" + fileName;
+        String IP_of_instance = "35.224.201.43"; // update me
         try {
-            conn = DriverManager.getConnection(url);
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        /*
+        String url = String.format("jdbc:mysql://google/%s?cloudSqlInstance=%s" +
+                        "&socketFactory=com.google.cloud.sql.mysql.SocketFactory" +
+                        "&useSSL=false" +
+                        "&user=%s" +
+                        "&password=%s",
+                databaseName,
+                instanceConnectionName,
+                username,
+                password);
+         */
+        String url = String.format("jdbc:mysql://%s:3306/%s",IP_of_instance,databaseName);
+        try {
+           // Class.forName("com.mysql.jdbc.Driver");
+            //DataSource pool = createConnectionPool();
+            conn = DriverManager.getConnection(url, username, password);
+            String schema = conn.getSchema();
+            System.out.println("Successful connection - Schema: " + schema);
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
                 System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("Successfully connected to database "+ fileName);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException  e) {
             System.out.println(e.getMessage());
         }
     }
@@ -100,6 +159,11 @@ public class databaseService {
         this.mkTransactionTable();
         this.mkUserTable();
         this.mkBalanceTable();
+    }
+
+    public void buildIfNone(){
+        File tempFile = new File("c:/temp/temp.txt");
+        boolean exists = tempFile.exists();
     }
 
     public void destroyTables(){
@@ -119,7 +183,7 @@ public class databaseService {
     public boolean deleteDatabase(){
         try {
             conn.close();
-            return new File(url).delete();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -192,6 +256,7 @@ public class databaseService {
     public int getAmountUserOwnes(String user_id, String symbol){
         //gets amount user ownes of specific stock TODO: add functions to get total list of owned stocks
         String sql = "SELECT * FROM "+OWNED_STOCK_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"' AND "+SYMBOL_FIELD+" = '"+symbol+"';";
+        System.out.println(sql);
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -245,6 +310,7 @@ public class databaseService {
     private void execute(String statment){
         //works for table make, insert,
         String sql = statment;
+        System.out.println(sql);
         try {
             Statement stmt = conn.createStatement();
             stmt.execute(sql);
@@ -256,6 +322,7 @@ public class databaseService {
 
     public userItem getUserLogin(String userName, String passwords){
         String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_NAME_FIELD+"='"+userName+"' AND "+USER_PASSWORD_FIELD+" = '"+passwords+"';";
+        System.out.println(sql);
         userItem res = null;
         try{
             Statement stmt = conn.createStatement();
@@ -297,6 +364,7 @@ public class databaseService {
 
     public double getUserCurrency(String user_id){
         String sql = "SELECT * FROM "+BALANCE_TABLE+" WHERE "+USER_ID_FIELD+"='"+user_id+"';";
+        System.out.println(sql);
         double res = -1;
         try{
             Statement stmt = conn.createStatement();
@@ -324,27 +392,27 @@ public class databaseService {
     public void mkOwnedStockTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+OWNED_STOCK_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ OWNED_STOCK_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer );";
+        String query = "CREATE TABLE  "+ OWNED_STOCK_TABLE +" ( id int NOT NULL AUTO_INCREMENT, "+USER_ID_FIELD+" varchar(50) NOT NULL, "+SYMBOL_FIELD+" varchar(50) NOT NULL, "+AMOUNT_FIELD+" integer, PRIMARY KEY (id) );";
         execute(query);
     }
     public void mkTransactionTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+TRANSACTION_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ TRANSACTION_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL, "+SYMBOL_FIELD+" text NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" text NOT NULL, "+TYPE_FIELD+" text NOT NULL,"+VALUE_FIELD+" real NOT NULL );";
+        String query = "CREATE TABLE "+ TRANSACTION_TABLE +" ( id int NOT NULL AUTO_INCREMENT, "+USER_ID_FIELD+" varchar(50) NOT NULL, "+SYMBOL_FIELD+" varchar(50) NOT NULL, "+AMOUNT_FIELD+" integer,"+DATE_TIME_FIELD+" varchar(50) NOT NULL, "+TYPE_FIELD+" varchar(50) NOT NULL,"+VALUE_FIELD+" real NOT NULL, PRIMARY KEY (id) );";
         execute(query);
     }
 
     public void mkUserTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+USER_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ USER_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+USER_NAME_FIELD+" text NOT NULL,"+USER_PASSWORD_FIELD+" text NOT NULL );";
+        String query = "CREATE TABLE "+ USER_TABLE +" ( id int NOT NULL AUTO_INCREMENT, "+USER_ID_FIELD+" varchar(50) NOT NULL,"+USER_NAME_FIELD+" varchar(50) NOT NULL,"+USER_PASSWORD_FIELD+" varchar(50) NOT NULL, PRIMARY KEY (id) );";
         execute(query);
     }
 
     public void mkBalanceTable(){
         //vars to have, user id, stock symbol, owned amount
         execute("DROP TABLE IF EXISTS "+BALANCE_TABLE+";");
-        String query = "CREATE TABLE IF NOT EXISTS "+ BALANCE_TABLE +" ( id integer PRIMARY KEY AUTOINCREMENT, "+USER_ID_FIELD+" text NOT NULL,"+BALANCE_FIELD+" real NOT NULL );";
+        String query = "CREATE TABLE "+ BALANCE_TABLE +" ( id int NOT NULL AUTO_INCREMENT, "+USER_ID_FIELD+" varchar(50) NOT NULL,"+BALANCE_FIELD+" real NOT NULL, PRIMARY KEY (id) );";
         execute(query);
     }
 }
