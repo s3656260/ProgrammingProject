@@ -30,7 +30,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID:"",
+            userID:"U5MFRILC9J39UUVCD",
             error: null,
             isLoaded: false,
             items: [],
@@ -57,22 +57,18 @@ export default class Home extends React.Component {
         console.log(stocks);
         this.setState({ items: stocks, error: err, isLoaded: loaded, userMoney: money });
     }
-    async getApi() {
-        console.log("test login");
-        const loginResult = fetch("http://34.70.170.35:8080/test/login/root/pass")
-        var res = await loginResult;
-        var json = await res.text();
-        this.setState({ userID: json });
-        console.log(this.state);
-        
+    buildList(){
+        this.getApi();
+    }
+    async getApi() {      
         console.log("getting api");
-        const fetchResult = fetch("http://34.70.170.35:8080/test/userCash/")
-        res = await fetchResult;
-        json = await res.text();
+        const fetchResult = fetch("http://34.70.170.35:8080/test/userCash/"+this.state.userID)
+        var res = await fetchResult;
+        var json = await res.text();
         this.setState({ userMoney: parseFloat(json) });
         console.log(this.state);
 
-        fetch("http://34.70.170.35:8080/test/top/").then(res => res.json()).then(
+        fetch("http://34.70.170.35:8080/test/top/"+this.state.userID).then(res => res.json()).then(
             (result) => { this.setState({ isLoaded: true, items: result }); },
             (error) => { this.setState({ isLoaded: true, error }); })
         //console.log(this.state.userMoney);
@@ -83,20 +79,34 @@ export default class Home extends React.Component {
         this.props.currentStock(item)
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         window.addEventListener("beforeunload", (ev) => 
         {  
         ev.preventDefault();
+        var url = "http://34.70.170.35:8080/test/logout/"+this.state.userID;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
         this.componentDidMount();
         this.render();
+
         return ev.returnValue = 'Are you sure you want to close?';
 
-        });
+        });console.log("test login");
+        const loginResult = fetch("http://34.70.170.35:8080/test/login/root/pass")
+        var res = await loginResult;
+        var json = await res.text();
+        this.setState({ userID: json });
+        console.log(this.state);
         this.getApi();
     }
 
     render() {
-       
+        console.log(this.props.id);
         console.log("rendering home");
         const { error, isLoaded, items, term } = this.state;
         if (error) {
