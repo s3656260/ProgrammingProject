@@ -227,7 +227,7 @@ public class webService {
 
     }
 
-    public Object getTop() throws IOException {
+    private Object getTop() throws IOException {
         return list;
     }
 }
