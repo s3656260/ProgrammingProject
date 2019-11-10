@@ -57,7 +57,7 @@ export default class StockItemDisplay extends React.Component {
             })
         }).then(this.props.updateUserAmount(this.state.buyVal, true, this.state.stock.symbol));
         
-        event.preventDefault();
+        //event.preventDefault();
         //need to check if user can afford
         
 
@@ -82,7 +82,7 @@ export default class StockItemDisplay extends React.Component {
         })
         .then(this.props.updateUserAmount(this.state.sellVal, true, this.state.stock.symbol));
         
-        event.preventDefault();
+        //event.preventDefault();
         //need to check if user can afford
         
     }

@@ -94,7 +94,7 @@ export default class Home extends React.Component {
         this.componentDidMount();
         this.render();
 
-        return ev.returnValue = 'Are you sure you want to close?';
+        return ev.returnValue = 'Would you like to confirm this action';
 
         });console.log("test login");
         const loginResult = fetch("http://34.70.170.35:8080/test/login/root/pass")
