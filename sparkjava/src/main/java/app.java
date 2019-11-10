@@ -18,10 +18,10 @@ public class app {
     static void liveService() throws IOException {
         databaseService db = new databaseService(DEFAULT_DB);
 
-        db.inititialiseTables();
+        //db.inititialiseTables();
         userService test = new userService("test",db);
         test.startService();
-        test.userRegester("root","pass");
+        //test.userRegester("root","pass");
         db.testList();
     }
 }
