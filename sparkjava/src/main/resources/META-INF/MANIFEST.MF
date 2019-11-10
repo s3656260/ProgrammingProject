@@ -1,0 +1,46 @@
+Manifest-Version: 1.0
+Main-Class: main
+Class-Path: iextrading4j-api-3.2.4.jar grpc-context-1.19.0.jar websocket
+ -server-9.4.12.v20180830.jar commons-logging-1.2.jar failureaccess-1.0.
+ 1.jar jersey-common-2.28.jar jackson-datatype-jsr310-2.9.9.jar jnr-unix
+ socket-0.23.jar jcommander-1.72.jar jackson-annotations-2.9.9.jar jaxb-
+ impl-2.3.1.jar google-auth-library-credentials-0.17.1.jar activation-1.
+ 1.1.jar opencensus-api-0.21.0.jar jetty-util-9.4.12.v20180830.jar FastI
+ nfoset-1.2.15.jar jnr-posix-3.0.50.jar animal-sniffer-annotations-1.17.
+ jar jetty-xml-9.4.12.v20180830.jar jnr-constants-0.9.12.jar jetty-secur
+ ity-9.4.12.v20180830.jar iextrading4j-all-3.2.4.jar stax-ex-1.8.jar jff
+ i-1.2.19-native.jar asm-util-7.1.jar commons-codec-1.11.jar javassist-3
+ .22.0-CR2.jar jackson-module-jaxb-annotations-2.9.8.jar hamcrest-core-1
+ .3.jar jnr-a64asm-1.0.0.jar jaxb-runtime-2.3.1.jar jackson-core-2.9.9.j
+ ar google-http-client-jackson2-1.31.0.jar google-api-services-sqladmin-
+ v1beta4-rev20190607-1.30.1.jar jetty-client-9.4.12.v20180830.jar jersey
+ -media-sse-2.28.jar jakarta.ws.rs-api-2.1.5.jar iextrading4j-client-3.2
+ .4.jar junit-4.12.jar istack-commons-runtime-3.0.7.jar httpcore-4.4.11.
+ jar jaxb-api-2.3.1.jar guava-28.0-jre.jar gson-2.8.0.jar slf4j-api-1.7.
+ 5.jar httpclient-4.5.9.jar websocket-common-9.4.12.v20180830.jar socket
+ .io-client-1.0.0.jar checker-qual-2.8.1.jar okio-1.13.0.jar jersey-clie
+ nt-2.28.jar asm-analysis-7.1.jar mssql-jdbc-7.0.0.jre8.jar sqlite-jdbc-
+ 3.15.1.jar jetty-webapp-9.4.12.v20180830.jar hk2-utils-2.5.0.jar mysql-
+ socket-factory-connector-j-8-1.0.15.jar osgi-resource-locator-1.0.1.jar
+  jetty-io-9.4.12.v20180830.jar json-20190722.jar jersey-hk2-2.28.jar jn
+ r-ffi-2.1.10.jar javax.activation-api-1.2.0.jar slf4j-log4j12-1.7.5.jar
+  log4j-1.2.17.jar validation-api-2.0.1.Final.jar aopalliance-repackaged
+ -2.5.0.jar google-http-client-1.31.0.jar jffi-1.2.19.jar jdbc-socket-fa
+ ctory-core-1.0.15.jar jnr-enxio-0.21.jar jersey-server-2.28.jar google-
+ auth-library-oauth2-http-0.17.1.jar jackson-databind-2.9.8.jar jetty-se
+ rvlet-9.4.12.v20180830.jar google-oauth-client-1.30.1.jar protobuf-java
+ -3.6.1.jar javax.servlet-api-3.1.0.jar listenablefuture-9999.0-empty-to
+ -avoid-conflict-with-guava.jar engine.io-client-1.0.0.jar commons-text-
+ 1.8.jar commons-lang3-3.9.jar asm-tree-7.1.jar jnr-x86asm-1.0.2.jar aut
+ o-value-annotations-1.6.6.jar jetty-server-9.4.12.v20180830.jar jersey-
+ entity-filtering-2.28.jar websocket-api-9.4.12.v20180830.jar hk2-api-2.
+ 5.0.jar google-api-client-1.30.1.jar j2objc-annotations-1.3.jar jetty-h
+ ttp-9.4.12.v20180830.jar jsr305-3.0.2.jar websocket-servlet-9.4.12.v201
+ 80830.jar websocket-client-9.4.12.v20180830.jar opencensus-contrib-http
+ -util-0.21.0.jar testng-7.0.0.jar javax.ws.rs-api-2.1.1.jar HikariCP-3.
+ 3.1.jar jersey-media-json-jackson-2.28.jar jakarta.annotation-api-1.3.4
+ .jar asm-commons-7.1.jar okhttp-3.8.1.jar hk2-locator-2.5.0.jar jakarta
+ .inject-2.5.0.jar txw2-2.3.1.jar asm-7.1.jar spark-core-2.8.0.jar error
+ _prone_annotations-2.3.2.jar jersey-media-jaxb-2.28.jar mysql-connector
+ -java-8.0.17.jar
+

@@ -38,7 +38,7 @@ public class userService {
     }
 
     public void startService(){
-
+        port(8080);
         options("/*",
                 (request, response) -> {
 
@@ -172,7 +172,7 @@ public class userService {
 
     public String userLogin(String uName, String pWord){
         userItem user = _database.getUserLogin(uName,pWord);
-        user.set_Database(_database);
+        //user.set_Database(_database);
         //add webservice to sessions
         try {
             _sessions.add(new webService(user.get_user_id(),_database,user));

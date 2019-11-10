@@ -2,8 +2,6 @@ package unitTests;
 
 import controller.databaseService;
 import model.transaction;
-import model.userItem;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.junit.*;
 
@@ -154,7 +152,6 @@ public class databaseTest {
         //run assertions
         this.dbService.regesterUser(username,password);
         userItem user = this.dbService.getUserLogin(username,password);
-
         assertEquals(InitialUserBalance,user.get_Money());
 
         double testVar = 100;
