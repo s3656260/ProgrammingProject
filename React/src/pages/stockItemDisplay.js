@@ -42,7 +42,7 @@ export default class StockItemDisplay extends React.Component {
         var id = 0;
         console.log("doing purchase");
         this.setState({isLoading:true});
-        var url = "http://34.70.170.35:8080/test/userPurchase/U5MFRILC9J39UUVCD";
+        var url = "http://34.70.170.35:8080/test/userPurchase/IEZPLSTQRPH2NFJHN";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -66,7 +66,7 @@ export default class StockItemDisplay extends React.Component {
         var id = 0;
         console.log("doing Sale");
         this.setState({isLoading:true});
-        var url = "http://34.70.170.35:8080/test/userSellShare/U5MFRILC9J39UUVCD";
+        var url = "http://34.70.170.35:8080/test/userSellShare/IEZPLSTQRPH2NFJHN";
         fetch(url, {
             method: 'POST',
             headers: {
