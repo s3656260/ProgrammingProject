@@ -9,6 +9,8 @@ import model.transaction;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import model.userItem;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
@@ -36,7 +38,10 @@ public class databaseService {
     public static String BALANCE_TABLE = "user_balances";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+
     private final String USER_ID_FIELD = "user_id";
+    private final String USER_NAME_FIELD = "user_name";
+    private final String USER_PASSWORD_FIELD = "password";
     private final String SYMBOL_FIELD = "symbol";
     private final String AMOUNT_FIELD = "amount";
     private final String TYPE_FIELD = "type";
@@ -341,6 +346,7 @@ public class databaseService {
         //generate user ID
         String user_id = RandomStringUtils.randomAlphanumeric(17).toUpperCase();
         String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_ID_FIELD+" = '"+user_id+"' OR "+USER_NAME_FIELD+" = '"+username+"';";
+        System.out.println(sql);
         try{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -414,5 +420,22 @@ public class databaseService {
         execute("DROP TABLE IF EXISTS "+BALANCE_TABLE+";");
         String query = "CREATE TABLE "+ BALANCE_TABLE +" ( id int NOT NULL AUTO_INCREMENT, "+USER_ID_FIELD+" varchar(50) NOT NULL,"+BALANCE_FIELD+" real NOT NULL, PRIMARY KEY (id) );";
         execute(query);
+    }
+
+    public void testList(){
+        String sql = "SELECT * FROM "+USER_TABLE+";";
+        System.out.println(sql);
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){//id int NOT NULL AUTO_INCREMENT, "+USER_ID_FIELD+" varchar(50) NOT NULL,"+USER_NAME_FIELD+" varchar(50) NOT NULL,"+USER_PASSWORD_FIELD+" varchar(50) NOT NULL, PRIMARY KEY (id) );";
+                String uId = rs.getString(USER_ID_FIELD);
+                String uName = rs.getString(USER_NAME_FIELD);
+                String pName = rs.getString(USER_PASSWORD_FIELD);
+                System.out.println(String.format("%s | %s | %s",uId,uName,pName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

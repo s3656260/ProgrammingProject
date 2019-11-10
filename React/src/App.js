@@ -15,6 +15,7 @@ class App extends Component {
       listDataFromChild: null
     };
   }
+  
   updateUserAmount = (amount, type, symbol) => {//type is wether its buy or sell, true for but, false for sell
     console.log("refs:");
     console.log(this.refs);

@@ -2,6 +2,7 @@ package unitTests;
 
 import controller.databaseService;
 import model.transaction;
+import model.userItem;
 import org.json.JSONObject;
 import org.junit.*;
 
