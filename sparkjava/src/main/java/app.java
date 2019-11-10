@@ -15,21 +15,17 @@ import static controller.databaseService.DEFAULT_DB;
 import static controller.databaseService.TEST_DB;
 
 public class app {
-    public static void main(String[] args) throws IOException {
-        BasicConfigurator.configure();
-        liveService();
-        //testService();
-    }
-    private static void testService() throws IOException {
+    static void testService() throws IOException {
         databaseService db = new databaseService(TEST_DB);
         db.inititialiseTables();
         userService test = new userService("test",db);
         test.startService();
     }
-    private static void liveService() throws IOException {
+    static void liveService() throws IOException {
         databaseService db = new databaseService(DEFAULT_DB);
         //db.inititialiseTables();
         userService test = new userService("test",db);
         test.startService();
+        //test.userRegester("root","pass");
     }
 }

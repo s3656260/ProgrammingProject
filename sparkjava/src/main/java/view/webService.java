@@ -201,12 +201,30 @@ public class webService {
     private void genStocklist() throws IOException {
         list = new JsonArray();
         allShares  = _apiService.genList();
-        for (shareItem x :allShares) {
+        List<shareItem> resultSet = this.database.getUserStocks(CurrentUser.get_user_id());
+        System.out.println("point");
+        boolean noRes = (resultSet == null);
+        boolean match = false;
 
+        for (shareItem x :allShares) {
             //get amount of stock for each symbol from db, afterwards any transaction should be synced to reflect the db
-            x.set_amount(checkForUserStock(x.getSymbol()));
+            //x.set_amount(checkForUserStock(x.getSymbol()));
+            if (!noRes){
+                for (shareItem resI :resultSet) {
+                    if (resI.getSymbol().equals(x.getSymbol())){
+                        x.set_amount(resI.get_amount());
+                        match = true;
+                        break;
+                    }
+                }
+            }
+            if (!match){
+                x.set_amount(0);
+            }
             list.add(x.toJson());
+            match = false;
         }
+
     }
 
     public Object getTop() throws IOException {

@@ -122,7 +122,7 @@ public class databaseService {
     public void startDBService(){
         String IP_of_instance = "35.224.201.43"; // update me
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -326,6 +326,7 @@ public class databaseService {
 
     public userItem getUserLogin(String userName, String passwords){
         String sql = "SELECT * FROM "+USER_TABLE+" WHERE "+USER_NAME_FIELD+"='"+userName+"' AND "+USER_PASSWORD_FIELD+" = '"+passwords+"';";
+        System.out.println(sql);
         userItem res = null;
         try{
             Statement stmt = conn.createStatement();
