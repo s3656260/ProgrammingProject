@@ -7,7 +7,7 @@
   },
   "homepage": "http://iamfaiz.github.io/react-auth-ui/",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "@material-ui/core": "^4.3.3",
     "bootstrap": "^4.3.1",
     "gh-pages": "^1.1.0",
